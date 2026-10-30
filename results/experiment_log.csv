@@ -1,0 +1,7 @@
+timestamp,dataset,model,train_samples,cv_folds,train_duration_sec,cv_r2_mean,cv_r2_std,cv_mae_mean
+2026-10-30 11:30:32,medical_premium_986,Random Forest,788,5,3.7771,0.7559,0.0938,1280.44
+2026-10-30 11:30:32,medical_premium_986,Gradient Boosting,788,5,4.4466,0.7436,0.0897,1689.03
+2026-10-30 11:30:32,medical_premium_986,XGBoost,788,5,4.8682,0.7491,0.0748,1720.27
+2026-10-30 11:31:13,medical_premium_986,Random Forest,788,5,4.4947,0.7559,0.0938,1280.44
+2026-10-30 11:31:13,medical_premium_986,Gradient Boosting,788,5,2.5391,0.7436,0.0897,1689.03
+2026-10-30 11:31:13,medical_premium_986,XGBoost,788,5,3.7859,0.7491,0.0748,1720.27

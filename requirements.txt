@@ -1,0 +1,25 @@
+# Medical Health Insurance Cost Prediction Dependencies
+# Core Data Science & Machine Learning
+numpy>=1.25.0
+pandas>=2.0.0
+scipy>=1.10.0
+scikit-learn>=1.3.0
+joblib>=1.3.0
+
+# Visualization
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Advanced Gradient Boosting Regressors
+xgboost>=2.0.0
+lightgbm>=4.0.0
+catboost>=1.2.0
+
+# Explainable AI (SHAP)
+shap>=0.44.0
+
+# Interactive Web Application
+streamlit>=1.30.0
+
+# Testing
+pytest>=7.4.0
