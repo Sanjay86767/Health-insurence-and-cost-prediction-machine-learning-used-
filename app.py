@@ -8,6 +8,7 @@ Interactive Production Web Application & Research Framework
 import sys
 from pathlib import Path
 import time
+import json
 
 PROJECT_ROOT = Path(__file__).resolve().parent
 if str(PROJECT_ROOT) not in sys.path:
@@ -262,48 +263,137 @@ def main():
     # -------------------------------------------------------------
     elif menu == "🔮 2. New Person Intake & Quote Generator":
         st.markdown('<div class="main-header">New Person Intake & Real-time Quote Generator</div>', unsafe_allow_html=True)
-        st.markdown('<div class="sub-header">Instant premium calculation with sub-10ms latency and automated counterfactual recourse</div>', unsafe_allow_html=True)
+        st.markdown('<div class="sub-header">Instant premium calculation with sub-10ms latency, multi-model consensus, and automated counterfactual recourse</div>', unsafe_allow_html=True)
 
-        col_in, col_out = st.columns([1, 1.2], gap="large")
+        col_in, col_out = st.columns([1, 1.25], gap="large")
 
         with col_in:
             st.subheader("👤 New Applicant Intake Form")
-            with st.form("intake_form"):
+
+            if d_type == "medical_premium_986":
+                preset = st.selectbox(
+                    "⚡ Rapid Load Profile:",
+                    [
+                        "Custom Applicant Entry",
+                        "Applicant 104 (Paper Table VII): Age 56, BMI 34.8, BP & Diabetes",
+                        "Applicant 289 (Paper Table VII): Age 48, BMI 31.2, Chronic Disease",
+                        "Applicant 415 (Paper Table VII): Age 35, BMI 28.4, Known Allergies",
+                        "Applicant 672 (Paper Table VII): Age 62, BMI 39.5, Severe Comorbidities",
+                        "Young Healthy Baseline: Age 23, Height 172cm, Weight 64kg (BMI 21.6)",
+                    ],
+                    index=0,
+                )
+
+                if "Applicant 104" in preset:
+                    def_age, def_h, def_w, def_surg, def_diab, def_bp, def_trans, def_chron, def_allerg, def_canc = 56, 168, 98, 1, 1, 1, 0, 0, 0, 0
+                elif "Applicant 289" in preset:
+                    def_age, def_h, def_w, def_surg, def_diab, def_bp, def_trans, def_chron, def_allerg, def_canc = 48, 170, 90, 0, 0, 0, 0, 1, 0, 0
+                elif "Applicant 415" in preset:
+                    def_age, def_h, def_w, def_surg, def_diab, def_bp, def_trans, def_chron, def_allerg, def_canc = 35, 175, 87, 0, 0, 0, 0, 0, 1, 0
+                elif "Applicant 672" in preset:
+                    def_age, def_h, def_w, def_surg, def_diab, def_bp, def_trans, def_chron, def_allerg, def_canc = 62, 165, 108, 2, 1, 1, 0, 1, 0, 1
+                elif "Young Healthy" in preset:
+                    def_age, def_h, def_w, def_surg, def_diab, def_bp, def_trans, def_chron, def_allerg, def_canc = 23, 172, 64, 0, 0, 0, 0, 0, 0, 0
+                else:
+                    def_age, def_h, def_w, def_surg, def_diab, def_bp, def_trans, def_chron, def_allerg, def_canc = 42, 168, 77, 0, 0, 1, 0, 0, 0, 0
+
                 active_model_name = st.selectbox("Inference Model:", options=list(artifacts["trained_results"].keys()), index=0)
 
-                if d_type == "medical_premium_986":
-                    age = st.slider("Applicant Age", 18, 66, 42)
-                    height = st.slider("Height (cm)", 140, 200, 168)
-                    weight = st.slider("Weight (kg)", 45, 140, 77)
-                    surgeries = st.selectbox("Major Surgeries (Past)", [0, 1, 2, 3], index=0)
+                age = st.slider("Applicant Age", 18, 66, def_age)
+                height = st.slider("Height (cm)", 140, 200, def_h)
+                weight = st.slider("Weight (kg)", 45, 140, def_w)
+                surgeries = st.selectbox("Major Surgeries (Past)", [0, 1, 2, 3], index=min(def_surg, 3))
 
-                    st.markdown("**Medical History & Conditions:**")
-                    c_a, c_b = st.columns(2)
-                    with c_a:
-                        diabetes = 1 if st.checkbox("Diabetes", False) else 0
-                        bp = 1 if st.checkbox("Blood Pressure Problems", True) else 0
-                        transplants = 1 if st.checkbox("Any Organ Transplants", False) else 0
-                    with c_b:
-                        chronic = 1 if st.checkbox("Any Chronic Diseases", False) else 0
-                        allergies = 1 if st.checkbox("Known Allergies", False) else 0
-                        cancer = 1 if st.checkbox("Family History of Cancer", False) else 0
+                st.markdown("**Medical History & Comorbidities:**")
+                c_a, c_b = st.columns(2)
+                with c_a:
+                    diabetes = 1 if st.checkbox("Diabetes", value=bool(def_diab)) else 0
+                    bp = 1 if st.checkbox("Blood Pressure Problems", value=bool(def_bp)) else 0
+                    transplants = 1 if st.checkbox("Any Organ Transplants", value=bool(def_trans)) else 0
+                with c_b:
+                    chronic = 1 if st.checkbox("Any Chronic Diseases", value=bool(def_chron)) else 0
+                    allergies = 1 if st.checkbox("Known Allergies", value=bool(def_allerg)) else 0
+                    cancer = 1 if st.checkbox("Family History of Cancer", value=bool(def_canc)) else 0
 
-                    user_dict = {
-                        "Age": age, "Diabetes": diabetes, "BloodPressureProblems": bp,
-                        "AnyTransplants": transplants, "AnyChronicDiseases": chronic,
-                        "Height": height, "Weight": weight, "KnownAllergies": allergies,
-                        "HistoryOfCancerInFamily": cancer, "NumberOfMajorSurgeries": surgeries,
-                    }
+                user_dict = {
+                    "Age": age, "Diabetes": diabetes, "BloodPressureProblems": bp,
+                    "AnyTransplants": transplants, "AnyChronicDiseases": chronic,
+                    "Height": height, "Weight": weight, "KnownAllergies": allergies,
+                    "HistoryOfCancerInFamily": cancer, "NumberOfMajorSurgeries": surgeries,
+                }
+
+                calc_bmi = round(weight / ((height / 100) ** 2), 1)
+                calc_cci = (2.0 * transplants) + (1.5 * chronic) + (1.0 * diabetes) + (1.0 * bp)
+                calc_surg_canc = surgeries * cancer
+
+                if calc_bmi < 18.5:
+                    bmi_cat = "Underweight (<18.5)"
+                    bmi_badge = "background-color: #FEF3C7; color: #92400E;"
+                elif calc_bmi < 25.0:
+                    bmi_cat = "Normal Weight (18.5–24.9) — Optimal"
+                    bmi_badge = "background-color: #DCFCE7; color: #166534;"
+                elif calc_bmi < 30.0:
+                    bmi_cat = "Overweight (25.0–29.9)"
+                    bmi_badge = "background-color: #FEF08A; color: #854D0E;"
+                elif calc_bmi < 35.0:
+                    bmi_cat = "Obese Class I (30.0–34.9)"
+                    bmi_badge = "background-color: #FED7AA; color: #9A3412;"
                 else:
-                    age = st.slider("Age (Years)", 18, 65, 38)
-                    sex = st.radio("Sex", ["female", "male"], horizontal=True)
-                    bmi = st.number_input("BMI (kg/m²)", 15.0, 50.0, 27.5, 0.1)
-                    children = st.slider("Dependents", 0, 5, 1)
-                    smoker = st.radio("Smoker Status", ["no", "yes"], horizontal=True)
-                    region = st.selectbox("Region", ["southwest", "southeast", "northwest", "northeast"])
-                    user_dict = {"age": age, "sex": sex, "bmi": bmi, "children": children, "smoker": smoker, "region": region}
+                    bmi_cat = "Severe / Morbidly Obese (≥35.0)"
+                    bmi_badge = "background-color: #FECACA; color: #991B1B;"
 
-                btn = st.form_submit_button("⚡ Generate Quote & Recourse", use_container_width=True)
+                cci_status = "Healthy Baseline (0.0)" if calc_cci == 0 else ("Moderate Comorbidity" if calc_cci <= 2.5 else "Severe Multi-morbidity")
+
+                st.markdown(f"""
+                <div style="background:#F8FAFC; border:1px solid #CBD5E1; padding:12px; border-radius:8px; margin-top:12px;">
+                    <div style="font-weight:700; font-size:0.85rem; color:#334155; margin-bottom:6px;">🩺 LIVE CLINICAL INDICES</div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:4px; font-size:0.9rem;">
+                        <span>Body Mass Index (BMI):</span> <strong>{calc_bmi} kg/m²</strong>
+                    </div>
+                    <div style="display:inline-block; padding:2px 8px; border-radius:4px; font-size:0.8rem; font-weight:600; {bmi_badge} margin-bottom:8px;">
+                        {bmi_cat}
+                    </div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:4px; font-size:0.9rem;">
+                        <span>Comorbidity Index (CCI):</span> <strong>{calc_cci:.1f} ({cci_status})</strong>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.9rem;">
+                        <span>Surgical-Oncological Score:</span> <strong>{calc_surg_canc}</strong>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+
+            else:
+                preset = st.selectbox(
+                    "⚡ Rapid Load Profile:",
+                    [
+                        "Custom Applicant Entry",
+                        "Young Fit Non-Smoker: Age 21, BMI 22.0, Dependents 0, Non-smoker",
+                        "Middle-Aged Smoker: Age 45, BMI 31.0, Dependents 2, Smoker",
+                        "Senior Non-Smoker: Age 60, BMI 28.5, Dependents 1, Non-smoker",
+                    ],
+                    index=0,
+                )
+                if "Young Fit" in preset:
+                    def_age, def_sex, def_bmi, def_child, def_smoker, def_reg = 21, "female", 22.0, 0, "no", "southwest"
+                elif "Middle-Aged" in preset:
+                    def_age, def_sex, def_bmi, def_child, def_smoker, def_reg = 45, "male", 31.0, 2, "yes", "southeast"
+                elif "Senior" in preset:
+                    def_age, def_sex, def_bmi, def_child, def_smoker, def_reg = 60, "female", 28.5, 1, "no", "northwest"
+                else:
+                    def_age, def_sex, def_bmi, def_child, def_smoker, def_reg = 38, "male", 27.5, 1, "no", "southwest"
+
+                active_model_name = st.selectbox("Inference Model:", options=list(artifacts["trained_results"].keys()), index=0)
+
+                age = st.slider("Age (Years)", 18, 65, def_age)
+                sex = st.radio("Sex", ["female", "male"], index=0 if def_sex == "female" else 1, horizontal=True)
+                bmi = st.number_input("BMI (kg/m²)", 15.0, 50.0, float(def_bmi), 0.1)
+                children = st.slider("Dependents", 0, 5, def_child)
+                smoker = st.radio("Smoker Status", ["no", "yes"], index=0 if def_smoker == "no" else 1, horizontal=True)
+                region_idx = ["southwest", "southeast", "northwest", "northeast"].index(def_reg) if def_reg in ["southwest", "southeast", "northwest", "northeast"] else 0
+                region = st.selectbox("Region", ["southwest", "southeast", "northwest", "northeast"], index=region_idx)
+                user_dict = {"age": age, "sex": sex, "bmi": bmi, "children": children, "smoker": smoker, "region": region}
+                calc_bmi = bmi
+                calc_cci = 0.0
 
         with col_out:
             st.subheader("💡 Real-time Actuarial Quote")
@@ -322,6 +412,26 @@ def main():
                 </div>
             </div>
             """, unsafe_allow_html=True)
+
+            with st.expander("📊 Compare All 9 Model Predictions for This Applicant", expanded=False):
+                model_quotes = []
+                for m_name, m_info in artifacts["trained_results"].items():
+                    m_pred, _, _ = predict_cost(m_info["model"], preprocessor, user_dict, d_type)
+                    model_quotes.append({"Model": m_name, "Predicted Quote": m_pred})
+
+                m_quotes_df = pd.DataFrame(model_quotes).sort_values("Predicted Quote", ascending=True)
+                fig_m, ax_m = plt.subplots(figsize=(7, 3.8))
+                colors = ["#2563EB" if m == active_model_name else "#94A3B8" for m in m_quotes_df["Model"]]
+                bars = ax_m.barh(m_quotes_df["Model"], m_quotes_df["Predicted Quote"], color=colors, height=0.6)
+                ax_m.set_xlabel(f"Predicted Premium ({curr})")
+                ax_m.set_title("Cross-Model Pricing Comparison for This Applicant", fontsize=11, fontweight="bold")
+                for bar in bars:
+                    w = bar.get_width()
+                    ax_m.text(w + 100, bar.get_y() + bar.get_height()/2, f"{curr}{w:,.0f}", va="center", fontsize=8)
+                ax_m.spines["top"].set_visible(False)
+                ax_m.spines["right"].set_visible(False)
+                st.pyplot(fig_m)
+                plt.close(fig_m)
 
             # Automated Counterfactual Recourse (Table VII reproduction)
             st.markdown("### 🎯 Actionable Recourse to Lower Premium")
@@ -347,6 +457,25 @@ def main():
                 plt.close(fig_wf)
             except Exception as e:
                 st.info(f"Local attribution note: {e}")
+
+            report_data = {
+                "applicant_profile": user_dict,
+                "clinical_metrics": {
+                    "BMI": float(calc_bmi),
+                    "CompositeComorbidityIndex": float(calc_cci),
+                },
+                "chosen_model": active_model_name,
+                "estimated_annual_premium": float(pred_cost),
+                "quote_latency_ms": round(latency_ms, 2),
+                "counterfactual_savings_roadmap": recourse_res["recourse_strategies"],
+            }
+            st.download_button(
+                label="📥 Download Applicant Actuarial Quote Report (.json)",
+                data=json.dumps(report_data, indent=2),
+                file_name="applicant_health_quote_report.json",
+                mime="application/json",
+                use_container_width=True,
+            )
 
     # -------------------------------------------------------------
     # Page 3: 9-Model Benchmark Leaderboard
