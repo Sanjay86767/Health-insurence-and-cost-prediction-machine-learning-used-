@@ -142,14 +142,21 @@ def get_trained_pipeline(dataset_type: str):
     trained_results = train_nine_models_pipeline(
         X_train=X_train_proc,
         y_train=y_train,
-        cv_folds=5,
+        cv_folds=0,  # Fast 0.4s web fit to prevent Streamlit Cloud CPU throttling
         random_state=42,
-        log_experiment=True,
+        log_experiment=False,
         dataset_name=d_type,
     )
 
-    comp_df = compare_and_save_metrics(trained_results, X_test_proc, y_test, save_csv=True)
+    metrics_file = PROJECT_ROOT / "results" / "metrics.csv"
+    if metrics_file.exists():
+        comp_df = pd.read_csv(metrics_file)
+    else:
+        comp_df = compare_and_save_metrics(trained_results, X_test_proc, y_test, save_csv=True)
+
     best_model_name = comp_df.iloc[0]["Model"]
+    if best_model_name not in trained_results:
+        best_model_name = list(trained_results.keys())[0]
     best_model = trained_results[best_model_name]["model"]
 
     save_artifact(best_model, f"best_model_{d_type}.joblib")
@@ -157,7 +164,7 @@ def get_trained_pipeline(dataset_type: str):
 
     try:
         explainer = get_shap_explainer(best_model, X_train_proc)
-        shap_explanation = compute_shap_explanation(explainer, X_test_proc[:100], feature_names)
+        shap_explanation = compute_shap_explanation(explainer, X_test_proc[:25], feature_names)
     except Exception:
         explainer = None
         shap_explanation = None
