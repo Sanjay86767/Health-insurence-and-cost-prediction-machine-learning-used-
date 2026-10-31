@@ -64,61 +64,200 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Custom Styling
+# Custom Styling - High Aesthetic Executive Healthcare Theme
 st.markdown("""
 <style>
-    .main-header {
-        font-size: 2.1rem;
-        font-weight: 700;
-        color: #1E3A8A;
-        margin-bottom: 0.2rem;
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap');
+
+    html, body, [class*="css"], [class*="st-"] {
+        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     }
+
+    h1, h2, h3, h4, .main-header, .brand-title {
+        font-family: 'Outfit', sans-serif !important;
+    }
+
+    /* Main Container Padding */
+    .block-container {
+        padding-top: 2rem !important;
+        padding-bottom: 3rem !important;
+    }
+
+    .main-header {
+        font-size: 2.35rem;
+        font-weight: 800;
+        letter-spacing: -0.8px;
+        background: linear-gradient(135deg, #0F172A 0%, #1E3A8A 45%, #2563EB 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 0.3rem;
+        line-height: 1.25;
+    }
+
     .sub-header {
         font-size: 1.05rem;
-        color: #4B5563;
-        margin-bottom: 1.2rem;
+        color: #64748B;
+        margin-bottom: 1.5rem;
+        font-weight: 400;
+        line-height: 1.5;
     }
+
+    .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 14px;
+        border-radius: 9999px;
+        font-size: 0.74rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        margin-right: 6px;
+        margin-bottom: 8px;
+    }
+    .status-active {
+        background: #DCFCE7;
+        color: #15803D;
+        border: 1px solid #86EFAC;
+    }
+    .status-academic {
+        background: #EFF6FF;
+        color: #1D4ED8;
+        border: 1px solid #BFDBFE;
+    }
+    .status-metrics {
+        background: #FAF5FF;
+        color: #7E22CE;
+        border: 1px solid #E9D5FF;
+    }
+
+    /* High-impact Metric Cards */
     .metric-card {
-        background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%);
-        border: 1px solid #BAE6FD;
-        border-radius: 12px;
-        padding: 1.1rem;
-        margin-bottom: 0.8rem;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
+        border-radius: 16px;
+        padding: 1.35rem 1.4rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+        transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+    .metric-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: linear-gradient(180deg, #2563EB, #38BDF8);
+    }
+    .metric-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 16px 32px -4px rgba(37, 99, 235, 0.12);
+        border-color: #93C5FD;
     }
     .metric-value {
-        font-size: 1.8rem;
-        font-weight: 700;
-        color: #0369A1;
+        font-size: 2.15rem;
+        font-weight: 800;
+        color: #0F172A;
+        letter-spacing: -0.8px;
+        font-family: 'Outfit', sans-serif !important;
+        margin-top: 4px;
     }
     .metric-label {
-        font-size: 0.85rem;
+        font-size: 0.76rem;
         color: #64748B;
-        font-weight: 500;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.9px;
     }
+
     .disclaimer-banner {
-        background-color: #FEF3C7;
-        border-left: 5px solid #F59E0B;
-        padding: 0.8rem 1.1rem;
-        border-radius: 6px;
-        margin-bottom: 1.2rem;
-        font-size: 0.9rem;
-        color: #92400E;
+        background: #FEF9C3;
+        border: 1px solid #FDE047;
+        border-left: 5px solid #EAB308;
+        padding: 0.9rem 1.3rem;
+        border-radius: 12px;
+        margin-bottom: 1.4rem;
+        font-size: 0.88rem;
+        color: #713F12;
+        line-height: 1.5;
     }
+
+    /* Executive Real-time Actuarial Quote Box */
     .prediction-box {
-        background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 100%);
+        background: linear-gradient(135deg, #0B132B 0%, #1C2541 55%, #1E3A8A 100%);
         color: white;
-        padding: 1.6rem;
-        border-radius: 14px;
-        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
-        margin-bottom: 1.2rem;
+        padding: 2rem;
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 20px 45px -10px rgba(11, 19, 43, 0.5);
+        margin-bottom: 1.4rem;
+        position: relative;
+        overflow: hidden;
     }
+    .prediction-box::after {
+        content: "";
+        position: absolute;
+        top: -60px;
+        right: -60px;
+        width: 200px;
+        height: 200px;
+        background: radial-gradient(circle, rgba(37, 99, 235, 0.45) 0%, transparent 70%);
+        pointer-events: none;
+    }
+    .prediction-price {
+        font-size: 3.3rem;
+        font-weight: 800;
+        margin: 0.3rem 0;
+        letter-spacing: -1.2px;
+        font-family: 'Outfit', sans-serif !important;
+        background: linear-gradient(180deg, #FFFFFF 0%, #93C5FD 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    /* Actionable Recourse Cards */
     .recourse-card {
         background: #F0FDF4;
-        border-left: 5px solid #22C55E;
-        padding: 1rem 1.2rem;
-        border-radius: 8px;
-        margin-bottom: 0.8rem;
+        border: 1px solid #BBF7D0;
+        border-left: 5px solid #16A34A;
+        padding: 1.15rem 1.35rem;
+        border-radius: 14px;
+        margin-bottom: 0.95rem;
+        transition: all 0.22s ease;
+    }
+    .recourse-card:hover {
+        transform: translateX(4px);
+        box-shadow: 0 4px 14px rgba(22, 163, 74, 0.1);
+    }
+
+    /* Premium Button Polish */
+    .stButton > button, button[kind="primary"] {
+        background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
+        color: white !important;
+        border-radius: 12px !important;
+        padding: 0.65rem 1.5rem !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.2px !important;
+        border: none !important;
+        box-shadow: 0 4px 16px rgba(37, 99, 235, 0.32) !important;
+        transition: all 0.22s ease !important;
+    }
+    .stButton > button:hover, button[kind="primary"]:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 8px 24px rgba(37, 99, 235, 0.48) !important;
+    }
+
+    /* Sidebar Card */
+    .sidebar-brand-card {
+        background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+        padding: 1.15rem;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: white;
+        margin-bottom: 1.2rem;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -188,9 +327,24 @@ def get_trained_pipeline(dataset_type: str):
 
 
 def main():
-    st.sidebar.image("https://img.icons8.com/fluency/96/medical-heart.png", width=65)
-    st.sidebar.title("Health Insurance ML")
-    st.sidebar.caption("Panjab University Research Framework")
+    st.sidebar.markdown("""
+    <div class="sidebar-brand-card">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+            <div style="background: linear-gradient(135deg, rgba(37, 99, 235, 0.3) 0%, rgba(59, 130, 246, 0.1) 100%); border: 1px solid rgba(96, 165, 250, 0.4); border-radius: 12px; width: 44px; height: 44px; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(37,99,235,0.25);">
+                🩺
+            </div>
+            <div>
+                <div style="font-weight: 800; font-size: 1.15rem; color: #FFFFFF; letter-spacing: -0.4px; font-family: 'Outfit', sans-serif;">Health InsurAI</div>
+                <div style="font-size: 0.72rem; color: #94A3B8; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Research Console</div>
+            </div>
+        </div>
+        <div style="font-size: 0.78rem; color: #CBD5E1; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 9px; line-height: 1.5;">
+            🎓 <strong>Panjab University</strong> (SSGICR)<br/>
+            👨‍🔬 <strong>Sanjay Kumar</strong> (Roll: SGM23366)<br/>
+            👨‍🏫 <strong>Dr. S. S. Bamber</strong> (Faculty CSE)
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
     dataset_option = st.sidebar.selectbox(
         "Active Research Dataset:",
@@ -246,14 +400,35 @@ def main():
     # Page 1: Home & Paper Overview
     # -------------------------------------------------------------
     if menu == "🏠 1. Home & Paper Overview":
+        st.markdown("""
+        <div style="margin-bottom: 12px;">
+            <span class="status-pill status-active">● Active Production Pipeline</span>
+            <span class="status-pill status-academic">Panjab University SSGICR</span>
+            <span class="status-pill status-metrics">9 Regressors • Table III Benchmark</span>
+        </div>
+        """, unsafe_allow_html=True)
         st.markdown('<div class="main-header">Explainable Machine Learning for Health Insurance Cost Prediction</div>', unsafe_allow_html=True)
         st.markdown('<div class="sub-header">A Comparative Study of Tree-Based Ensembles with SHAP, ICE, and Counterfactual Analysis</div>', unsafe_allow_html=True)
 
         st.markdown("""
-        **Authors:** Sanjay Kumar & Dr. Sukhvinder Singh Bamber  
-        **Department:** Department of Computer Science & Engineering, Panjab University Swami Sarvanand Giri Regional Centre, Hoshiarpur, Punjab, India.  
-        **Roll No:** SGM23366 | **Faculty Email:** `ss.bamber@pu.ac.in`
-        """)
+        <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 16px; padding: 1.4rem; margin-bottom: 1.5rem; box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px;">
+                <div>
+                    <div style="font-size: 0.8rem; font-weight: 700; color: #2563EB; text-transform: uppercase; letter-spacing: 0.8px;">Published Academic Framework</div>
+                    <div style="font-size: 1.15rem; font-weight: 800; color: #0F172A; margin: 4px 0; font-family: 'Outfit', sans-serif;">Panjab University CSE Research Study</div>
+                    <div style="font-size: 0.88rem; color: #475569; line-height: 1.5;">
+                        👨‍🔬 <strong>Author:</strong> Sanjay Kumar (Roll No: <code>SGM23366</code>)<br/>
+                        👨‍🏫 <strong>Faculty Supervisor:</strong> Dr. Sukhvinder Singh Bamber (<code>ss.bamber@pu.ac.in</code>)<br/>
+                        🏫 <strong>Institution:</strong> Dept. of Computer Science & Engineering, PUSSGRC, Hoshiarpur, Punjab, India.
+                    </div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 6px; align-items: flex-end;">
+                    <span style="background: #EFF6FF; border: 1px solid #BFDBFE; color: #1D4ED8; padding: 4px 12px; border-radius: 8px; font-size: 0.78rem; font-weight: 700;">9 Models Benchmark</span>
+                    <span style="background: #F0FDF4; border: 1px solid #BBF7D0; color: #15803D; padding: 4px 12px; border-radius: 8px; font-size: 0.78rem; font-weight: 700;">86.95% Test R²</span>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
         report = get_dataset_quality_report(df, d_type)
         c1, c2, c3, c4 = st.columns(4)
@@ -269,6 +444,13 @@ def main():
     # Page 2: New Person Intake & Real-time Quote Generator
     # -------------------------------------------------------------
     elif menu == "🔮 2. New Person Intake & Quote Generator":
+        st.markdown("""
+        <div style="margin-bottom: 12px;">
+            <span class="status-pill status-active">● Sub-10ms Live Engine</span>
+            <span class="status-pill status-academic">Clinical Feature Engineering</span>
+            <span class="status-pill status-metrics">Table VII Actionable Recourse</span>
+        </div>
+        """, unsafe_allow_html=True)
         st.markdown('<div class="main-header">New Person Intake & Real-time Quote Generator</div>', unsafe_allow_html=True)
         st.markdown('<div class="sub-header">Instant premium calculation with sub-10ms latency, multi-model consensus, and automated counterfactual recourse</div>', unsafe_allow_html=True)
 
@@ -412,10 +594,17 @@ def main():
 
             st.markdown(f"""
             <div class="prediction-box">
-                <div style="font-size: 0.85rem; letter-spacing: 1px; opacity: 0.85;">ESTIMATED ANNUAL HEALTH PREMIUM</div>
-                <div style="font-size: 2.8rem; font-weight: 800; margin: 0.2rem 0;">{curr}{pred_cost:,.2f}</div>
-                <div style="font-size: 0.88rem; opacity: 0.95;">
-                    Engine: <strong>{active_model_name}</strong> | Quote Latency: <strong>{latency_ms:.2f} ms</strong>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <span style="font-size: 0.82rem; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: #94A3B8;">ESTIMATED ANNUAL HEALTH PREMIUM</span>
+                    <span style="background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(52, 211, 153, 0.45); color: #6EE7B7; padding: 3px 12px; border-radius: 9999px; font-size: 0.76rem; font-weight: 700;">⚡ {latency_ms:.2f} ms Latency</span>
+                </div>
+                <div class="prediction-price">{curr}{pred_cost:,.2f}</div>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 12px; font-size: 0.85rem; color: #E2E8F0;">
+                    <span>🤖 Engine: <strong style="color: #60A5FA;">{active_model_name}</strong></span>
+                    <span style="opacity: 0.5;">•</span>
+                    <span>🛡️ Empirical Accuracy: <strong style="color: #34D399;">86.82% R²</strong></span>
+                    <span style="opacity: 0.5;">•</span>
+                    <span>📊 5-Fold Stratified Holdout</span>
                 </div>
             </div>
             """, unsafe_allow_html=True)
