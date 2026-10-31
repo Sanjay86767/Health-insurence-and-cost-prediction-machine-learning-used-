@@ -9,6 +9,7 @@ import sys
 from pathlib import Path
 import time
 import json
+from datetime import datetime
 
 PROJECT_ROOT = Path(__file__).resolve().parent
 if str(PROJECT_ROOT) not in sys.path:
@@ -28,6 +29,7 @@ from src.auth import (
     update_user_profile,
 )
 from src.counterfactual import generate_counterfactual_recourse
+from src.pdf_generator import generate_policyholder_pdf_report
 from src.data_loader import (
     DataLoaderError,
     get_dataset_quality_report,
@@ -770,6 +772,25 @@ def main():
                     mime="application/json",
                     use_container_width=True,
                 )
+                try:
+                    pdf_bytes = generate_policyholder_pdf_report(
+                        applicant_data=user_data_dict,
+                        quote_inr=float(u_quote),
+                        model_name=best_name,
+                        bmi=u_bmi,
+                        cci=u_cci,
+                        cardholder_name=u["full_name"],
+                        policy_id=u["policy_id"],
+                    )
+                    st.download_button(
+                        label="📄 Download Official Underwriting Report (.pdf)",
+                        data=pdf_bytes,
+                        file_name=f"underwriting_report_{u['policy_id']}.pdf",
+                        mime="application/pdf",
+                        use_container_width=True,
+                    )
+                except Exception:
+                    pass
 
                 if st.button("🚪 Log Out from Portal", key="portal_logout_btn", use_container_width=True):
                     st.session_state["user"]["is_logged_in"] = False
@@ -1127,13 +1148,58 @@ def main():
                 "quote_latency_ms": round(latency_ms, 2),
                 "counterfactual_savings_roadmap": recourse_res["recourse_strategies"],
             }
-            st.download_button(
-                label="📥 Download Applicant Actuarial Quote Report (.json)",
-                data=json.dumps(report_data, indent=2),
-                file_name="applicant_health_quote_report.json",
-                mime="application/json",
-                use_container_width=True,
-            )
+            col_d_json, col_d_pdf = st.columns(2)
+            with col_d_json:
+                st.download_button(
+                    label="📥 Download Quote Data (.json)",
+                    data=json.dumps(report_data, indent=2),
+                    file_name="applicant_health_quote_report.json",
+                    mime="application/json",
+                    use_container_width=True,
+                )
+            with col_d_pdf:
+                try:
+                    pdf_quote_bytes = generate_policyholder_pdf_report(
+                        applicant_data=user_dict,
+                        quote_inr=float(pred_cost),
+                        model_name=active_model_name,
+                        bmi=calc_bmi,
+                        cci=calc_cci,
+                        counterfactual_strategies=recourse_res.get("recourse_strategies", []),
+                        cardholder_name=user.get("full_name", "Applicant Evaluation"),
+                        policy_id=user.get("policy_id", "PU-INS-CALC"),
+                    )
+                    st.download_button(
+                        label="📄 Download Official PDF Report (.pdf)",
+                        data=pdf_quote_bytes,
+                        file_name="applicant_underwriting_report.pdf",
+                        mime="application/pdf",
+                        use_container_width=True,
+                    )
+                except Exception:
+                    pass
+
+            # Prediction History Logger & Table
+            if "prediction_history" not in st.session_state:
+                st.session_state["prediction_history"] = []
+
+            curr_hist_item = {
+                "Time": datetime.now().strftime("%H:%M:%S"),
+                "Age": user_dict.get("Age", user_dict.get("age", 0)),
+                "BMI": round(calc_bmi, 1),
+                "Model": active_model_name,
+                "Annual Quote": f"{curr}{pred_cost:,.2f}",
+                "Monthly Est.": f"{curr}{pred_cost / 12:,.2f}",
+            }
+            if not st.session_state["prediction_history"] or st.session_state["prediction_history"][0]["Annual Quote"] != curr_hist_item["Annual Quote"]:
+                st.session_state["prediction_history"].insert(0, curr_hist_item)
+                st.session_state["prediction_history"] = st.session_state["prediction_history"][:8]
+
+            st.markdown("---")
+            st.subheader("📋 Recent In-Session Prediction History")
+            if st.session_state["prediction_history"]:
+                hist_df = pd.DataFrame(st.session_state["prediction_history"])
+                st.dataframe(hist_df, use_container_width=True)
 
     # -------------------------------------------------------------
     # Page 3: 9-Model Benchmark Leaderboard
@@ -1224,23 +1290,119 @@ def main():
     # Page 6: Actionable Counterfactual Recourse
     # -------------------------------------------------------------
     elif menu == "🔄 6. Actionable Counterfactual Recourse":
-        st.markdown('<div class="main-header">Actionable Counterfactual Recourse (Table VII)</div>', unsafe_allow_html=True)
-        st.markdown('<div class="sub-header">What feasible actions can a policyholder take to reduce their health premium?</div>', unsafe_allow_html=True)
-
         st.markdown("""
-        **Counterfactual Principle (Wachter et al. & DiCE):**  
-        $$x^* = \\arg\\min_{x'} \\text{dist}(x, x') + \\lambda (f(x') - y^*)^2$$
-        With immutable attributes (Age, Family Cancer History, Transplants) held fixed.
-        """)
+        <div style="margin-bottom: 12px;">
+            <span class="status-pill status-active">● Dataiku-Style Comparator</span>
+            <span class="status-pill status-academic">Table VII Recourse Engine</span>
+            <span class="status-pill status-metrics">Constrained Optimization (DiCE)</span>
+        </div>
+        """, unsafe_allow_html=True)
+        st.markdown('<div class="main-header">Actionable Counterfactual Recourse & What-If Simulator</div>', unsafe_allow_html=True)
+        st.markdown('<div class="sub-header">Dataiku-style scenario comparator: what feasible lifestyle or clinical changes reduce predicted health premiums?</div>', unsafe_allow_html=True)
 
-        st.subheader("Benchmark Applicants from Table VII in Paper")
-        table_vii = [
-            {"Applicant": "104", "BMI change": "34.8 → 29.9", "Saving (₹/yr)": "₹8,400", "Saving (%)": "24.3%"},
-            {"Applicant": "289", "BMI change": "31.2 → 26.9", "Saving (₹/yr)": "₹4,800", "Saving (%)": "16.8%"},
-            {"Applicant": "415", "BMI change": "28.4 → 24.8", "Saving (₹/yr)": "₹3,250", "Saving (%)": "13.5%"},
-            {"Applicant": "672", "BMI change": "39.5 → 32.1", "Saving (₹/yr)": "₹9,850", "Saving (%)": "26.6%"},
-        ]
-        st.table(pd.DataFrame(table_vii))
+        tab_sim, tab_table = st.tabs(["🧪 Interactive What-If Scenario Comparator", "📑 Paper Table VII Benchmarks"])
+
+        with tab_sim:
+            sim_sel = st.selectbox(
+                "Select Baseline Cohort Applicant:",
+                [
+                    "Applicant 104 (Age 56, BMI 34.8, BP & Diabetes)",
+                    "Applicant 289 (Age 48, BMI 31.2, Chronic Disease)",
+                    "Applicant 415 (Age 35, BMI 28.4, Known Allergies)",
+                    "Applicant 672 (Age 62, BMI 39.5, Severe Comorbidities)",
+                    f"Active Profile: {user.get('full_name', 'Current Policyholder')}",
+                ],
+                index=0,
+            )
+
+            if "104" in sim_sel:
+                b_age, b_h, b_w, b_surg, b_diab, b_bp, b_trans, b_chron, b_allerg, b_canc = 56, 168, 98, 1, 1, 1, 0, 0, 0, 0
+            elif "289" in sim_sel:
+                b_age, b_h, b_w, b_surg, b_diab, b_bp, b_trans, b_chron, b_allerg, b_canc = 48, 170, 90, 0, 0, 0, 0, 1, 0, 0
+            elif "415" in sim_sel:
+                b_age, b_h, b_w, b_surg, b_diab, b_bp, b_trans, b_chron, b_allerg, b_canc = 35, 175, 87, 0, 0, 0, 0, 0, 1, 0
+            elif "672" in sim_sel:
+                b_age, b_h, b_w, b_surg, b_diab, b_bp, b_trans, b_chron, b_allerg, b_canc = 62, 165, 108, 2, 1, 1, 0, 1, 0, 1
+            else:
+                b_age, b_h, b_w = int(user.get("age", 42)), int(user.get("height", 168)), int(user.get("weight", 77))
+                b_surg, b_diab, b_bp = int(user.get("surgeries", 0)), int(user.get("diabetes", 0)), int(user.get("bp", 1))
+                b_trans, b_chron, b_allerg, b_canc = int(user.get("transplants", 0)), int(user.get("chronic", 0)), int(user.get("allergies", 0)), int(user.get("cancer", 0))
+
+            b_input = {
+                "Age": b_age, "Diabetes": b_diab, "BloodPressureProblems": b_bp,
+                "AnyTransplants": b_trans, "AnyChronicDiseases": b_chron,
+                "Height": b_h, "Weight": b_w, "KnownAllergies": b_allerg,
+                "HistoryOfCancerInFamily": b_canc, "NumberOfMajorSurgeries": b_surg,
+            }
+            base_quote, _, _ = predict_cost(best_model, preprocessor, b_input, "medical_premium_986")
+            base_bmi = b_w / ((b_h / 100) ** 2)
+
+            col_cf_in, col_cf_out = st.columns([1, 1.25], gap="large")
+
+            with col_cf_in:
+                st.subheader("🎛️ Modify Mutable Attributes")
+                st.markdown("<small style='color:#64748B;'>*Immutable attributes (Age, Family Cancer History, Transplants) are locked per Wachter et al.*</small>", unsafe_allow_html=True)
+
+                w_reduction = st.slider("Simulated Weight Reduction (kg):", 0, 25, 8, step=1)
+                sim_weight = max(45, b_w - w_reduction)
+                sim_bmi = sim_weight / ((b_h / 100) ** 2)
+
+                st.markdown(f"**Target BMI:** `{base_bmi:.1f}` → `{sim_bmi:.1f} kg/m²` (Δ -{base_bmi - sim_bmi:.1f} units)")
+
+                sim_bp = 0 if b_bp == 1 and st.checkbox("Manage & Normalize Blood Pressure", value=True) else b_bp
+                sim_chron = 0 if b_chron == 1 and st.checkbox("Control Chronic Disease with Preventive Care", value=False) else b_chron
+
+                sim_input = dict(b_input)
+                sim_input["Weight"] = sim_weight
+                sim_input["BloodPressureProblems"] = sim_bp
+                sim_input["AnyChronicDiseases"] = sim_chron
+
+                sim_quote, _, _ = predict_cost(best_model, preprocessor, sim_input, "medical_premium_986")
+                savings = max(0.0, base_quote - sim_quote)
+                saving_pct = (savings / base_quote * 100.0) if base_quote > 0 else 0
+
+            with col_cf_out:
+                st.subheader("📊 What-If Valuation Comparison")
+
+                kpi1, kpi2, kpi3 = st.columns(3)
+                kpi1.metric("Baseline Annual Quote", f"{curr}{base_quote:,.2f}")
+                kpi2.metric("Scenario Annual Quote", f"{curr}{sim_quote:,.2f}")
+                kpi3.metric("Projected Savings", f"{curr}{savings:,.2f}", f"-{saving_pct:.1f}%")
+
+                fig_cf, ax_cf = plt.subplots(figsize=(7, 3.2))
+                bars = ax_cf.barh(["Simulated Scenario", "Baseline Quote"], [sim_quote, base_quote], color=["#10B981", "#2563EB"], height=0.55)
+                ax_cf.set_xlabel(f"Annual Premium ({curr})")
+                ax_cf.set_title("Quote Comparison: Baseline vs. Scenario", fontsize=11, weight="bold")
+                for bar in bars:
+                    w = bar.get_width()
+                    ax_cf.text(w + 300, bar.get_y() + bar.get_height()/2, f"{curr}{w:,.0f}", va="center", fontsize=9, weight="bold")
+                ax_cf.spines["top"].set_visible(False)
+                ax_cf.spines["right"].set_visible(False)
+                plt.tight_layout()
+                st.pyplot(fig_cf)
+                plt.close(fig_cf)
+
+                st.markdown(f"""
+                <div style="background: #FEF9C3; border: 1px solid #FDE047; border-left: 5px solid #EAB308; padding: 10px 14px; border-radius: 10px; font-size: 0.82rem; color: #713F12;">
+                    ⚠️ <strong>Regulatory & Safety Notice (Section III-E):</strong> Scenario analysis demonstrates the regression model's mathematical response function. It does not establish causal clinical health effects or guarantee underwriting discounts.
+                </div>
+                """, unsafe_allow_html=True)
+
+        with tab_table:
+            st.markdown("""
+            **Counterfactual Principle (Wachter et al. & DiCE):**  
+            $$x^* = \\arg\\min_{x'} \\text{dist}(x, x') + \\lambda (f(x') - y^*)^2$$
+            With immutable attributes (Age, Family Cancer History, Transplants) held fixed.
+            """)
+
+            st.subheader("Benchmark Applicants from Table VII in Paper")
+            table_vii = [
+                {"Applicant": "104", "BMI change": "34.8 → 29.9", "Saving (₹/yr)": "₹8,400", "Saving (%)": "24.3%"},
+                {"Applicant": "289", "BMI change": "31.2 → 26.9", "Saving (₹/yr)": "₹4,800", "Saving (%)": "16.8%"},
+                {"Applicant": "415", "BMI change": "28.4 → 24.8", "Saving (₹/yr)": "₹3,250", "Saving (%)": "13.5%"},
+                {"Applicant": "672", "BMI change": "39.5 → 32.1", "Saving (₹/yr)": "₹9,850", "Saving (%)": "26.6%"},
+            ]
+            st.table(pd.DataFrame(table_vii))
 
     # -------------------------------------------------------------
     # Page 7: Subgroup & Fairness Audit
