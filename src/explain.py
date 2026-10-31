@@ -227,7 +227,7 @@ def generate_natural_language_explanation(
         feature_clean = item["feature"].replace("_", " ").title()
         sign = "+" if item["shap_value"] > 0 else "-"
         summary_bullets.append(
-            f"**{feature_clean}**: {item['direction']} the estimated charge by **{sign}${item['abs_val']:,.2f}**."
+            f"**{feature_clean}**: {item['direction']} the estimated charge by **{sign}₹{item['abs_val']:,.2f}**."
         )
 
     return {

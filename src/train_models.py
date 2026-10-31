@@ -268,8 +268,8 @@ def run_feature_ablation_study(
             "Configuration": label,
             "Feature Count": len(cols),
             "R² (%)": round(r2, 2),
-            "MAE ($)": round(mae, 2),
-            "RMSE ($)": round(rmse, 2),
+            "MAE (₹)": round(mae, 2),
+            "RMSE (₹)": round(rmse, 2),
         })
 
     return pd.DataFrame(records)

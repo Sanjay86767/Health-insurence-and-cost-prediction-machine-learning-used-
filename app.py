@@ -491,7 +491,7 @@ def main():
     preprocessor = artifacts["preprocessor"]
     feature_names = artifacts["feature_names"]
     target_col = "PremiumPrice" if d_type == "medical_premium_986" else "charges"
-    curr = "$" if d_type == "medical_premium_986" else "$"
+    curr = "₹"
 
     # -------------------------------------------------------------
     # Page 0: My Policyholder Portal & Digital Health Card
@@ -969,15 +969,15 @@ def main():
 
         st.subheader("📑 Paper Reported Benchmarks (Table III Reference)")
         paper_table_iii = [
-            {"Model": "Ordinary Least Squares", "Train R² (%)": "76.12", "CV R² (%)": "71.40", "Test R² (%)": "75.09", "MAE ($)": "2,310.45", "RMSE ($)": "3,124.60", "MAPE (%)": "11.20"},
-            {"Model": "Ridge Regression (α = 1)", "Train R² (%)": "76.08", "CV R² (%)": "71.45", "Test R² (%)": "75.12", "MAE ($)": "2,305.10", "RMSE ($)": "3,118.25", "MAPE (%)": "11.15"},
-            {"Model": "Tweedie GLM (p = 1.5)", "Train R² (%)": "78.45", "CV R² (%)": "72.20", "Test R² (%)": "77.80", "MAE ($)": "2,115.30", "RMSE ($)": "2,940.10", "MAPE (%)": "9.85"},
-            {"Model": "Gradient Boosting (GBM)", "Train R² (%)": "79.84", "CV R² (%)": "73.00", "Test R² (%)": "84.72", "MAE ($)": "1,725.86", "RMSE ($)": "2,371.41", "MAPE (%)": "7.23"},
-            {"Model": "Random Forest", "Train R² (%)": "95.81", "CV R² (%)": "73.43", "Test R² (%)": "84.05", "MAE ($)": "1,379.96", "RMSE ($)": "2,423.16", "MAPE (%)": "5.83"},
-            {"Model": "LightGBM", "Train R² (%)": "87.10", "CV R² (%)": "74.12", "Test R² (%)": "85.80", "MAE ($)": "1,510.20", "RMSE ($)": "2,290.15", "MAPE (%)": "6.10"},
-            {"Model": "CatBoost", "Train R² (%)": "88.40", "CV R² (%)": "74.25", "Test R² (%)": "86.15", "MAE ($)": "1,465.30", "RMSE ($)": "2,254.80", "MAPE (%)": "5.72"},
-            {"Model": "XGBoost (optimized)", "Train R² (%)": "88.22", "CV R² (%)": "74.48", "Test R² (%)": "86.82", "MAE ($)": "1,442.90", "RMSE ($)": "2,210.45", "MAPE (%)": "5.48"},
-            {"Model": "Stacking meta-ensemble", "Train R² (%)": "90.15", "CV R² (%)": "74.65", "Test R² (%)": "86.95", "MAE ($)": "1,395.20", "RMSE ($)": "2,198.50", "MAPE (%)": "5.42"},
+            {"Model": "Ordinary Least Squares", "Train R² (%)": "76.12", "CV R² (%)": "71.40", "Test R² (%)": "75.09", "MAE (₹)": "2,310.45", "RMSE (₹)": "3,124.60", "MAPE (%)": "11.20"},
+            {"Model": "Ridge Regression (α = 1)", "Train R² (%)": "76.08", "CV R² (%)": "71.45", "Test R² (%)": "75.12", "MAE (₹)": "2,305.10", "RMSE (₹)": "3,118.25", "MAPE (%)": "11.15"},
+            {"Model": "Tweedie GLM (p = 1.5)", "Train R² (%)": "78.45", "CV R² (%)": "72.20", "Test R² (%)": "77.80", "MAE (₹)": "2,115.30", "RMSE (₹)": "2,940.10", "MAPE (%)": "9.85"},
+            {"Model": "Gradient Boosting (GBM)", "Train R² (%)": "79.84", "CV R² (%)": "73.00", "Test R² (%)": "84.72", "MAE (₹)": "1,725.86", "RMSE (₹)": "2,371.41", "MAPE (%)": "7.23"},
+            {"Model": "Random Forest", "Train R² (%)": "95.81", "CV R² (%)": "73.43", "Test R² (%)": "84.05", "MAE (₹)": "1,379.96", "RMSE (₹)": "2,423.16", "MAPE (%)": "5.83"},
+            {"Model": "LightGBM", "Train R² (%)": "87.10", "CV R² (%)": "74.12", "Test R² (%)": "85.80", "MAE (₹)": "1,510.20", "RMSE (₹)": "2,290.15", "MAPE (%)": "6.10"},
+            {"Model": "CatBoost", "Train R² (%)": "88.40", "CV R² (%)": "74.25", "Test R² (%)": "86.15", "MAE (₹)": "1,465.30", "RMSE (₹)": "2,254.80", "MAPE (%)": "5.72"},
+            {"Model": "XGBoost (optimized)", "Train R² (%)": "88.22", "CV R² (%)": "74.48", "Test R² (%)": "86.82", "MAE (₹)": "1,442.90", "RMSE (₹)": "2,210.45", "MAPE (%)": "5.48"},
+            {"Model": "Stacking meta-ensemble", "Train R² (%)": "90.15", "CV R² (%)": "74.65", "Test R² (%)": "86.95", "MAE (₹)": "1,395.20", "RMSE (₹)": "2,198.50", "MAPE (%)": "5.42"},
         ]
         st.table(pd.DataFrame(paper_table_iii))
 
@@ -990,7 +990,7 @@ def main():
 
         st.markdown("""
         The paper demonstrates that engineering **BMI**, a **Composite Comorbidity Index (CCI)**, and a **Surgical-Oncological Interaction**
-        adds **+2.77 points of R²** and saves **$178 in lower MAE** on the hold-out test set without introducing multicollinearity (all VIF < 3.0).
+        adds **+2.77 points of R²** and saves **₹178 in lower MAE** on the hold-out test set without introducing multicollinearity (all VIF < 3.0).
         """)
 
         with st.spinner("Computing live ablation study across 4 feature subsets..."):
@@ -1022,7 +1022,7 @@ def main():
                 fig_g = plot_shap_summary(artifacts["shap_explanation"], feature_names)
                 st.pyplot(fig_g)
                 plt.close(fig_g)
-                st.info("💡 **Finding (Fig. 4):** Age is the main driver (Mean |SHAP|: $3,700), followed by BMI ($3,100), Organ Transplants ($2,450), and Chronic Diseases ($1,820).")
+                st.info("💡 **Finding (Fig. 4):** Age is the main driver (Mean |SHAP|: ₹3,700), followed by BMI (₹3,100), Organ Transplants (₹2,450), and Chronic Diseases (₹1,820).")
 
         with tab_i:
             st.subheader("Centered ICE Curves (Section III-E)")
@@ -1045,10 +1045,10 @@ def main():
 
         st.subheader("Benchmark Applicants from Table VII in Paper")
         table_vii = [
-            {"Applicant": "104", "BMI change": "34.8 → 29.9", "Saving ($/yr)": "$8,400", "Saving (%)": "24.3%"},
-            {"Applicant": "289", "BMI change": "31.2 → 26.9", "Saving ($/yr)": "$4,800", "Saving (%)": "16.8%"},
-            {"Applicant": "415", "BMI change": "28.4 → 24.8", "Saving ($/yr)": "$3,250", "Saving (%)": "13.5%"},
-            {"Applicant": "672", "BMI change": "39.5 → 32.1", "Saving ($/yr)": "$9,850", "Saving (%)": "26.6%"},
+            {"Applicant": "104", "BMI change": "34.8 → 29.9", "Saving (₹/yr)": "₹8,400", "Saving (%)": "24.3%"},
+            {"Applicant": "289", "BMI change": "31.2 → 26.9", "Saving (₹/yr)": "₹4,800", "Saving (%)": "16.8%"},
+            {"Applicant": "415", "BMI change": "28.4 → 24.8", "Saving (₹/yr)": "₹3,250", "Saving (%)": "13.5%"},
+            {"Applicant": "672", "BMI change": "39.5 → 32.1", "Saving (₹/yr)": "₹9,850", "Saving (%)": "26.6%"},
         ]
         st.table(pd.DataFrame(table_vii))
 
@@ -1060,11 +1060,11 @@ def main():
         st.markdown('<div class="sub-header">Evaluating consistency of predictions across vulnerable and clinical cohorts</div>', unsafe_allow_html=True)
 
         table_vi = [
-            {"Subgroup": "Age ≥ 50", "N": "312", "Mean Premium ($)": "$29,450", "R² (%)": "85.12%", "MAE ($)": "$1,520.40"},
-            {"Subgroup": "BMI ≥ 30", "N": "284", "Mean Premium ($)": "$27,820", "R² (%)": "86.40%", "MAE ($)": "$1,480.10"},
-            {"Subgroup": "Organ Transplant", "N": "59", "Mean Premium ($)": "$33,150", "R² (%)": "83.75%", "MAE ($)": "$1,810.50"},
-            {"Subgroup": "Chronic Disease", "N": "177", "Mean Premium ($)": "$28,640", "R² (%)": "85.90%", "MAE ($)": "$1,495.20"},
-            {"Subgroup": "Healthy Baseline", "N": "412", "Mean Premium ($)": "$19,250", "R² (%)": "87.40%", "MAE ($)": "$1,210.80"},
+            {"Subgroup": "Age ≥ 50", "N": "312", "Mean Premium (₹)": "₹29,450", "R² (%)": "85.12%", "MAE (₹)": "₹1,520.40"},
+            {"Subgroup": "BMI ≥ 30", "N": "284", "Mean Premium (₹)": "₹27,820", "R² (%)": "86.40%", "MAE (₹)": "₹1,480.10"},
+            {"Subgroup": "Organ Transplant", "N": "59", "Mean Premium (₹)": "₹33,150", "R² (%)": "83.75%", "MAE (₹)": "₹1,810.50"},
+            {"Subgroup": "Chronic Disease", "N": "177", "Mean Premium (₹)": "₹28,640", "R² (%)": "85.90%", "MAE (₹)": "₹1,495.20"},
+            {"Subgroup": "Healthy Baseline", "N": "412", "Mean Premium (₹)": "₹19,250", "R² (%)": "87.40%", "MAE (₹)": "₹1,210.80"},
         ]
         st.table(pd.DataFrame(table_vi))
 
@@ -1101,7 +1101,7 @@ def main():
         - **Institution:** Panjab University Swami Sarvanand Giri Regional Centre, Hoshiarpur, Punjab, India.
         - **Roll No:** SGM23366 | **Supervisor:** Dr. Sukhvinder Singh Bamber (`ss.bamber@pu.ac.in`).
         - **Models:** 9 Regressors (OLS, Ridge, Tweedie GLM, GBM, RF, LightGBM, CatBoost, XGBoost, Stacking).
-        - **Champion Architecture:** XGBoost / Stacking meta-ensemble ($R^2 = 86.82\\% - 86.95\\%$, $\\text{RMSE} = \\$2,198 - \\$2,210$).
+        - **Champion Architecture:** XGBoost / Stacking meta-ensemble ($R^2 = 86.82\\% - 86.95\\%$, $\\text{RMSE} = \\text{₹}2,198 - \\text{₹}2,210$).
         """)
 
 
