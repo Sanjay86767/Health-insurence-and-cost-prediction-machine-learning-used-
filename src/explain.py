@@ -140,13 +140,13 @@ def plot_global_bar_importance(
     Returns
     -------
     pd.DataFrame
-        DataFrame with features and Mean |SHAP value| ($).
+        DataFrame with features and Mean |SHAP value| (₹).
     """
     mean_abs_shap = np.mean(np.abs(explanation.values), axis=0)
     df_importance = pd.DataFrame({
         "Feature": feature_names,
-        "Mean Absolute SHAP Value ($)": mean_abs_shap,
-    }).sort_values(by="Mean Absolute SHAP Value ($)", ascending=False).reset_index(drop=True)
+        "Mean Absolute SHAP Value (₹)": mean_abs_shap,
+    }).sort_values(by="Mean Absolute SHAP Value (₹)", ascending=False).reset_index(drop=True)
     return df_importance
 
 

@@ -108,8 +108,8 @@ def compare_models(
         records.append({
             "Model": name,
             "Test R2": test_metrics["R2"],
-            "Test MAE ($)": test_metrics["MAE"],
-            "Test RMSE ($)": test_metrics["RMSE"],
+            "Test MAE (₹)": test_metrics["MAE"],
+            "Test RMSE (₹)": test_metrics["RMSE"],
             "Test MAPE (%)": test_metrics["MAPE"],
             "CV R2 (Train Mean)": res["cv_r2_mean"],
             "CV R2 (Train Std)": res["cv_r2_std"],
@@ -139,23 +139,25 @@ def plot_metrics_comparison(df_comp: pd.DataFrame) -> plt.Figure:
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
     # Plot 1: Errors (MAE and RMSE) - Lower is better
+    mae_col = "Test MAE (₹)" if "Test MAE (₹)" in df_comp.columns else "Test MAE ($)"
+    rmse_col = "Test RMSE (₹)" if "Test RMSE (₹)" in df_comp.columns else "Test RMSE ($)"
     df_melted = df_comp.melt(
         id_vars=["Model"],
-        value_vars=["Test MAE ($)", "Test RMSE ($)"],
+        value_vars=[mae_col, rmse_col],
         var_name="Metric",
-        value_name="Error ($)",
+        value_name="Error (₹)",
     )
     sns.barplot(
         data=df_melted,
         x="Model",
-        y="Error ($)",
+        y="Error (₹)",
         hue="Metric",
         ax=axes[0],
         palette=["#3498db", "#e74c3c"],
     )
     axes[0].set_title("Test Error Comparison (Lower is Better)", fontsize=13, weight="bold")
     axes[0].set_xlabel("")
-    axes[0].set_ylabel("Error in USD ($)", fontsize=11)
+    axes[0].set_ylabel("Error in Indian Rupees (₹)", fontsize=11)
     axes[0].tick_params(axis="x", rotation=35)
     axes[0].legend(frameon=True)
 
@@ -226,8 +228,8 @@ def plot_predicted_vs_actual(
     ax.plot([min_val, max_val], [min_val, max_val], "r--", lw=2, label="Perfect Fit (y = x)")
 
     ax.set_title(f"Predicted vs. Actual Charges: {model_name}", fontsize=13, weight="bold")
-    ax.set_xlabel("Actual Insurance Charges ($)", fontsize=11)
-    ax.set_ylabel("Predicted Insurance Charges ($)", fontsize=11)
+    ax.set_xlabel("Actual Insurance Charges (₹)", fontsize=11)
+    ax.set_ylabel("Predicted Insurance Charges (₹)", fontsize=11)
     ax.legend(frameon=True)
     plt.tight_layout()
     return fig
@@ -267,14 +269,14 @@ def plot_residuals(
     axes[0].scatter(y_pred, residuals, alpha=0.6, color="#8e44ad", edgecolors="w", s=45)
     axes[0].axhline(0, color="red", linestyle="--", lw=2)
     axes[0].set_title(f"Residuals vs. Predicted ({model_name})", fontsize=12, weight="bold")
-    axes[0].set_xlabel("Predicted Charges ($)", fontsize=11)
-    axes[0].set_ylabel("Residuals (Actual - Predicted) ($)", fontsize=11)
+    axes[0].set_xlabel("Predicted Charges (₹)", fontsize=11)
+    axes[0].set_ylabel("Residuals (Actual - Predicted) (₹)", fontsize=11)
 
     # Histogram of residuals
     sns.histplot(residuals, kde=True, ax=axes[1], color="#27ae60", bins=25)
     axes[1].axvline(0, color="red", linestyle="--", lw=2)
     axes[1].set_title("Residual Error Distribution", fontsize=12, weight="bold")
-    axes[1].set_xlabel("Residual Error ($)", fontsize=11)
+    axes[1].set_xlabel("Residual Error (₹)", fontsize=11)
     axes[1].set_ylabel("Frequency", fontsize=11)
 
     plt.tight_layout()

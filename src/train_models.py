@@ -124,6 +124,15 @@ def get_nine_models_registry(random_state: int = 42) -> Dict[str, Any]:
     }
 
 
+def get_core_paper_models(random_state: int = 42) -> Dict[str, Any]:
+    """Alias returning registry with shorthand model keys for test suites."""
+    reg = get_nine_models_registry(random_state)
+    reg["Random Forest"] = reg["Random Forest (RF)"]
+    reg["Gradient Boosting"] = reg["Gradient Boosting (GBM)"]
+    reg["XGBoost"] = reg["XGBoost (optimized)"]
+    return reg
+
+
 def train_single_model(
     model: Any,
     X_train: np.ndarray,
