@@ -259,6 +259,46 @@ st.markdown("""
         color: white;
         margin-bottom: 1.2rem;
     }
+
+    /* Digital Smart Health ID Card (Apple Wallet / Healthcare Pass style) */
+    .smart-health-card {
+        background: linear-gradient(135deg, #0F172A 0%, #1E1B4B 45%, #1E3A8A 100%);
+        border-radius: 22px;
+        padding: 1.8rem 2.2rem;
+        color: white;
+        box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.65), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 1.8rem;
+    }
+    .smart-health-card::before {
+        content: "";
+        position: absolute;
+        top: -80px;
+        right: -80px;
+        width: 220px;
+        height: 220px;
+        background: radial-gradient(circle, rgba(234, 179, 8, 0.35) 0%, transparent 70%);
+        pointer-events: none;
+    }
+    .card-chip {
+        width: 48px;
+        height: 34px;
+        background: linear-gradient(135deg, #FDE047 0%, #CA8A04 100%);
+        border-radius: 8px;
+        margin-bottom: 1.1rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .card-number {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 1.35rem;
+        letter-spacing: 3px;
+        color: #F8FAFC;
+        margin-bottom: 1.2rem;
+        font-weight: 700;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -346,6 +386,62 @@ def main():
     </div>
     """, unsafe_allow_html=True)
 
+    # Initialize user profile in session state
+    if "user" not in st.session_state:
+        st.session_state["user"] = {
+            "is_logged_in": True,
+            "username": "sanjay86767",
+            "full_name": "Sanjay Kumar",
+            "policy_id": "PU-INS-2026-98604",
+            "tier": "Comprehensive Platinum Care",
+            "email": "sanjay@pussgrc.ac.in",
+            "avatar": "👨‍🔬",
+            "age": 42,
+            "height": 168,
+            "weight": 77,
+            "surgeries": 0,
+            "diabetes": 0,
+            "bp": 1,
+            "transplants": 0,
+            "chronic": 0,
+            "allergies": 0,
+            "cancer": 0,
+        }
+
+    # Sidebar Account Card & Login / Logout
+    u_sess = st.session_state["user"]
+    if u_sess["is_logged_in"]:
+        st.sidebar.markdown(f"""
+        <div style="background: white; border: 1px solid #E2E8F0; border-radius: 14px; padding: 12px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(15,23,42,0.05);">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                <span style="font-size: 0.72rem; font-weight: 700; color: #16A34A; background: #DCFCE7; padding: 2px 8px; border-radius: 9999px;">● MEMBER ONLINE</span>
+                <span style="font-size: 0.72rem; color: #64748B; font-weight: 600;">{u_sess['policy_id']}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 1.6rem;">{u_sess['avatar']}</span>
+                <div>
+                    <div style="font-weight: 800; font-size: 0.94rem; color: #0F172A; font-family: 'Outfit', sans-serif;">{u_sess['full_name']}</div>
+                    <div style="font-size: 0.75rem; color: #64748B;">{u_sess['tier']}</div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.sidebar.button("🚪 Sign Out", key="sidebar_logout_btn", use_container_width=True):
+            st.session_state["user"]["is_logged_in"] = False
+            st.rerun()
+    else:
+        st.sidebar.markdown("""
+        <div style="background: #FEF3C7; border: 1px solid #FDE68A; border-radius: 12px; padding: 10px; margin-bottom: 10px; font-size: 0.82rem; color: #92400E;">
+            🔒 <strong>Guest Session:</strong> Sign in to view your Digital Policyholder Health Card & Online Records.
+        </div>
+        """, unsafe_allow_html=True)
+        with st.sidebar.form("quick_login_form"):
+            login_user = st.text_input("Username", value="sanjay86767")
+            login_pass = st.text_input("Password", type="password", value="password123")
+            if st.form_submit_button("🔑 Quick Sign In", use_container_width=True):
+                st.session_state["user"]["is_logged_in"] = True
+                st.rerun()
+
     dataset_option = st.sidebar.selectbox(
         "Active Research Dataset:",
         [
@@ -359,6 +455,7 @@ def main():
     menu = st.sidebar.radio(
         "Application Navigation:",
         [
+            "💳 0. My Policyholder Portal & Health Card",
             "🏠 1. Home & Paper Overview",
             "🔮 2. New Person Intake & Quote Generator",
             "📊 3. 9-Model Benchmark Leaderboard",
@@ -369,7 +466,7 @@ def main():
             "🚀 8. Production Latency & Drift Monitor",
             "📖 9. Model Card & Presentation",
         ],
-        index=1,
+        index=0,
     )
 
     st.markdown("""
@@ -397,9 +494,184 @@ def main():
     curr = "$" if d_type == "medical_premium_986" else "$"
 
     # -------------------------------------------------------------
+    # Page 0: My Policyholder Portal & Digital Health Card
+    # -------------------------------------------------------------
+    if menu == "💳 0. My Policyholder Portal & Health Card":
+        user = st.session_state["user"]
+
+        if not user["is_logged_in"]:
+            st.markdown("""
+            <div style="margin-bottom: 12px;">
+                <span class="status-pill status-active">● Secure Member Gateway</span>
+                <span class="status-pill status-academic">Panjab University SSGICR</span>
+            </div>
+            """, unsafe_allow_html=True)
+            st.markdown('<div class="main-header">Policyholder Sign In & Member Access</div>', unsafe_allow_html=True)
+            st.markdown('<div class="sub-header">Log in to view your Digital Health Insurance Smart Card, active policy tier, and online records</div>', unsafe_allow_html=True)
+
+            col_auth1, col_auth2 = st.columns([1, 1], gap="large")
+            with col_auth1:
+                st.subheader("🔑 Member Sign In")
+                with st.form("main_login_form"):
+                    u_in = st.text_input("Policy ID or Username", value="sanjay86767")
+                    p_in = st.text_input("Password", type="password", value="password123")
+                    remember = st.checkbox("Remember this device", value=True)
+                    if st.form_submit_button("🚀 Sign In to My Account", use_container_width=True):
+                        st.session_state["user"]["is_logged_in"] = True
+                        st.rerun()
+
+            with col_auth2:
+                st.subheader("🌟 1-Click Demo Profiles")
+                st.markdown("Try out the system instantly with pre-configured research accounts:")
+                if st.button("👤 Log in as Sanjay Kumar (Active Member)", use_container_width=True):
+                    st.session_state["user"] = {
+                        "is_logged_in": True, "username": "sanjay86767", "full_name": "Sanjay Kumar",
+                        "policy_id": "PU-INS-2026-98604", "tier": "Comprehensive Platinum Care",
+                        "email": "sanjay@pussgrc.ac.in", "avatar": "👨‍🔬",
+                        "age": 42, "height": 168, "weight": 77, "surgeries": 0, "diabetes": 0,
+                        "bp": 1, "transplants": 0, "chronic": 0, "allergies": 0, "cancer": 0,
+                    }
+                    st.rerun()
+
+                if st.button("👤 Log in as Applicant #104 (Paper Benchmark - Senior with BP)", use_container_width=True):
+                    st.session_state["user"] = {
+                        "is_logged_in": True, "username": "applicant_104", "full_name": "Ramesh Chandra (App #104)",
+                        "policy_id": "PU-INS-2026-104", "tier": "High-Risk Chronic Care Tier",
+                        "email": "ramesh.chandra@sample.org", "avatar": "👴",
+                        "age": 56, "height": 168, "weight": 98, "surgeries": 1, "diabetes": 1,
+                        "bp": 1, "transplants": 0, "chronic": 0, "allergies": 0, "cancer": 0,
+                    }
+                    st.rerun()
+
+                if st.button("👤 Log in as Young Fit Adult (Baseline Zero-Condition)", use_container_width=True):
+                    st.session_state["user"] = {
+                        "is_logged_in": True, "username": "priya_sharma", "full_name": "Priya Sharma (Young Fit)",
+                        "policy_id": "PU-INS-2026-701", "tier": "Standard Essential Health Pass",
+                        "email": "priya.sharma@sample.org", "avatar": "👩‍💼",
+                        "age": 23, "height": 172, "weight": 64, "surgeries": 0, "diabetes": 0,
+                        "bp": 0, "transplants": 0, "chronic": 0, "allergies": 0, "cancer": 0,
+                    }
+                    st.rerun()
+
+        else:
+            u = st.session_state["user"]
+            st.markdown(f"""
+            <div style="margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                <div>
+                    <span class="status-pill status-active">● Verified Member Online</span>
+                    <span class="status-pill status-academic">Policy ID: {u['policy_id']}</span>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+            st.markdown(f'<div class="main-header">Welcome, {u["full_name"]}</div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="sub-header">Your personal healthcare actuarial portal, live digital policy card, and online medical risk records.</div>', unsafe_allow_html=True)
+
+            col_card, col_details = st.columns([1, 1.25], gap="large")
+
+            u_bmi = round(u["weight"] / ((u["height"] / 100) ** 2), 1)
+            u_cci = (2.0 * u["transplants"]) + (1.5 * u["chronic"]) + (1.0 * u["diabetes"]) + (1.0 * u["bp"])
+            u_surg_canc = u["surgeries"] * u["cancer"]
+
+            user_data_dict = {
+                "Age": u["age"], "Diabetes": u["diabetes"], "BloodPressureProblems": u["bp"],
+                "AnyTransplants": u["transplants"], "AnyChronicDiseases": u["chronic"],
+                "Height": u["height"], "Weight": u["weight"], "KnownAllergies": u["allergies"],
+                "HistoryOfCancerInFamily": u["cancer"], "NumberOfMajorSurgeries": u["surgeries"],
+            }
+            u_quote, _, _ = predict_cost(best_model, preprocessor, user_data_dict, "medical_premium_986")
+
+            with col_card:
+                st.markdown(f"""
+                <div class="smart-health-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <span style="font-weight: 800; font-size: 1.1rem; letter-spacing: 0.5px; text-transform: uppercase; color: #F8FAFC; font-family: 'Outfit', sans-serif;">HEALTH INSURAI SMART PASS</span>
+                        <span style="background: rgba(16, 185, 129, 0.25); border: 1px solid rgba(52, 211, 153, 0.5); color: #6EE7B7; padding: 2px 10px; border-radius: 9999px; font-size: 0.72rem; font-weight: 700;">● ACTIVE</span>
+                    </div>
+                    <div class="card-chip"></div>
+                    <div class="card-number">{u['policy_id'][:4]} •••• •••• {u['policy_id'][-4:]}</div>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                        <div>
+                            <div style="font-size: 0.68rem; color: #94A3B8; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;">Cardholder Name</div>
+                            <div style="font-size: 1.2rem; font-weight: 800; color: #FFFFFF; font-family: 'Outfit', sans-serif;">{u['full_name']}</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 0.68rem; color: #94A3B8; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;">Coverage Plan</div>
+                            <div style="font-size: 0.88rem; font-weight: 700; color: #FDE047;">{u['tier']}</div>
+                        </div>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+
+                st.subheader("📑 Digital Documentation")
+                cert_data = {
+                    "policyholder": u,
+                    "vitals": {"BMI": u_bmi, "CCI": u_cci},
+                    "quote": float(u_quote),
+                    "coverage_status": "Active & Verified",
+                    "issuing_authority": "Panjab University SSGICR Research Framework",
+                }
+                st.download_button(
+                    label="📥 Download Official Policy Certificate (.json)",
+                    data=json.dumps(cert_data, indent=2),
+                    file_name=f"policy_{u['policy_id']}.json",
+                    mime="application/json",
+                    use_container_width=True,
+                )
+
+                if st.button("🚪 Log Out from Portal", key="portal_logout_btn", use_container_width=True):
+                    st.session_state["user"]["is_logged_in"] = False
+                    st.rerun()
+
+            with col_details:
+                st.subheader("🩺 My Vitals & Clinical Health Records")
+
+                v1, v2, v3, v4 = st.columns(4)
+                v1.markdown(f"""<div class="metric-card"><div class="metric-label">AGE</div><div class="metric-value">{u['age']} <span style="font-size:1rem;color:#64748B;">yr</span></div></div>""", unsafe_allow_html=True)
+                v2.markdown(f"""<div class="metric-card"><div class="metric-label">HEIGHT / WEIGHT</div><div class="metric-value" style="font-size:1.35rem;">{u['height']}cm<br/><span style="font-size:1.05rem;color:#64748B;">{u['weight']}kg</span></div></div>""", unsafe_allow_html=True)
+
+                bmi_badge = "#DCFCE7; color: #166534;" if u_bmi < 25 else ("#FEF08A; color: #854D0E;" if u_bmi < 30 else "#FECACA; color: #991B1B;")
+                v3.markdown(f"""<div class="metric-card"><div class="metric-label">BMI</div><div class="metric-value">{u_bmi}</div><div style="display:inline-block;padding:2px 6px;border-radius:4px;font-size:0.7rem;font-weight:700;background:{bmi_badge}">{ 'Normal' if u_bmi < 25 else ('Overweight' if u_bmi < 30 else 'Obese') }</div></div>""", unsafe_allow_html=True)
+                v4.markdown(f"""<div class="metric-card"><div class="metric-label">COMORBIDITY (CCI)</div><div class="metric-value">{u_cci:.1f}</div><div style="font-size:0.7rem;color:#64748B;">{'Low Risk' if u_cci == 0 else ('Moderate' if u_cci <= 2.5 else 'Elevated')}</div></div>""", unsafe_allow_html=True)
+
+                st.markdown("**Medical History & Underwriting Risk Status:**")
+                c_cond1, c_cond2, c_cond3 = st.columns(3)
+                c_cond1.markdown(f"🩺 **Hypertension:** {'🔴 Elevated (Yes)' if u['bp'] else '🟢 Normal (No)'}")
+                c_cond1.markdown(f"🩸 **Diabetes:** {'🔴 Yes' if u['diabetes'] else '🟢 None'}")
+                c_cond2.markdown(f"🫀 **Organ Transplants:** {'🔴 Yes' if u['transplants'] else '🟢 None'}")
+                c_cond2.markdown(f"🩹 **Chronic Diseases:** {'🔴 Yes' if u['chronic'] else '🟢 None'}")
+                c_cond3.markdown(f"🧬 **Cancer in Family:** {'🔴 Yes' if u['cancer'] else '🟢 None'}")
+                c_cond3.markdown(f"🏥 **Past Surgeries:** **{u['surgeries']} major surgeries**")
+
+                st.markdown("---")
+                st.subheader(f"💡 Real-time Active Premium: {curr}{u_quote:,.2f} / year")
+                st.markdown(f"""
+                <div class="prediction-box" style="padding: 1.5rem;">
+                    <div style="font-size: 0.8rem; letter-spacing: 1px; color: #94A3B8; text-transform: uppercase;">Actuarial Valuation for {u['full_name']}</div>
+                    <div class="prediction-price" style="font-size: 2.7rem;">{curr}{u_quote:,.2f}</div>
+                    <div style="font-size: 0.84rem; color: #E2E8F0; margin-top: 6px;">
+                        Engine: <strong>{best_name}</strong> | Confidence: <strong>86.82% R²</strong>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+
+                with st.expander("✏️ Update My Health Profile Online (Live Recalculate)", expanded=False):
+                    with st.form("update_profile_form"):
+                        new_w = st.slider("Current Weight (kg)", 45, 140, int(u["weight"]))
+                        new_h = st.slider("Height (cm)", 140, 200, int(u["height"]))
+                        new_bp = 1 if st.checkbox("Blood Pressure Problems", value=bool(u["bp"])) else 0
+                        new_chronic = 1 if st.checkbox("Any Chronic Diseases", value=bool(u["chronic"])) else 0
+                        if st.form_submit_button("💾 Save Profile Changes & Recalculate", use_container_width=True):
+                            st.session_state["user"]["weight"] = new_w
+                            st.session_state["user"]["height"] = new_h
+                            st.session_state["user"]["bp"] = new_bp
+                            st.session_state["user"]["chronic"] = new_chronic
+                            st.success("Health profile updated successfully! Recalculating actuarial quote...")
+                            st.rerun()
+
+    # -------------------------------------------------------------
     # Page 1: Home & Paper Overview
     # -------------------------------------------------------------
-    if menu == "🏠 1. Home & Paper Overview":
+    elif menu == "🏠 1. Home & Paper Overview":
         st.markdown("""
         <div style="margin-bottom: 12px;">
             <span class="status-pill status-active">● Active Production Pipeline</span>
