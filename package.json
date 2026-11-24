@@ -1,0 +1,11 @@
+{
+  "name": "health-insurance-ml",
+  "version": "2.0.0",
+  "description": "Health Insurance Cost Prediction with Mongoose Authentication",
+  "main": "api/index.js",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.2.0"
+  }
+}

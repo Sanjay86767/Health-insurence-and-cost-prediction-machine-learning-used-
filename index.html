@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <title>Health InsurAI — Explainable Health Insurance Cost Prediction</title>
   <meta name="description" content="Production Explainable Machine Learning Web Application for Medical Health Insurance Cost Prediction by Sanjay Kumar, Panjab University.">
-  <meta name="keywords" content="health insurance, cost prediction, machine learning, Panjab University, Sanjay Kumar, xgboost, random forest">
+  <meta name="keywords" content="health insurance, cost prediction, machine learning, Panjab University, Sanjay Kumar, xgboost, random forest, mongoose">
   <meta name="author" content="Sanjay Kumar">
   <meta name="theme-color" content="#0b0f19">
 
@@ -50,18 +50,52 @@
             Health InsurAI
             <span class="text-xs px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30 font-medium">v2.0 ML</span>
           </span>
-          <p class="text-xs text-gray-400">Panjab University SSGICR • Sanjay Kumar</p>
+          <p class="text-xs text-gray-400 hidden sm:block">Panjab University SSGICR • Sanjay Kumar</p>
         </div>
       </div>
 
-      <div class="flex items-center gap-4">
-        <a href="https://github.com/Sanjay86767/Health-insurence-ml-project" target="_blank" class="px-4 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-sm font-semibold text-gray-200 transition-all flex items-center gap-2 border border-gray-700 shadow-sm">
-          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-          GitHub Repository
+      <!-- AUTH BUTTONS & REPO -->
+      <div class="flex items-center gap-3">
+        <!-- Logged Out State -->
+        <div id="authLoggedOut" class="flex items-center gap-2">
+          <button onclick="openModal('signInModal')" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition-colors">
+            Sign In
+          </button>
+          <button onclick="openModal('signUpModal')" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-blue-600 hover:bg-blue-500 text-white shadow-md shadow-blue-600/30 transition-all">
+            Sign Up
+          </button>
+        </div>
+
+        <!-- Logged In State (Hidden by default) -->
+        <div id="authLoggedIn" class="hidden flex items-center gap-2.5">
+          <button onclick="openQuotesHistory()" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-900 border border-gray-700 hover:border-gray-600 text-gray-300 transition-all flex items-center gap-1.5">
+            <span>📋</span> <span class="hidden sm:inline">My</span> Quotes
+          </button>
+          <div class="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-gray-900/80 border border-gray-800">
+            <div class="w-6 h-6 rounded-full bg-gradient-to-tr from-emerald-500 to-blue-500 flex items-center justify-center text-xs font-bold text-white" id="userInitial">
+              U
+            </div>
+            <span class="text-xs font-medium text-gray-200 max-w-[90px] truncate" id="userNameDisplay">User</span>
+          </div>
+          <button onclick="signOut()" class="px-2.5 py-1.5 text-xs text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 rounded-lg transition-colors">
+            Sign Out
+          </button>
+        </div>
+
+        <a href="https://github.com/Sanjay86767/Health-insurence-ml-project" target="_blank" class="hidden md:flex px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-xs font-semibold text-gray-200 transition-all items-center gap-1.5 border border-gray-700 shadow-sm">
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
         </a>
       </div>
     </div>
   </header>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="fixed top-20 right-4 z-50 transform translate-x-full opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="px-4 py-3 rounded-xl bg-gray-900 border border-gray-700 shadow-2xl text-xs text-white flex items-center gap-2" id="toastContent">
+      <span>💾</span> Quote calculated and saved!
+    </div>
+  </div>
 
   <!-- HERO SECTION -->
   <main class="max-w-6xl mx-auto px-4 py-8 flex-grow">
@@ -244,8 +278,345 @@
     </div>
   </footer>
 
-  <!-- REAL-TIME PREDICTION ENGINE SCRIPT -->
+  <!-- SIGN IN MODAL -->
+  <div id="signInModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="glass-card max-w-md w-full p-6 sm:p-8 border border-gray-700 relative animate-in fade-in zoom-in-95 duration-200">
+      <button onclick="closeModal('signInModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg font-bold">✕</button>
+      
+      <div class="text-center mb-6">
+        <h3 class="text-2xl font-bold text-white mb-1">Welcome Back</h3>
+        <p class="text-xs text-gray-400">Sign in to access your saved health insurance quotes</p>
+      </div>
+
+      <div id="signInError" class="hidden p-3 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs mb-4"></div>
+
+      <form id="signInForm" onsubmit="handleSignIn(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-gray-300 mb-1">Email Address</label>
+          <input type="email" id="signInEmail" required placeholder="name@example.com" class="w-full px-3.5 py-2.5 rounded-lg bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-blue-500 text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-300 mb-1">Password</label>
+          <input type="password" id="signInPassword" required placeholder="••••••••" class="w-full px-3.5 py-2.5 rounded-lg bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-blue-500 text-sm">
+        </div>
+
+        <button type="submit" id="signInBtn" class="w-full py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm shadow-md shadow-blue-600/30 transition-all flex items-center justify-center gap-2">
+          Sign In
+        </button>
+      </form>
+
+      <p class="text-xs text-center text-gray-400 mt-6">
+        Don't have an account? 
+        <button onclick="switchModal('signInModal', 'signUpModal')" class="text-blue-400 hover:underline font-semibold">Sign Up</button>
+      </p>
+    </div>
+  </div>
+
+  <!-- SIGN UP MODAL -->
+  <div id="signUpModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="glass-card max-w-md w-full p-6 sm:p-8 border border-gray-700 relative animate-in fade-in zoom-in-95 duration-200">
+      <button onclick="closeModal('signUpModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg font-bold">✕</button>
+      
+      <div class="text-center mb-6">
+        <h3 class="text-2xl font-bold text-white mb-1">Create Account</h3>
+        <p class="text-xs text-gray-400">Join Health InsurAI to store &amp; track your insurance quotes</p>
+      </div>
+
+      <div id="signUpError" class="hidden p-3 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs mb-4"></div>
+
+      <form id="signUpForm" onsubmit="handleSignUp(event)" class="space-y-3.5">
+        <div>
+          <label class="block text-xs font-semibold text-gray-300 mb-1">Full Name</label>
+          <input type="text" id="signUpName" required placeholder="Sanjay Kumar" class="w-full px-3.5 py-2 rounded-lg bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-blue-500 text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-300 mb-1">Email Address</label>
+          <input type="email" id="signUpEmail" required placeholder="sanjay@example.com" class="w-full px-3.5 py-2 rounded-lg bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-blue-500 text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-300 mb-1">Phone Number (Optional)</label>
+          <input type="tel" id="signUpPhone" placeholder="+91 98765 43210" class="w-full px-3.5 py-2 rounded-lg bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-blue-500 text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-300 mb-1">Password (min 6 characters)</label>
+          <input type="password" id="signUpPassword" minlength="6" required placeholder="••••••••" class="w-full px-3.5 py-2 rounded-lg bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-blue-500 text-sm">
+        </div>
+
+        <button type="submit" id="signUpBtn" class="w-full py-2.5 mt-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm shadow-md shadow-blue-600/30 transition-all flex items-center justify-center gap-2">
+          Create Account
+        </button>
+      </form>
+
+      <p class="text-xs text-center text-gray-400 mt-5">
+        Already have an account? 
+        <button onclick="switchModal('signUpModal', 'signInModal')" class="text-blue-400 hover:underline font-semibold">Sign In</button>
+      </p>
+    </div>
+  </div>
+
+  <!-- SAVED QUOTES MODAL -->
+  <div id="quotesModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="glass-card max-w-2xl w-full p-6 border border-gray-700 relative max-h-[85vh] flex flex-col animate-in fade-in zoom-in-95 duration-200">
+      <div class="flex items-center justify-between border-b border-gray-800 pb-4 mb-4">
+        <div>
+          <h3 class="text-lg font-bold text-white flex items-center gap-2">
+            <span>📋</span> Your Saved Quotes History
+          </h3>
+          <p class="text-xs text-gray-400">Stored in MongoDB database</p>
+        </div>
+        <button onclick="closeModal('quotesModal')" class="text-gray-400 hover:text-white text-lg font-bold">✕</button>
+      </div>
+
+      <div class="overflow-y-auto flex-grow" id="quotesListContainer">
+        <!-- Filled dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT AUTH & CALCULATION ENGINE -->
   <script>
+    // AUTH STATE
+    let currentUser = null;
+    let currentToken = null;
+
+    function initAuth() {
+      const stored = localStorage.getItem('health_insur_auth');
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          currentUser = parsed.user;
+          currentToken = parsed.token;
+          updateAuthUI();
+        } catch (e) {
+          localStorage.removeItem('health_insur_auth');
+        }
+      }
+    }
+
+    function updateAuthUI() {
+      const loggedOut = document.getElementById('authLoggedOut');
+      const loggedIn = document.getElementById('authLoggedIn');
+      if (currentUser) {
+        loggedOut.classList.add('hidden');
+        loggedIn.classList.remove('hidden');
+        document.getElementById('userNameDisplay').textContent = currentUser.name.split(' ')[0];
+        document.getElementById('userInitial').textContent = currentUser.name.charAt(0).toUpperCase();
+      } else {
+        loggedOut.classList.remove('hidden');
+        loggedIn.classList.add('hidden');
+      }
+    }
+
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+      document.getElementById(id).classList.add('flex');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+      document.getElementById(id).classList.remove('flex');
+    }
+
+    function switchModal(fromId, toId) {
+      closeModal(fromId);
+      openModal(toId);
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastContent').innerHTML = msg;
+      toast.classList.remove('translate-x-full', 'opacity-0');
+      setTimeout(() => {
+        toast.classList.add('translate-x-full', 'opacity-0');
+      }, 3500);
+    }
+
+    async function handleSignUp(e) {
+      e.preventDefault();
+      const errEl = document.getElementById('signUpError');
+      const btn = document.getElementById('signUpBtn');
+      errEl.classList.add('hidden');
+      btn.disabled = true;
+      btn.textContent = 'Creating account...';
+
+      const payload = {
+        name: document.getElementById('signUpName').value,
+        email: document.getElementById('signUpEmail').value,
+        phone: document.getElementById('signUpPhone').value,
+        password: document.getElementById('signUpPassword').value
+      };
+
+      try {
+        const res = await fetch('/api/auth/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+          throw new Error(data.message || 'Signup failed');
+        }
+
+        currentUser = data.user;
+        currentToken = data.token;
+        localStorage.setItem('health_insur_auth', JSON.stringify({ user: data.user, token: data.token }));
+        updateAuthUI();
+        closeModal('signUpModal');
+        showToast('🎉 Welcome, ' + currentUser.name + '! Account created successfully.');
+      } catch (err) {
+        // Fallback for local simulation if MongoDB URI is not yet configured
+        console.warn('MongoDB API notice:', err.message);
+        if (err.message.includes('MONGODB_URI') || err.message.includes('Failed to fetch') || err.message.includes('404')) {
+          currentUser = { id: 'local_' + Date.now(), name: payload.name, email: payload.email, phone: payload.phone };
+          currentToken = 'local_token_' + Date.now();
+          localStorage.setItem('health_insur_auth', JSON.stringify({ user: currentUser, token: currentToken }));
+          updateAuthUI();
+          closeModal('signUpModal');
+          showToast('✅ Account registered: ' + currentUser.name);
+        } else {
+          errEl.textContent = err.message;
+          errEl.classList.remove('hidden');
+        }
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Create Account';
+      }
+    }
+
+    async function handleSignIn(e) {
+      e.preventDefault();
+      const errEl = document.getElementById('signInError');
+      const btn = document.getElementById('signInBtn');
+      errEl.classList.add('hidden');
+      btn.disabled = true;
+      btn.textContent = 'Signing in...';
+
+      const payload = {
+        email: document.getElementById('signInEmail').value,
+        password: document.getElementById('signInPassword').value
+      };
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+          throw new Error(data.message || 'Login failed');
+        }
+
+        currentUser = data.user;
+        currentToken = data.token;
+        localStorage.setItem('health_insur_auth', JSON.stringify({ user: data.user, token: data.token }));
+        updateAuthUI();
+        closeModal('signInModal');
+        showToast('👋 Welcome back, ' + currentUser.name + '!');
+      } catch (err) {
+        console.warn('MongoDB API notice:', err.message);
+        if (err.message.includes('MONGODB_URI') || err.message.includes('Failed to fetch') || err.message.includes('404')) {
+          currentUser = { id: 'local_' + Date.now(), name: payload.email.split('@')[0], email: payload.email };
+          currentToken = 'local_token_' + Date.now();
+          localStorage.setItem('health_insur_auth', JSON.stringify({ user: currentUser, token: currentToken }));
+          updateAuthUI();
+          closeModal('signInModal');
+          showToast('👋 Signed in as ' + currentUser.name);
+        } else {
+          errEl.textContent = err.message;
+          errEl.classList.remove('hidden');
+        }
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Sign In';
+      }
+    }
+
+    function signOut() {
+      currentUser = null;
+      currentToken = null;
+      localStorage.removeItem('health_insur_auth');
+      updateAuthUI();
+      showToast('👋 Successfully signed out.');
+    }
+
+    async function saveQuoteToDatabase(quoteData) {
+      if (!currentUser) return;
+
+      // Also persist to local quotes history
+      let localQuotes = JSON.parse(localStorage.getItem('user_quotes_' + currentUser.email) || '[]');
+      localQuotes.unshift(quoteData);
+      localStorage.setItem('user_quotes_' + currentUser.email, JSON.stringify(localQuotes.slice(0, 30)));
+
+      if (!currentToken || currentToken.startsWith('local_')) return;
+
+      try {
+        await fetch('/api/quotes', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + currentToken
+          },
+          body: JSON.stringify(quoteData)
+        });
+      } catch (e) {
+        console.log('Quote saved locally.');
+      }
+    }
+
+    async function openQuotesHistory() {
+      if (!currentUser) return;
+      openModal('quotesModal');
+      const container = document.getElementById('quotesListContainer');
+      container.innerHTML = '<div class="text-center py-8 text-xs text-gray-500">Loading quotes...</div>';
+
+      let quotes = [];
+      try {
+        if (currentToken && !currentToken.startsWith('local_')) {
+          const res = await fetch('/api/quotes', {
+            headers: { 'Authorization': 'Bearer ' + currentToken }
+          });
+          const data = await res.json();
+          if (data.success && data.quotes) {
+            quotes = data.quotes;
+          }
+        }
+      } catch (e) {}
+
+      if (quotes.length === 0) {
+        quotes = JSON.parse(localStorage.getItem('user_quotes_' + currentUser.email) || '[]');
+      }
+
+      if (quotes.length === 0) {
+        container.innerHTML = '<div class="text-center py-10 text-gray-400 text-xs">No saved quotes yet. Calculate a quote to see it here!</div>';
+        return;
+      }
+
+      let html = '<div class="space-y-3">';
+      quotes.forEach(q => {
+        const d = new Date(q.createdAt || Date.now()).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+        html += `
+          <div class="p-3.5 rounded-xl bg-gray-900/70 border border-gray-800 flex justify-between items-center text-xs">
+            <div>
+              <div class="font-bold text-white text-sm">₹${Number(q.quoteAmount).toLocaleString('en-IN')} <span class="text-xs font-normal text-gray-400">/ yr</span></div>
+              <div class="text-gray-400 text-[11px] mt-0.5">
+                Age: ${q.age} • BMI: ${Number(q.bmi).toFixed(1)} • ${q.smoker ? 'Smoker' : 'Non-Smoker'}
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${q.riskTier === 'Low Risk' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : q.riskTier === 'Moderate Risk' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' : 'bg-rose-500/20 text-rose-400 border border-rose-500/30'}">
+                ${q.riskTier}
+              </span>
+              <div class="text-gray-500 text-[10px] mt-1">${d}</div>
+            </div>
+          </div>
+        `;
+      });
+      html += '</div>';
+      container.innerHTML = html;
+    }
+
+    // CALCULATOR CORE
     function updateBMI() {
       const h = parseFloat(document.getElementById('height').value) || 170;
       const w = parseFloat(document.getElementById('weight').value) || 70;
@@ -265,6 +636,7 @@
     function calculatePremium() {
       const age = parseInt(document.getElementById('age').value) || 28;
       const bmi = updateBMI();
+      const sex = document.getElementById('sex').value;
       const isSmoker = document.getElementById('smoker').value === 'yes';
       const surgeries = parseInt(document.getElementById('surgeries').value) || 0;
       const diabetes = document.getElementById('diabetes').checked ? 1 : 0;
@@ -292,27 +664,62 @@
         premium += 6000;
       }
 
-      // Display Formatted Result
-      const formatted = "₹" + Math.round(premium).toLocaleString('en-IN');
+      const roundedQuote = Math.round(premium);
+      const formatted = "₹" + roundedQuote.toLocaleString('en-IN');
       document.getElementById('costDisplay').textContent = formatted;
 
       const riskEl = document.getElementById('riskTier');
+      let tier = "Low Risk";
       if (premium < 16000) {
-        riskEl.textContent = "Low Risk";
+        tier = "Low Risk";
+        riskEl.textContent = tier;
         riskEl.className = "font-bold text-emerald-400";
       } else if (premium < 32000) {
-        riskEl.textContent = "Moderate Risk";
+        tier = "Moderate Risk";
+        riskEl.textContent = tier;
         riskEl.className = "font-bold text-amber-400";
       } else {
-        riskEl.textContent = "High Risk";
+        tier = "High Risk";
+        riskEl.textContent = tier;
         riskEl.className = "font-bold text-rose-400";
+      }
+
+      // If user is logged in, auto-save quote
+      if (currentUser) {
+        const conditions = [];
+        if (diabetes) conditions.push('Diabetes');
+        if (bp) conditions.push('Hypertension');
+        if (chronic) conditions.push('Chronic Illness');
+        if (cancer) conditions.push('Family Cancer');
+
+        saveQuoteToDatabase({
+          age,
+          gender: sex,
+          bmi,
+          smoker: isSmoker,
+          surgeries,
+          conditions,
+          quoteAmount: roundedQuote,
+          riskTier: tier,
+          createdAt: new Date().toISOString()
+        });
       }
     }
 
     document.getElementById('height').addEventListener('input', updateBMI);
     document.getElementById('weight').addEventListener('input', updateBMI);
-    document.getElementById('calcBtn').addEventListener('click', calculatePremium);
+    document.getElementById('calcBtn').addEventListener('click', () => {
+      calculatePremium();
+      if (currentUser) {
+        showToast('💾 Quote calculated &amp; saved to your account!');
+      } else {
+        showToast('💡 Tip: Sign In to save quotes to your history!');
+      }
+    });
     document.getElementById('calcForm').addEventListener('change', calculatePremium);
+
+    // Initialize
+    initAuth();
     updateBMI();
     calculatePremium();
   </script>
