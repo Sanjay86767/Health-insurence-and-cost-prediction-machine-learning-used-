@@ -202,22 +202,39 @@
     }
 
     @media print {
+      @page {
+        size: A4;
+        margin: 10mm 12mm;
+      }
       body {
         background: #ffffff;
         padding: 0;
+        color: #000000;
+        font-size: 9.5pt;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
       }
       .print-bar {
-        display: none;
+        display: none !important;
       }
       .resume-wrapper {
-        border: none;
-        box-shadow: none;
-        padding: 0;
-        max-width: 100%;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        max-width: 100% !important;
+      }
+      .section {
+        margin-bottom: 1rem !important;
+      }
+      .section-title {
+        border-bottom-color: #cbd5e1 !important;
+      }
+      .project-item, .edu-item, .skill-category {
+        page-break-inside: avoid;
       }
       a {
         text-decoration: none;
-        color: inherit;
+        color: #1d4ed8;
       }
     }
   </style>
@@ -350,6 +367,23 @@
         <ul>
           <li>Engineered a full-featured e-commerce storefront with real-time cart state synchronization, search filtering, and seamless checkout processing.</li>
           <li>Optimized Cumulative Layout Shift (CLS &lt; 0.05) and asset bundling for lightning-fast mobile loading on Vercel global edge network.</li>
+        </ul>
+      </div>
+
+      <!-- PROJECT 4 -->
+      <div class="project-item">
+        <div class="project-header">
+          <div>
+            <span class="project-title">EstateHub — Modern Real-Estate Property Marketplace</span>
+            <span class="project-role">• Full-Stack Developer</span>
+          </div>
+          <div class="project-links">
+            <a href="https://estatehub-rust.vercel.app" target="_blank">Live Demo ↗</a>
+          </div>
+        </div>
+        <ul>
+          <li>Designed and launched an interactive property search and listing portal with location-based filtering, rich media previews, and inquiry lead routing.</li>
+          <li>Constructed responsive mobile-first UI components with fast query caching and streamlined client navigation.</li>
         </ul>
       </div>
 
