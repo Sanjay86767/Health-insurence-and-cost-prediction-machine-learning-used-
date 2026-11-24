@@ -25,11 +25,7 @@
     },
     {
       "src": "/Sanjay_Kumar_Resume.pdf",
-      "dest": "/Sanjay_Kumar_Resume.pdf",
-      "headers": {
-        "Content-Type": "application/pdf",
-        "Content-Disposition": "attachment; filename=\"Sanjay_Kumar_Resume.pdf\""
-      }
+      "dest": "/api/resume.js"
     },
     {
       "src": "/resume.html",
