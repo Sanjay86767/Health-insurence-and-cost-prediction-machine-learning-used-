@@ -441,14 +441,45 @@
           </div>
         </div>
 
-        <div class="flex items-center justify-between pt-3 border-t border-white/10 text-[11px] text-gray-300">
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-3 border-t border-white/10 text-[11px] text-gray-300">
           <div>
-            <span class="text-gray-400">Risk Profile:</span> <strong class="text-emerald-300" id="digitalCardRisk">Low Risk</strong>
+            <span class="text-gray-400 block text-[9px] uppercase tracking-wider">Valid From</span>
+            <strong class="text-white text-xs font-bold" id="digitalCardValidFrom">24 Nov 2026</strong>
           </div>
           <div>
-            <span class="text-gray-400">Annual Premium:</span> <strong class="text-blue-300 text-sm" id="digitalCardPremium">₹10,700 / yr</strong>
+            <span class="text-gray-400 block text-[9px] uppercase tracking-wider">Valid Till (1 Year)</span>
+            <strong class="text-emerald-300 text-xs font-bold" id="digitalCardValidThru">23 Nov 2027</strong>
+          </div>
+          <div class="col-span-2 sm:col-span-1 text-left sm:text-right">
+            <span class="text-gray-400 block text-[9px] uppercase tracking-wider">Annual Premium</span>
+            <strong class="text-blue-300 text-sm font-bold" id="digitalCardPremium">₹10,700 / yr</strong>
           </div>
         </div>
+
+        <div class="mt-4 pt-2.5 border-t border-white/10 flex items-center justify-between text-[10px] text-gray-400">
+          <span class="flex items-center gap-1.5 text-emerald-300">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            365 Days Active Coverage
+          </span>
+          <span class="text-gray-400">Lifetime Guaranteed Renewal 🔄</span>
+        </div>
+      </div>
+
+      <!-- VALIDITY & DATABASE RETENTION BANNER -->
+      <div class="mt-6 max-w-xl mx-auto p-4 rounded-2xl bg-gray-900/90 border border-blue-500/30 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-base">
+            📅
+          </div>
+          <div>
+            <strong class="text-white block font-bold">Insurance Validity: 1 Full Year (365 Days)</strong>
+            <span class="text-gray-400 text-[11px]">Database Record: Permanently Stored in MongoDB Database</span>
+          </div>
+        </div>
+        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+          Auto-Saved
+        </span>
+      </div>
       </div>
     </div>
 
@@ -1121,6 +1152,10 @@
                 <span class="text-gray-500 block text-[10px]">Surgeries:</span>
                 <strong>${q.surgeries || 0} Major Surg.</strong>
               </div>
+              <div class="col-span-2 pt-1.5 border-t border-gray-800/80 flex items-center justify-between text-[10px]">
+                <span class="text-gray-400">Validity Period:</span>
+                <strong class="text-emerald-300 font-bold">1 Full Year (Active 365 Days)</strong>
+              </div>
             </div>
 
             <!-- Action Buttons -->
@@ -1261,9 +1296,18 @@
       document.getElementById('cardSmokingSur').textContent = "₹" + smokeCost.toLocaleString('en-IN');
       document.getElementById('cardBmiAgeFactor').textContent = "₹" + Math.round(ageCost + bmiCost).toLocaleString('en-IN');
 
-      // Update Digital Card Elements
+      // Update Digital Card Elements & Dynamic 1-Year Dates
       document.getElementById('digitalCardHolder').textContent = applicantName.toUpperCase();
       document.getElementById('digitalCardPremium').textContent = "₹" + roundedQuote.toLocaleString('en-IN') + " / yr";
+      
+      const now = new Date();
+      const nextYear = new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000);
+      const fromStr = now.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+      const thruStr = nextYear.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+      const elFrom = document.getElementById('digitalCardValidFrom');
+      const elThru = document.getElementById('digitalCardValidThru');
+      if (elFrom) elFrom.textContent = fromStr;
+      if (elThru) elThru.textContent = thruStr;
       
       // Update Tier Prices
       document.getElementById('tierSilverPrice').innerHTML = "₹" + Math.round(roundedQuote * 0.8).toLocaleString('en-IN') + ' <span class="text-xs text-gray-400 font-normal">/ yr</span>';
