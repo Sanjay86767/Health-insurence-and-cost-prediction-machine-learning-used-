@@ -106,14 +106,14 @@
       <!-- CENTER NAV LINKS (DESKTOP) -->
       <nav class="hidden lg:flex items-center gap-6 text-xs font-semibold text-gray-300">
         <a href="#calculatorSection" class="hover:text-blue-400 transition-colors">Underwriting Engine</a>
-        <a href="#tierComparisonSection" class="hover:text-blue-400 transition-colors">Protection Tiers</a>
-        <a href="#analyticsSection" class="hover:text-blue-400 transition-colors">ML Analytics &amp; Graphs</a>
         <a href="#digitalCardSection" class="hover:text-blue-400 transition-colors">Digital Health Card</a>
-        <a href="/resume.html" target="_blank" class="px-3 py-1.5 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/30 text-xs font-bold transition-all flex items-center gap-1.5">
-          <span>📄</span> View Resume
+        <a href="#tierComparisonSection" class="hover:text-blue-400 transition-colors">Protection Tiers</a>
+        <a href="#analyticsSection" class="hover:text-blue-400 transition-colors">ML Analytics</a>
+        <a href="#claimEstimatorSection" class="px-3 py-1.5 rounded-xl bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 text-xs font-bold transition-all flex items-center gap-1.5">
+          <span>⚡</span> Claim Estimator
         </a>
-        <a href="/Sanjay_Kumar_Resume.pdf" download="Sanjay_Kumar_Resume.pdf" class="px-3 py-1.5 rounded-xl bg-emerald-600/30 hover:bg-emerald-600/40 text-emerald-300 border border-emerald-500/40 text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm">
-          <span>⬇️</span> Download Resume
+        <a href="#hospitalNetworkSection" class="px-3 py-1.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 text-xs font-bold transition-all flex items-center gap-1.5">
+          <span>🏥</span> Cashless Hospitals
         </a>
       </nav>
 
@@ -668,6 +668,151 @@
       </div>
     </div>
 
+
+    <!-- ========================================== -->
+    <!-- NEW FEATURE 1: AI CLAIM SETTLEMENT ESTIMATOR -->
+    <!-- ========================================== -->
+    <div id="claimEstimatorSection" class="glass-panel p-6 sm:p-8 rounded-3xl border border-indigo-500/40 relative overflow-hidden space-y-6">
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-4 border-b border-gray-800">
+        <div>
+          <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest block mb-1">Instant Claim Simulation</span>
+          <h3 class="text-2xl font-black text-white flex items-center gap-2">
+            <span>⚡</span> AI Fast-Track Claim Settlement Estimator
+          </h3>
+          <p class="text-xs text-gray-400 mt-1">Simulate hospital claim payouts, cashless pre-authorization, and document readiness in real-time</p>
+        </div>
+        <span class="px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          24/7 Cashless Pre-Auth Engine
+        </span>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Input Controls -->
+        <div class="lg:col-span-5 space-y-4">
+          <div>
+            <label class="block text-xs font-semibold text-gray-300 mb-1.5">Planned Medical Treatment / Procedure</label>
+            <select id="claimTreatment" onchange="runClaimEstimator()" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-900 border border-gray-700 text-white text-xs focus:outline-none focus:border-indigo-500">
+              <option value="cardiac">Cardiology & Heart Stent Procedure</option>
+              <option value="ortho">Orthopedic & Joint / Knee Replacement</option>
+              <option value="inpatient" selected>General Hospitalization (Dengue, Pneumonia, ICU)</option>
+              <option value="surgery">Laparoscopic Day-Care Surgery</option>
+              <option value="maternity">Maternity Delivery & Neonatal Care</option>
+              <option value="trauma">Emergency Accident & Trauma Recovery</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-gray-300 mb-1.5">Estimated Hospitalization Bill (₹)</label>
+            <div class="relative">
+              <span class="absolute left-3.5 top-2.5 text-gray-400 font-bold text-sm">₹</span>
+              <input type="number" id="claimBillAmount" value="150000" min="5000" step="5000" oninput="runClaimEstimator()" class="w-full pl-8 pr-4 py-2 rounded-xl bg-gray-900 border border-gray-700 text-white text-sm font-bold focus:outline-none focus:border-indigo-500">
+            </div>
+            <div class="flex gap-2 mt-2">
+              <button type="button" onclick="setBill(50000)" class="px-2.5 py-1 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 text-[11px] font-semibold border border-gray-700">₹50K</button>
+              <button type="button" onclick="setBill(150000)" class="px-2.5 py-1 rounded-lg bg-indigo-600/30 text-indigo-300 text-[11px] font-semibold border border-indigo-500/30">₹1.5 Lakh</button>
+              <button type="button" onclick="setBill(300000)" class="px-2.5 py-1 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 text-[11px] font-semibold border border-gray-700">₹3 Lakh</button>
+              <button type="button" onclick="setBill(600000)" class="px-2.5 py-1 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 text-[11px] font-semibold border border-gray-700">₹6 Lakh</button>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-gray-300 mb-1.5">Hospital Network Tier</label>
+            <select id="claimHospitalType" onchange="runClaimEstimator()" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-900 border border-gray-700 text-white text-xs focus:outline-none focus:border-indigo-500">
+              <option value="tier1_metro" selected>Tier-1 Metro Super-Speciality (Max, Fortis, Apollo)</option>
+              <option value="nabh_tier2">NABH Regional Accredited Hospital</option>
+              <option value="non_network">Non-Network Hospital (Post-Discharge Reimbursement)</option>
+            </select>
+          </div>
+
+          <div class="p-3.5 rounded-2xl bg-indigo-950/30 border border-indigo-500/20 text-xs text-indigo-300 leading-relaxed">
+            🛡️ <strong>Fast-Track SLA:</strong> Under the Health InsurAI cashless framework, network admissions receive pre-authorization review within <strong>&lt; 25 minutes</strong> with zero physical paperwork.
+          </div>
+        </div>
+
+        <!-- Output KPI Cards -->
+        <div class="lg:col-span-7 flex flex-col justify-between space-y-4">
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <div class="p-4 rounded-2xl bg-gray-900/90 border border-emerald-500/30 text-center">
+              <span class="text-[10px] text-gray-400 uppercase tracking-wider block font-semibold">Cashless Settlement</span>
+              <span class="text-xl sm:text-2xl font-black text-emerald-400 block mt-1" id="claimCoveredPayout">₹1,38,000</span>
+              <span class="text-[10px] text-emerald-300 font-bold" id="claimCoveredPct">92% Covered by Insurer</span>
+            </div>
+            <div class="p-4 rounded-2xl bg-gray-900/90 border border-amber-500/30 text-center">
+              <span class="text-[10px] text-gray-400 uppercase tracking-wider block font-semibold">Estimated Co-Pay</span>
+              <span class="text-xl sm:text-2xl font-black text-amber-400 block mt-1" id="claimOutPocket">₹12,000</span>
+              <span class="text-[10px] text-gray-400">Non-Medical Consumables</span>
+            </div>
+            <div class="col-span-2 sm:col-span-1 p-4 rounded-2xl bg-gray-900/90 border border-blue-500/30 text-center">
+              <span class="text-[10px] text-gray-400 uppercase tracking-wider block font-semibold">Approval Confidence</span>
+              <span class="text-xl sm:text-2xl font-black text-blue-400 block mt-1" id="claimApprovalRate">98.4%</span>
+              <span class="text-[10px] text-emerald-400 font-bold">&lt; 20 Mins TAT</span>
+            </div>
+          </div>
+
+          <!-- Document Checklist -->
+          <div class="p-4 rounded-2xl bg-gray-900/80 border border-gray-800 space-y-2.5">
+            <div class="flex items-center justify-between">
+              <strong class="text-xs text-white font-bold flex items-center gap-1.5">
+                <span>📋</span> Required Claim Documents Checklist:
+              </strong>
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 font-semibold">Digital Submission Ready</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] text-gray-300 pt-1">
+              <div class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> Doctor's Hospitalization Advice Letter</div>
+              <div class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> Digital Policy Card / Govt Photo ID</div>
+              <div class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> Initial Diagnostic & Blood Lab Reports</div>
+              <div class="flex items-center gap-1.5"><span class="text-emerald-400">✓</span> Hospital Pre-Auth Admission Form</div>
+            </div>
+          </div>
+
+          <div class="flex flex-col sm:flex-row items-center gap-3 pt-1">
+            <button onclick="downloadPreAuthSlip()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-bold text-xs shadow-lg shadow-indigo-600/30 transition-all flex items-center justify-center gap-2">
+              <span>📄</span> Download Pre-Authorization Estimate (PDF)
+            </button>
+            <button onclick="showToast('📞 24/7 Cashless Support Hotline: 1800-419-8800 (Toll-Free)')" class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-gray-200 font-bold text-xs border border-gray-700 transition-all flex items-center justify-center gap-1.5">
+              <span>📞</span> 24/7 Claim Desk
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- NEW FEATURE 2: 12,400+ CASHLESS HOSPITAL NETWORK LOCATOR -->
+    <!-- ========================================== -->
+    <div id="hospitalNetworkSection" class="glass-panel p-6 sm:p-8 rounded-3xl border border-emerald-500/40 relative overflow-hidden space-y-6">
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-4 border-b border-gray-800">
+        <div>
+          <span class="text-xs font-bold text-emerald-400 uppercase tracking-widest block mb-1">Pan-India Cashless Healthcare Network</span>
+          <h3 class="text-2xl font-black text-white flex items-center gap-2">
+            <span>🏥</span> 12,400+ Cashless Hospital Network Locator
+          </h3>
+          <p class="text-xs text-gray-400 mt-1">Locate empaneled network hospitals with zero deposit admission across Punjab, Chandigarh, Delhi NCR & Metros</p>
+        </div>
+        <div>
+          <input type="text" id="hospitalSearchInput" placeholder="Search hospital name or city..." oninput="filterHospitals()" class="px-4 py-2 rounded-xl bg-gray-900 border border-gray-700 text-white text-xs focus:outline-none focus:border-emerald-500 w-52 sm:w-72">
+        </div>
+      </div>
+
+      <!-- Quick City Filter Pills -->
+      <div class="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
+        <span class="text-gray-400 font-semibold mr-1">Filter City:</span>
+        <button onclick="selectCityFilter('All')" class="px-3 py-1 rounded-full bg-emerald-600 text-white font-bold text-xs transition-all city-btn" data-city="All">All Cities</button>
+        <button onclick="selectCityFilter('Chandigarh')" class="px-3 py-1 rounded-full bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold text-xs transition-all city-btn" data-city="Chandigarh">Chandigarh / Mohali</button>
+        <button onclick="selectCityFilter('Hoshiarpur')" class="px-3 py-1 rounded-full bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold text-xs transition-all city-btn" data-city="Hoshiarpur">Hoshiarpur / Jalandhar</button>
+        <button onclick="selectCityFilter('Delhi')" class="px-3 py-1 rounded-full bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold text-xs transition-all city-btn" data-city="Delhi">Delhi NCR</button>
+        <button onclick="selectCityFilter('Mumbai')" class="px-3 py-1 rounded-full bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold text-xs transition-all city-btn" data-city="Mumbai">Mumbai</button>
+        <button onclick="selectCityFilter('Bangalore')" class="px-3 py-1 rounded-full bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold text-xs transition-all city-btn" data-city="Bangalore">Bangalore</button>
+      </div>
+
+      <!-- Dynamic Hospital Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="hospitalsGrid">
+        <!-- Rendered dynamically by JavaScript -->
+      </div>
+    </div>
+
+
     <!-- ACADEMIC RESEARCH ATTRIBUTION -->
     <div class="glass-panel p-6 rounded-2xl border border-gray-800 text-xs text-gray-400 flex flex-col md:flex-row justify-between items-center gap-4">
       <div>
@@ -976,6 +1121,8 @@
         closeModal('signUpModal');
         showToast('🎉 Welcome, ' + currentUser.name + '! Account created.');
         calculatePremium();
+      runClaimEstimator();
+      filterHospitals();
       } catch (err) {
         currentUser = { id: 'usr_' + Date.now().toString(36), name: payload.name, email: payload.email, phone: payload.phone };
         currentToken = 'jwt_mock_' + Date.now();
@@ -1618,6 +1765,286 @@
       document.getElementById('digitalCardSection').scrollIntoView({ behavior: 'smooth' });
     });
     document.getElementById('calcForm').addEventListener('change', calculatePremium);
+
+
+    // ==========================================
+    // NEW FEATURE 1 LOGIC: CLAIM SETTLEMENT ESTIMATOR
+    // ==========================================
+    function setBill(amount) {
+      document.getElementById('claimBillAmount').value = amount;
+      runClaimEstimator();
+    }
+
+    function runClaimEstimator() {
+      const bill = parseFloat(document.getElementById('claimBillAmount').value) || 100000;
+      const treatment = document.getElementById('claimTreatment').value;
+      const hospType = document.getElementById('claimHospitalType').value;
+
+      let baseCoverageRate = 0.92;
+      let approvalRate = 98.4;
+
+      if (treatment === 'cardiac') baseCoverageRate = 0.93;
+      else if (treatment === 'ortho') baseCoverageRate = 0.91;
+      else if (treatment === 'inpatient') baseCoverageRate = 0.92;
+      else if (treatment === 'surgery') baseCoverageRate = 0.95;
+      else if (treatment === 'maternity') baseCoverageRate = 0.88;
+      else if (treatment === 'trauma') baseCoverageRate = 0.96;
+
+      if (hospType === 'tier1_metro') {
+        approvalRate = 98.8;
+      } else if (hospType === 'nabh_tier2') {
+        baseCoverageRate -= 0.02;
+        approvalRate = 97.5;
+      } else if (hospType === 'non_network') {
+        baseCoverageRate = 0.80;
+        approvalRate = 92.0;
+      }
+
+      const coveredAmount = Math.round(bill * baseCoverageRate);
+      const outPocket = Math.round(bill - coveredAmount);
+      const coveredPct = Math.round(baseCoverageRate * 100);
+
+      document.getElementById('claimCoveredPayout').textContent = '₹' + coveredAmount.toLocaleString('en-IN');
+      document.getElementById('claimCoveredPct').textContent = coveredPct + '% of Total Bill Covered';
+      document.getElementById('claimOutPocket').textContent = '₹' + outPocket.toLocaleString('en-IN');
+      document.getElementById('claimApprovalRate').textContent = approvalRate.toFixed(1) + '%';
+    }
+
+    function downloadPreAuthSlip() {
+      const name = document.getElementById('applicantName').value || 'Sanjay Kumar';
+      const bill = parseFloat(document.getElementById('claimBillAmount').value) || 150000;
+      const covered = document.getElementById('claimCoveredPayout').textContent;
+      const outPocket = document.getElementById('claimOutPocket').textContent;
+      const treatmentSelect = document.getElementById('claimTreatment');
+      const treatmentText = treatmentSelect.options[treatmentSelect.selectedIndex].text;
+      const polNum = document.getElementById('digitalCardNumber').textContent || 'POL-2026-9842-8871';
+
+      const win = window.open('', '_blank');
+      win.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Health InsurAI — Pre-Authorization Claim Estimate Slip</title>
+          <style>
+            body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 40px; color: #0f172a; max-width: 720px; margin: 0 auto; line-height: 1.5; }
+            .header { border-bottom: 3px solid #2563eb; padding-bottom: 20px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; }
+            .badge { background: #dcfce7; color: #166534; padding: 5px 12px; border-radius: 20px; font-weight: bold; font-size: 12px; }
+            .table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+            .table td, .table th { padding: 10px 14px; border: 1px solid #e2e8f0; font-size: 13px; }
+            .table th { background: #f8fafc; text-align: left; }
+            .highlight-box { background: #eff6ff; border: 1.5px solid #bfdbfe; border-radius: 12px; padding: 18px; margin: 20px 0; display: flex; justify-content: space-between; }
+            .footer { font-size: 11px; color: #64748b; margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 15px; }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <div>
+              <h2 style="margin:0; color:#1e40af;">HEALTH INSURAI</h2>
+              <div style="font-size:12px; color:#64748b;">Panjab University SSGICR • Cashless Claims Desk</div>
+            </div>
+            <div class="badge">PRE-APPROVED PRE-AUTHORIZATION</div>
+          </div>
+
+          <div style="font-size:13px; margin-bottom:15px;">
+            <strong>Policy Number:</strong> ${polNum} &nbsp;|&nbsp; 
+            <strong>Policyholder:</strong> ${name} &nbsp;|&nbsp; 
+            <strong>Date:</strong> ${new Date().toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' })}
+          </div>
+
+          <div class="highlight-box">
+            <div>
+              <div style="font-size:11px; color:#475569; text-transform:uppercase; font-weight:bold;">Estimated Hospital Bill</div>
+              <div style="font-size:22px; font-weight:800; color:#0f172a;">₹${bill.toLocaleString('en-IN')}</div>
+            </div>
+            <div>
+              <div style="font-size:11px; color:#166534; text-transform:uppercase; font-weight:bold;">Cashless Settlement Payout</div>
+              <div style="font-size:22px; font-weight:800; color:#16a34a;">${covered}</div>
+            </div>
+            <div>
+              <div style="font-size:11px; color:#b45309; text-transform:uppercase; font-weight:bold;">Estimated Co-Pay</div>
+              <div style="font-size:22px; font-weight:800; color:#d97706;">${outPocket}</div>
+            </div>
+          </div>
+
+          <table class="table">
+            <tr>
+              <th width="35%">Medical Event / Treatment</th>
+              <td>${treatmentText}</td>
+            </tr>
+            <tr>
+              <th>Approval Channel</th>
+              <td>AI Instant Fast-Track Cashless TPA (Turnaround: &lt; 25 Minutes)</td>
+            </tr>
+            <tr>
+              <th>Zero Deposit Status</th>
+              <td>Eligible at 12,400+ Empaneled Network Hospitals Pan-India</td>
+            </tr>
+            <tr>
+              <th>Required Documents</th>
+              <td>Doctor Prescription, Patient ID Proof, Initial Diagnostic Reports</td>
+            </tr>
+          </table>
+
+          <div class="footer">
+            Note: This computer-generated estimate is verified via the Health InsurAI Actuarial Model and valid across all empaneled network hospitals. For 24x7 Emergency Assistance, dial 1800-419-8800.
+          </div>
+          <script>window.print();<\/script>
+        </body>
+        </html>
+      `);
+      win.document.close();
+    }
+
+    // ==========================================
+    // NEW FEATURE 2 LOGIC: 12,400+ HOSPITAL NETWORK
+    // ==========================================
+    const hospitalsData = [
+      {
+        name: "Max Super Speciality Hospital",
+        city: "Chandigarh",
+        location: "Phase 6, Mohali (Chandigarh Tricity)",
+        specialties: "Cardiology, Oncology, Neuro, Ortho",
+        beds: "350+ Beds",
+        badge: "NABH / NABL Accredited",
+        phone: "+91 172 521 2000"
+      },
+      {
+        name: "Fortis Hospital Mohali",
+        city: "Chandigarh",
+        location: "Sector 62, Mohali, Punjab",
+        specialties: "Organ Transplant, Cardiac Sciences, Trauma",
+        beds: "340+ Beds",
+        badge: "JCI / NABH Certified",
+        phone: "+91 172 469 2222"
+      },
+      {
+        name: "Ivy Hospital Hoshiarpur",
+        city: "Hoshiarpur",
+        location: "Chandigarh-Hoshiarpur Highway, Punjab",
+        specialties: "Critical Care, Emergency Trauma, General Surgery",
+        beds: "150+ Beds",
+        badge: "NABH Accredited Regional Center",
+        phone: "+91 188 250 8888"
+      },
+      {
+        name: "Apollo Hospital Delhi",
+        city: "Delhi",
+        location: "Sarita Vihar, Mathura Road, New Delhi",
+        specialties: "Multi-Organ Transplant, Cardiology, Robotic Surgery",
+        beds: "700+ Beds",
+        badge: "JCI Accredited Flagship",
+        phone: "+91 11 2692 5858"
+      },
+      {
+        name: "Medanta - The Medicity",
+        city: "Delhi",
+        location: "CH Bakhtawar Singh Rd, Gurugram, Delhi NCR",
+        specialties: "Heart Institute, Cancer Institute, Neurosciences",
+        beds: "1,250+ Beds",
+        badge: "Apex Tertiary Care Center",
+        phone: "+91 124 414 1414"
+      },
+      {
+        name: "Manipal Hospital",
+        city: "Bangalore",
+        location: "Old Airport Road, Bangalore, Karnataka",
+        specialties: "Cardiology, Nephrology, Oncology, Pediatrics",
+        beds: "600+ Beds",
+        badge: "NABH / NABL Network Excellence",
+        phone: "+91 80 2502 4444"
+      },
+      {
+        name: "Kokilaben Dhirubhai Ambani Hospital",
+        city: "Mumbai",
+        location: "Rao Saheb Achutrao Patwardhan Marg, Andheri West, Mumbai",
+        specialties: "Children's Heart Center, Robotic Surgery, Critical Care",
+        beds: "750+ Beds",
+        badge: "Full JCI / NABH Accreditation",
+        phone: "+91 22 4269 6969"
+      },
+      {
+        name: "PGI Satellite Centre / Civil Multispeciality",
+        city: "Hoshiarpur",
+        location: "Una Road, Hoshiarpur, Punjab",
+        specialties: "General Medicine, Surgical, Orthopedics",
+        beds: "200+ Beds",
+        badge: "Empaneled Government Medical Hub",
+        phone: "+91 188 222 0044"
+      }
+    ];
+
+    let currentCityFilter = "All";
+
+    function selectCityFilter(city) {
+      currentCityFilter = city;
+      document.querySelectorAll('.city-btn').forEach(btn => {
+        if (btn.getAttribute('data-city') === city) {
+          btn.className = "px-3 py-1 rounded-full bg-emerald-600 text-white font-bold text-xs transition-all city-btn";
+        } else {
+          btn.className = "px-3 py-1 rounded-full bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold text-xs transition-all city-btn";
+        }
+      });
+      filterHospitals();
+    }
+
+    function filterHospitals() {
+      const query = (document.getElementById('hospitalSearchInput').value || '').toLowerCase().trim();
+      const container = document.getElementById('hospitalsGrid');
+      if (!container) return;
+
+      const filtered = hospitalsData.filter(h => {
+        const matchesCity = (currentCityFilter === 'All') || (h.city.toLowerCase() === currentCityFilter.toLowerCase());
+        const matchesQuery = query === '' || 
+          h.name.toLowerCase().includes(query) || 
+          h.city.toLowerCase().includes(query) || 
+          h.location.toLowerCase().includes(query) || 
+          h.specialties.toLowerCase().includes(query);
+        return matchesCity && matchesQuery;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full py-8 text-center text-gray-400 text-xs">
+            No network hospitals matched your query. Try searching "Chandigarh", "Mohali", "Hoshiarpur", or "Delhi".
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(h => `
+        <div class="p-5 rounded-2xl bg-gray-900/80 border border-gray-800 hover:border-emerald-500/50 transition-all flex flex-col justify-between space-y-3 glass-card-hover">
+          <div>
+            <div class="flex items-start justify-between gap-2 mb-1.5">
+              <h4 class="font-bold text-sm text-white font-heading">${h.name}</h4>
+              <span class="text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-bold whitespace-nowrap">
+                Zero Deposit
+              </span>
+            </div>
+            <div class="text-[11px] text-gray-400 flex items-center gap-1.5 mb-2">
+              <span>📍</span> ${h.location}
+            </div>
+            <div class="text-[11px] text-gray-300 space-y-1">
+              <div><strong>Key Depts:</strong> <span class="text-gray-400">${h.specialties}</span></div>
+              <div><strong>Capacity:</strong> <span class="text-blue-300 font-semibold">${h.beds}</span> • <span class="text-emerald-300 font-semibold">${h.badge}</span></div>
+            </div>
+          </div>
+          <div class="pt-3 border-t border-gray-800 flex items-center justify-between text-xs">
+            <span class="text-gray-400 text-[11px] flex items-center gap-1">
+              📞 ${h.phone}
+            </span>
+            <button onclick="preAuthHospital('${h.name}')" class="px-3 py-1.5 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 font-bold text-[11px] transition-all">
+              ⚡ Pre-Authorize
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function preAuthHospital(name) {
+      showToast('🏥 ' + name + ' selected for Cashless Pre-Authorization!');
+      document.getElementById('claimEstimatorSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
 
     // INITIAL EXECUTION ON LOAD
     window.addEventListener('DOMContentLoaded', () => {
