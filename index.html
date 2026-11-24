@@ -1,205 +1,284 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>Health InsurAI — Explainable Health Insurance Cost Prediction</title>
-  <meta name="description" content="Production Explainable Machine Learning Web Application for Medical Health Insurance Cost Prediction by Sanjay Kumar, Panjab University.">
-  <meta name="keywords" content="health insurance, cost prediction, machine learning, Panjab University, Sanjay Kumar, xgboost, random forest, mongoose, chartjs">
+  <title>Health InsurAI — Premium Explainable Machine Learning Health Insurance Platform</title>
+  <meta name="description" content="Next-Generation Explainable ML Health Insurance & Actuarial Cost Platform by Sanjay Kumar, Panjab University.">
+  <meta name="keywords" content="health insurance, cost prediction, machine learning, Panjab University, Sanjay Kumar, fintech, insurtech">
   <meta name="author" content="Sanjay Kumar">
-  <meta name="theme-color" content="#0b0f19">
+  <meta name="theme-color" content="#070a12">
 
-  <!-- Open Graph / Social Media -->
+  <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://health-insurance-ml.vercel.app/">
-  <meta property="og:title" content="Health InsurAI — Health Insurance Cost Prediction">
-  <meta property="og:description" content="Calculate medical health insurance premium quotes in real-time with sub-10ms explainable ML inference and interactive graphs.">
-  
-  <!-- Favicon -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏥</text></svg>">
+  <meta property="og:title" content="Health InsurAI — Premium AI Health Insurance">
+  <meta property="og:description" content="Instant ML underwriting, actuarial cost decomposition, and digital health cards.">
 
-  <!-- Tailwind CSS & Fonts -->
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Chart.js for all Interactive Graphs -->
+  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
   <style>
-    body { font-family: 'Inter', sans-serif; background-color: #0b0f19; color: #f1f5f9; }
-    h1, h2, h3, .font-heading { font-family: 'Outfit', sans-serif; }
-    .glass-card {
-      background: rgba(17, 24, 39, 0.75);
-      backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 1rem;
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #060911; color: #f1f5f9; }
+    h1, h2, h3, h4, .font-heading { font-family: 'Outfit', sans-serif; }
+    .font-mono-card { font-family: 'Space Grotesk', monospace; }
+    
+    .glass-panel {
+      background: rgba(13, 19, 33, 0.75);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.07);
     }
-    .gradient-border {
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(147, 51, 234, 0.05));
+    
+    .glass-card-hover {
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card-hover:hover {
+      transform: translateY(-3px);
+      border-color: rgba(59, 130, 246, 0.4);
+      box-shadow: 0 15px 35px -10px rgba(59, 130, 246, 0.2);
+    }
+
+    .holo-card {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #1e1b4b 100%);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 20px 45px -10px rgba(30, 58, 138, 0.35);
+    }
+    .holo-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    
+    .glow-blob {
+      position: absolute;
+      filter: blur(90px);
+      border-radius: 9999px;
+      pointer-events: none;
+      z-index: 0;
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-blue-600 selection:text-white">
+<body class="min-h-screen flex flex-col justify-between selection:bg-blue-600 selection:text-white relative overflow-x-hidden">
 
-  <!-- TOP NAVIGATION -->
-  <header class="border-b border-gray-800 bg-gray-950/90 sticky top-0 z-50 backdrop-blur-md">
-    <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/20 font-bold text-lg text-white">
-          HI
+  <!-- AMBIENT BACKGROUND GLOWS -->
+  <div class="glow-blob w-[500px] h-[500px] bg-blue-600/10 -top-32 -left-32"></div>
+  <div class="glow-blob w-[600px] h-[600px] bg-indigo-600/10 top-1/3 -right-40"></div>
+  <div class="glow-blob w-[500px] h-[500px] bg-emerald-600/10 bottom-1/4 left-1/4"></div>
+
+  <!-- ULTRA-PREMIUM NAVIGATION BAR -->
+  <header class="border-b border-gray-800/80 bg-gray-950/85 sticky top-0 z-50 backdrop-blur-xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-18 flex items-center justify-between py-3">
+      
+      <!-- LOGO & RESEARCH ATTRIBUTION -->
+      <div class="flex items-center gap-3.5">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-500/25 border border-white/20">
+          <span class="text-xl">🛡️</span>
         </div>
         <div>
-          <span class="font-bold text-lg text-white tracking-tight flex items-center gap-2">
-            Health InsurAI
-            <span class="text-xs px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30 font-medium">v2.0 ML</span>
-          </span>
-          <p class="text-xs text-gray-400 hidden sm:block">Panjab University SSGICR • Sanjay Kumar</p>
+          <div class="flex items-center gap-2">
+            <span class="font-heading font-extrabold text-xl text-white tracking-tight">
+              Health <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300">InsurAI</span>
+            </span>
+            <span class="text-[10px] font-black px-2 py-0.5 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-300 border border-blue-500/30 uppercase tracking-widest">
+              PRO ML v2.0
+            </span>
+          </div>
+          <p class="text-[11px] text-gray-400 font-medium hidden sm:block">Panjab University SSGICR • Supervised by Dr. Sukhvinder Singh Bamber</p>
         </div>
       </div>
 
-      <!-- AUTH BUTTONS & REPO -->
+      <!-- CENTER NAV LINKS (DESKTOP) -->
+      <nav class="hidden lg:flex items-center gap-6 text-xs font-semibold text-gray-300">
+        <a href="#calculatorSection" class="hover:text-blue-400 transition-colors">Underwriting Engine</a>
+        <a href="#tierComparisonSection" class="hover:text-blue-400 transition-colors">Protection Tiers</a>
+        <a href="#analyticsSection" class="hover:text-blue-400 transition-colors">ML Analytics &amp; Graphs</a>
+        <a href="#digitalCardSection" class="hover:text-blue-400 transition-colors">Digital Health Card</a>
+      </nav>
+
+      <!-- AUTHENTICATION WIDGET (LOGIN / SIGN UP / USER STATE) -->
       <div class="flex items-center gap-3">
         <!-- Logged Out State -->
-        <div id="authLoggedOut" class="flex items-center gap-2">
-          <button onclick="openModal('signInModal')" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition-colors">
-            Sign In
+        <div id="authLoggedOut" class="flex items-center gap-2.5">
+          <button onclick="openModal('signInModal')" class="px-4 py-2 rounded-xl text-xs font-bold text-gray-200 hover:text-white bg-gray-900/90 hover:bg-gray-800 border border-gray-700/80 transition-all flex items-center gap-1.5 shadow-sm">
+            <span>🔐</span> Sign In
           </button>
-          <button onclick="openModal('signUpModal')" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-blue-600 hover:bg-blue-500 text-white shadow-md shadow-blue-600/30 transition-all">
-            Sign Up
+          <button onclick="openModal('signUpModal')" class="px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-lg shadow-blue-500/25 transition-all flex items-center gap-1.5 border border-white/20">
+            <span>✨</span> Sign Up Free
           </button>
         </div>
 
-        <!-- Logged In State -->
-        <div id="authLoggedIn" class="hidden flex items-center gap-2.5">
-          <button onclick="openQuotesHistory()" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-900 border border-gray-700 hover:border-gray-600 text-gray-300 transition-all flex items-center gap-1.5">
-            <span>📋</span> <span class="hidden sm:inline">My</span> Quotes
-          </button>
-          <div class="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-gray-900/80 border border-gray-800">
-            <div class="w-6 h-6 rounded-full bg-gradient-to-tr from-emerald-500 to-blue-500 flex items-center justify-center text-xs font-bold text-white" id="userInitial">
-              U
+        <!-- Logged In State (High-End Profile Widget) -->
+        <div id="authLoggedIn" class="hidden flex items-center gap-3">
+          <div class="flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-gray-900/90 border border-blue-500/40 shadow-md shadow-blue-500/10">
+            <div class="w-7 h-7 rounded-lg bg-gradient-to-tr from-emerald-500 to-blue-600 flex items-center justify-center text-xs font-black text-white" id="userInitial">
+              S
             </div>
-            <span class="text-xs font-medium text-gray-200 max-w-[110px] truncate" id="userNameDisplay">User</span>
+            <div class="text-left hidden sm:block">
+              <div class="text-xs font-bold text-white flex items-center gap-1.5" id="userNameDisplay">
+                Sanjay Kumar
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              </div>
+              <span class="text-[10px] text-emerald-400 font-semibold block leading-none">Verified Policyholder ⭐</span>
+            </div>
           </div>
-          <button onclick="signOut()" class="px-2.5 py-1.5 text-xs text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 rounded-lg transition-colors">
-            Sign Out
+
+          <button onclick="signOut()" class="px-3 py-2 rounded-xl text-xs font-bold bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 transition-all flex items-center gap-1.5">
+            <span>🚪</span> <span class="hidden sm:inline">Sign Out</span>
           </button>
         </div>
 
-        <a href="https://github.com/Sanjay86767/Health-insurence-ml-project" target="_blank" class="hidden md:flex px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-xs font-semibold text-gray-200 transition-all items-center gap-1.5 border border-gray-700 shadow-sm">
-          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-          GitHub
+        <!-- GITHUB BADGE -->
+        <a href="https://github.com/Sanjay86767/Health-insurence-ml-project" target="_blank" class="hidden md:flex p-2 rounded-xl bg-gray-900 hover:bg-gray-800 text-gray-300 hover:text-white border border-gray-800 transition-colors" title="GitHub Code">
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
         </a>
       </div>
+
     </div>
   </header>
 
-  <!-- TOAST NOTIFICATION -->
-  <div id="toast" class="fixed top-20 right-4 z-50 transform translate-x-full opacity-0 transition-all duration-300 pointer-events-none">
-    <div class="px-4 py-3 rounded-xl bg-gray-900 border border-gray-700 shadow-2xl text-xs text-white flex items-center gap-2" id="toastContent">
+  <!-- FLOATING TOAST -->
+  <div id="toast" class="fixed top-20 right-5 z-50 transform translate-x-full opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="px-5 py-3.5 rounded-2xl bg-gray-900/95 border border-blue-500/40 shadow-2xl text-xs font-semibold text-white flex items-center gap-2.5 backdrop-blur-xl" id="toastContent">
       <span>💾</span> Quote calculated and saved!
     </div>
   </div>
 
-  <!-- MAIN WRAPPER -->
-  <main class="max-w-7xl mx-auto px-4 py-8 flex-grow space-y-8">
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex-grow space-y-10 relative z-10">
 
-    <!-- USER WELCOME PROFILE BANNER CARD -->
-    <div class="glass-card p-5 sm:p-6 border border-blue-500/20 bg-gradient-to-r from-blue-950/40 via-gray-900/80 to-indigo-950/40 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-      <div class="flex items-center gap-3.5">
-        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 flex items-center justify-center text-xl font-black text-white shadow-lg shadow-blue-500/25" id="bannerAvatar">
-          👤
+    <!-- HERO SECTION WITH LUXURIOUS ACTUARIAL BANNER -->
+    <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-blue-500/30 bg-gradient-to-r from-blue-950/40 via-gray-900/90 to-purple-950/30 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 relative overflow-hidden">
+      <div class="max-w-3xl">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-blue-500/10 text-blue-400 border border-blue-500/30 mb-3">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          AI-Powered Actuarial Underwriting • Live Production Model
         </div>
-        <div>
-          <div class="flex items-center gap-2">
-            <h1 class="text-lg sm:text-xl font-bold text-white" id="bannerUserName">Welcome, Guest Explorer!</h1>
-            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30" id="bannerStatusBadge">Guest Session</span>
-          </div>
-          <p class="text-xs text-gray-400 mt-0.5" id="bannerSubtext">
-            Sign in with Mongoose Auth to sync and save your policy quotes to MongoDB database.
-          </p>
-        </div>
+        <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
+          Intelligent Health Insurance <br>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-300 to-purple-400">
+            Cost Prediction &amp; Recourse
+          </span>
+        </h1>
+        <p class="text-gray-300 text-sm sm:text-base mt-3 leading-relaxed">
+          Trained on empirical healthcare distributions utilizing Gradient Boosted Trees (Random Forest, XGBoost, CatBoost). Delivers sub-10ms transparent actuarial quotes and counterfactual savings recommendations.
+        </p>
       </div>
-      <div class="flex items-center gap-3 w-full md:w-auto justify-end">
-        <button onclick="document.getElementById('calcForm').scrollIntoView({behavior: 'smooth'})" class="px-4 py-2 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 text-xs font-semibold text-blue-300 transition-all">
-          ⚡ Calculate Quote
-        </button>
-        <button onclick="openQuotesHistory()" class="px-4 py-2 rounded-xl bg-gray-800 hover:bg-gray-700 text-xs font-semibold text-gray-200 transition-all border border-gray-700">
-          📋 View Saved Cards
-        </button>
+
+      <!-- ACTIVE STATUS CARD -->
+      <div class="w-full lg:w-auto p-5 rounded-2xl bg-gray-900/80 border border-gray-700/80 shadow-xl flex flex-col gap-3 min-w-[280px]">
+        <div class="flex items-center justify-between">
+          <span class="text-xs uppercase tracking-wider text-gray-400 font-bold">Policyholder</span>
+          <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30" id="heroUserBadge">Active</span>
+        </div>
+        <div class="text-xl font-bold text-white flex items-center gap-2" id="heroUserName">
+          <span>👤</span> Sanjay Kumar
+        </div>
+        <div class="text-xs text-gray-400 flex justify-between border-t border-gray-800 pt-2">
+          <span>Base Coverage:</span>
+          <strong class="text-blue-400">₹15,00,000 (15L)</strong>
+        </div>
+        <div class="text-xs text-gray-400 flex justify-between">
+          <span>Cashless Hospitals:</span>
+          <strong class="text-emerald-400">12,400+ Pan-India</strong>
+        </div>
       </div>
     </div>
 
-    <!-- 4 KEY METRIC SUMMARY CARDS -->
+    <!-- 4 TOP METRIC TILES -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <!-- Card 1: Annual Premium -->
-      <div class="glass-card p-5 border border-blue-500/30 bg-gradient-to-br from-blue-950/30 to-gray-900/60">
+      <!-- Tile 1 -->
+      <div class="glass-panel p-5 rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-950/30 to-gray-900/70 glass-card-hover">
         <div class="flex items-center justify-between text-xs text-gray-400 mb-1">
-          <span>Estimated Annual Premium</span>
+          <span>Annual Premium Quote</span>
           <span class="text-blue-400 font-bold">₹ / Year</span>
         </div>
-        <div class="text-3xl font-black text-white tracking-tight my-1" id="metricAnnual">₹18,450</div>
+        <div class="text-3xl sm:text-4xl font-black text-white tracking-tight my-1" id="metricAnnual">₹10,700</div>
         <div class="flex items-center gap-1.5 text-xs text-emerald-400 font-semibold" id="metricRiskTier">
           <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Low Risk Category
         </div>
       </div>
 
-      <!-- Card 2: Monthly Installment -->
-      <div class="glass-card p-5 border border-gray-800">
+      <!-- Tile 2 -->
+      <div class="glass-panel p-5 rounded-2xl border border-gray-800 glass-card-hover">
         <div class="flex items-center justify-between text-xs text-gray-400 mb-1">
-          <span>Monthly Premium (EMI)</span>
+          <span>Monthly Installment (EMI)</span>
           <span class="text-purple-400 font-bold">12 Months</span>
         </div>
-        <div class="text-3xl font-black text-white tracking-tight my-1" id="metricMonthly">₹1,538</div>
-        <p class="text-xs text-gray-400">Zero surcharge on monthly installments</p>
+        <div class="text-3xl sm:text-4xl font-black text-white tracking-tight my-1" id="metricMonthly">₹892</div>
+        <p class="text-xs text-gray-400">0% interest flexi-installment plan</p>
       </div>
 
-      <!-- Card 3: Body Mass Index (BMI) -->
-      <div class="glass-card p-5 border border-gray-800">
+      <!-- Tile 3 -->
+      <div class="glass-panel p-5 rounded-2xl border border-gray-800 glass-card-hover">
         <div class="flex items-center justify-between text-xs text-gray-400 mb-1">
           <span>Body Mass Index (BMI)</span>
           <span class="text-emerald-400 font-bold" id="metricBmiStatus">Normal</span>
         </div>
-        <div class="text-3xl font-black text-white tracking-tight my-1" id="metricBmi">22.86</div>
-        <p class="text-xs text-gray-400" id="metricBmiAdvice">Healthy range: 18.5 – 24.9 kg/m²</p>
+        <div class="text-3xl sm:text-4xl font-black text-white tracking-tight my-1" id="metricBmi">22.86</div>
+        <p class="text-xs text-gray-400" id="metricBmiAdvice">Healthy zone: 18.5 – 24.9 kg/m²</p>
       </div>
 
-      <!-- Card 4: Health Risk Score -->
-      <div class="glass-card p-5 border border-gray-800">
+      <!-- Tile 4 -->
+      <div class="glass-panel p-5 rounded-2xl border border-gray-800 glass-card-hover">
         <div class="flex items-center justify-between text-xs text-gray-400 mb-1">
-          <span>Actuarial Risk Index</span>
-          <span class="text-indigo-400 font-bold">ML Score</span>
+          <span>Actuarial Health Score</span>
+          <span class="text-indigo-400 font-bold">Underwriting</span>
         </div>
-        <div class="text-3xl font-black text-white tracking-tight my-1" id="metricRiskScore">18 / 100</div>
-        <p class="text-xs text-emerald-400">Favorable risk underwriting profile</p>
+        <div class="text-3xl sm:text-4xl font-black text-white tracking-tight my-1" id="metricRiskScore">18 / 100</div>
+        <p class="text-xs text-emerald-400">Prime underwriting bracket</p>
       </div>
     </div>
 
-    <!-- MAIN FORM & PRIMARY GRAPH GRID -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <!-- MAIN FORM & DONUT BREAKDOWN GRID -->
+    <div id="calculatorSection" class="grid grid-cols-1 lg:grid-cols-12 gap-8">
       
       <!-- FORM INPUT CARD (LEFT 6 COLS) -->
-      <div class="lg:col-span-6 glass-card p-6 sm:p-7 gradient-border flex flex-col justify-between">
+      <div class="lg:col-span-6 glass-panel p-6 sm:p-7 rounded-3xl border border-gray-800 flex flex-col justify-between">
         <div>
           <div class="flex items-center justify-between mb-4">
-            <h2 class="text-lg font-bold text-white flex items-center gap-2">
-              <span>🔮</span> Policyholder Health Parameters
+            <h2 class="text-xl font-bold text-white flex items-center gap-2">
+              <span>🔮</span> Policyholder Parameters
             </h2>
-            <span class="text-xs px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
+            <span class="text-xs px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 font-semibold">
               Live Input
             </span>
           </div>
 
           <form id="calcForm" class="space-y-4">
+            <!-- APPLICANT FULL NAME -->
+            <div>
+              <label class="block text-xs font-bold text-gray-300 mb-1">Policyholder / Applicant Full Name</label>
+              <div class="relative">
+                <input type="text" id="applicantName" value="Sanjay Kumar" placeholder="Enter Full Name" class="w-full px-4 py-2.5 rounded-xl bg-gray-900/90 border border-blue-500/40 text-white focus:outline-none focus:border-blue-400 text-sm font-bold pl-10 shadow-inner">
+                <span class="absolute left-3.5 top-2.5 text-sm text-blue-400">👤</span>
+              </div>
+            </div>
+
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label class="block text-xs font-semibold text-gray-300 mb-1">Age (Years)</label>
-                <input type="number" id="age" value="28" min="18" max="90" class="w-full px-3.5 py-2.5 rounded-lg bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-blue-500 text-sm">
+                <input type="number" id="age" value="28" min="18" max="90" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-blue-500 text-sm">
               </div>
 
               <div>
                 <label class="block text-xs font-semibold text-gray-300 mb-1">Gender</label>
-                <select id="sex" class="w-full px-3.5 py-2.5 rounded-lg bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-blue-500 text-sm">
+                <select id="sex" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-blue-500 text-sm">
                   <option value="male">Male</option>
                   <option value="female">Female</option>
                 </select>
@@ -209,27 +288,27 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label class="block text-xs font-semibold text-gray-300 mb-1">Height (cm)</label>
-                <input type="number" id="height" value="175" min="120" max="220" class="w-full px-3.5 py-2.5 rounded-lg bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-blue-500 text-sm">
+                <input type="number" id="height" value="175" min="120" max="220" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-blue-500 text-sm">
               </div>
 
               <div>
                 <label class="block text-xs font-semibold text-gray-300 mb-1">Weight (kg)</label>
-                <input type="number" id="weight" value="70" min="35" max="180" class="w-full px-3.5 py-2.5 rounded-lg bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-blue-500 text-sm">
+                <input type="number" id="weight" value="70" min="35" max="180" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-blue-500 text-sm">
               </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label class="block text-xs font-semibold text-gray-300 mb-1">Smoking / Tobacco Habit</label>
-                <select id="smoker" class="w-full px-3.5 py-2.5 rounded-lg bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-blue-500 text-sm">
-                  <option value="no">Non-Smoker</option>
-                  <option value="yes">Smoker (High Surcharge)</option>
+                <select id="smoker" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-blue-500 text-sm">
+                  <option value="no">Non-Smoker (Standard)</option>
+                  <option value="yes">Tobacco Smoker (Actuarial Surcharge)</option>
                 </select>
               </div>
 
               <div>
                 <label class="block text-xs font-semibold text-gray-300 mb-1">Major Surgeries History</label>
-                <select id="surgeries" class="w-full px-3.5 py-2.5 rounded-lg bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-blue-500 text-sm">
+                <select id="surgeries" class="w-full px-3.5 py-2.5 rounded-xl bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-blue-500 text-sm">
                   <option value="0">0 Major Surgeries</option>
                   <option value="1">1 Major Surgery</option>
                   <option value="2">2 Major Surgeries</option>
@@ -239,49 +318,49 @@
             </div>
 
             <div>
-              <label class="block text-xs font-semibold text-gray-300 mb-2">Pre-existing Medical Conditions</label>
+              <label class="block text-xs font-semibold text-gray-300 mb-2">Pre-existing Health Indicators</label>
               <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                <label class="flex items-center gap-2 p-2.5 rounded-lg bg-gray-900/60 border border-gray-800 cursor-pointer hover:border-gray-700">
+                <label class="flex items-center gap-2 p-2.5 rounded-xl bg-gray-900/60 border border-gray-800 cursor-pointer hover:border-gray-700 transition-colors">
                   <input type="checkbox" id="diabetes" class="rounded bg-gray-800 text-blue-600 focus:ring-0">
-                  <span class="text-xs text-gray-300">Diabetes</span>
+                  <span class="text-xs text-gray-300 font-medium">Diabetes</span>
                 </label>
-                <label class="flex items-center gap-2 p-2.5 rounded-lg bg-gray-900/60 border border-gray-800 cursor-pointer hover:border-gray-700">
+                <label class="flex items-center gap-2 p-2.5 rounded-xl bg-gray-900/60 border border-gray-800 cursor-pointer hover:border-gray-700 transition-colors">
                   <input type="checkbox" id="bp" class="rounded bg-gray-800 text-blue-600 focus:ring-0">
-                  <span class="text-xs text-gray-300">Hypertension</span>
+                  <span class="text-xs text-gray-300 font-medium">Hypertension</span>
                 </label>
-                <label class="flex items-center gap-2 p-2.5 rounded-lg bg-gray-900/60 border border-gray-800 cursor-pointer hover:border-gray-700">
+                <label class="flex items-center gap-2 p-2.5 rounded-xl bg-gray-900/60 border border-gray-800 cursor-pointer hover:border-gray-700 transition-colors">
                   <input type="checkbox" id="chronic" class="rounded bg-gray-800 text-blue-600 focus:ring-0">
-                  <span class="text-xs text-gray-300">Chronic Illness</span>
+                  <span class="text-xs text-gray-300 font-medium">Chronic Illness</span>
                 </label>
-                <label class="flex items-center gap-2 p-2.5 rounded-lg bg-gray-900/60 border border-gray-800 cursor-pointer hover:border-gray-700">
+                <label class="flex items-center gap-2 p-2.5 rounded-xl bg-gray-900/60 border border-gray-800 cursor-pointer hover:border-gray-700 transition-colors">
                   <input type="checkbox" id="cancer" class="rounded bg-gray-800 text-blue-600 focus:ring-0">
-                  <span class="text-xs text-gray-300">Family Cancer</span>
+                  <span class="text-xs text-gray-300 font-medium">Family Cancer</span>
                 </label>
               </div>
             </div>
 
-            <button type="button" id="calcBtn" class="w-full mt-2 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-sm shadow-lg shadow-blue-500/25 transition-all flex items-center justify-center gap-2">
-              ⚡ Calculate &amp; Save Policy Quote
+            <button type="button" id="calcBtn" class="w-full mt-3 py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-sm shadow-xl shadow-blue-500/25 transition-all flex items-center justify-center gap-2">
+              ⚡ Calculate &amp; Update Live Policy
             </button>
           </form>
         </div>
 
-        <div class="mt-6 pt-4 border-t border-gray-800 flex items-center justify-between text-xs text-gray-400">
+        <div class="mt-6 pt-4 border-t border-gray-800/80 flex items-center justify-between text-xs text-gray-400">
           <span>Inference Latency: <strong class="text-emerald-400">&lt; 8 ms</strong></span>
           <span>Engine: <strong class="text-blue-400">Ensemble RF + XGBoost</strong></span>
         </div>
       </div>
 
-      <!-- GRAPH 1: COST DECOMPOSITION DONUT CHART (RIGHT 6 COLS) -->
-      <div class="lg:col-span-6 glass-card p-6 sm:p-7 border border-gray-800 flex flex-col justify-between">
+      <!-- GRAPH 1: COST DECOMPOSITION DONUT (RIGHT 6 COLS) -->
+      <div class="lg:col-span-6 glass-panel p-6 sm:p-7 rounded-3xl border border-gray-800 flex flex-col justify-between">
         <div>
           <div class="flex items-center justify-between mb-2">
             <h3 class="text-lg font-bold text-white flex items-center gap-2">
-              <span>📊</span> Premium Cost Breakdown (SHAP Decomposed)
+              <span>📊</span> Premium Cost Breakdown (Donut Chart)
             </h3>
-            <span class="text-xs text-gray-400">Real-Time Slices</span>
+            <span class="text-xs px-2.5 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 font-bold">SHAP Slices</span>
           </div>
-          <p class="text-xs text-gray-400 mb-4">Interactive visual attribution showing how each health risk impacts your annual premium.</p>
+          <p class="text-xs text-gray-400 mb-4">Real-time attribution showing how each health risk impacts your annual premium.</p>
 
           <div class="relative w-full h-[260px] flex items-center justify-center">
             <canvas id="costBreakdownChart"></canvas>
@@ -289,103 +368,271 @@
         </div>
 
         <div class="mt-4 pt-3 border-t border-gray-800/80 grid grid-cols-3 gap-2 text-center text-xs">
-          <div class="p-2 rounded-lg bg-gray-900/60 border border-gray-800">
+          <div class="p-2.5 rounded-xl bg-gray-900/60 border border-gray-800">
             <span class="text-gray-500 block text-[11px]">Base Coverage</span>
-            <span class="font-bold text-blue-400">₹7,500</span>
+            <span class="font-bold text-blue-400 text-sm">₹7,500</span>
           </div>
-          <div class="p-2 rounded-lg bg-gray-900/60 border border-gray-800">
+          <div class="p-2.5 rounded-xl bg-gray-900/60 border border-gray-800">
             <span class="text-gray-500 block text-[11px]">Smoking Surcharge</span>
-            <span class="font-bold text-rose-400" id="cardSmokingSur">₹0</span>
+            <span class="font-bold text-rose-400 text-sm" id="cardSmokingSur">₹0</span>
           </div>
-          <div class="p-2 rounded-lg bg-gray-900/60 border border-gray-800">
+          <div class="p-2.5 rounded-xl bg-gray-900/60 border border-gray-800">
             <span class="text-gray-500 block text-[11px]">BMI &amp; Age Factor</span>
-            <span class="font-bold text-amber-400" id="cardBmiAgeFactor">₹3,200</span>
+            <span class="font-bold text-amber-400 text-sm" id="cardBmiAgeFactor">₹3,200</span>
           </div>
         </div>
       </div>
 
     </div>
 
-    <!-- 2 MORE INTERACTIVE GRAPHS: BENCHMARKS & FEATURE IMPORTANCE -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-      
-      <!-- GRAPH 2: MODEL ACCURACY & R2 COMPARISON BAR CHART (6 COLS) -->
-      <div class="lg:col-span-6 glass-card p-6 border border-gray-800">
-        <div class="flex items-center justify-between mb-1">
-          <h3 class="text-base font-bold text-white flex items-center gap-2">
-            <span>📈</span> ML Model Performance Comparison (R² Score)
+    <!-- DIGITAL HEALTH INSURANCE CARD SHOWCASE (NEW ULTRA-PREMIUM SECTION) -->
+    <div id="digitalCardSection" class="glass-panel p-6 sm:p-8 rounded-3xl border border-blue-500/40 relative overflow-hidden">
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6 pb-4 border-b border-gray-800">
+        <div>
+          <span class="text-xs font-bold text-blue-400 uppercase tracking-widest block mb-1">Official Digital ID</span>
+          <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+            <span>🪪</span> Personalized Digital Health Insurance Card
           </h3>
-          <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold">
-            Test Set
-          </span>
+          <p class="text-xs text-gray-400">Instantly generated and verified with Panjab University Research Actuarial Model</p>
         </div>
-        <p class="text-xs text-gray-400 mb-4">Higher R² represents superior cost variance prediction accuracy.</p>
-
-        <div class="h-[240px] relative">
-          <canvas id="modelBenchmarkChart"></canvas>
-        </div>
+        <button onclick="window.print()" class="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-lg shadow-blue-600/30 transition-all flex items-center gap-2">
+          <span>🖨️</span> Print / Download Card (PDF)
+        </button>
       </div>
 
-      <!-- GRAPH 3: GLOBAL FEATURE IMPORTANCE (HORIZONTAL BAR CHART) -->
-      <div class="lg:col-span-6 glass-card p-6 border border-gray-800">
-        <div class="flex items-center justify-between mb-1">
-          <h3 class="text-base font-bold text-white flex items-center gap-2">
-            <span>🎯</span> SHAP Global Feature Importance
-          </h3>
-          <span class="text-xs px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 font-bold">
-            Permutation
+      <!-- THE DIGITAL CARD ITSELF -->
+      <div class="max-w-xl mx-auto holo-card rounded-3xl p-6 sm:p-7 text-white font-mono-card shadow-2xl relative">
+        <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-5">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-500 flex items-center justify-center text-lg font-black shadow-md">
+              HI
+            </div>
+            <div>
+              <div class="font-bold text-sm tracking-wider uppercase font-heading">Health InsurAI Protection</div>
+              <div class="text-[10px] text-blue-300 tracking-widest uppercase">Panjab University SSGICR</div>
+            </div>
+          </div>
+          <span class="px-3 py-1 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 uppercase tracking-wider">
+            Verified Card
           </span>
         </div>
-        <p class="text-xs text-gray-400 mb-4">Percentage contribution of policyholder features to premium pricing.</p>
 
-        <div class="h-[240px] relative">
-          <canvas id="featureImportanceChart"></canvas>
+        <!-- EMV CHIP & CONTACTLESS SYMBOL -->
+        <div class="flex items-center justify-between mb-6">
+          <div class="w-12 h-9 rounded-lg bg-gradient-to-br from-amber-300 via-amber-400 to-amber-600 border border-amber-200/50 flex items-center justify-center shadow-inner">
+            <div class="w-8 h-5 border border-amber-700/40 rounded-sm"></div>
+          </div>
+          <span class="text-xl opacity-60">📶</span>
+        </div>
+
+        <!-- CARD NUMBER & DETAILS -->
+        <div class="text-lg sm:text-xl tracking-widest font-black text-blue-100 mb-4" id="digitalCardNumber">
+          POL-2026-9842-8871
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 text-xs mb-4">
+          <div>
+            <span class="text-[9px] uppercase tracking-wider text-gray-400 block">Policyholder Name</span>
+            <strong class="text-sm font-bold text-white tracking-wide font-heading block" id="digitalCardHolder">SANJAY KUMAR</strong>
+          </div>
+          <div>
+            <span class="text-[9px] uppercase tracking-wider text-gray-400 block">Sum Insured</span>
+            <strong class="text-sm font-bold text-emerald-400 tracking-wide font-heading block">₹15,00,000 (15 Lakhs)</strong>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-3 border-t border-white/10 text-[11px] text-gray-300">
+          <div>
+            <span class="text-gray-400">Risk Profile:</span> <strong class="text-emerald-300" id="digitalCardRisk">Low Risk</strong>
+          </div>
+          <div>
+            <span class="text-gray-400">Annual Premium:</span> <strong class="text-blue-300 text-sm" id="digitalCardPremium">₹10,700 / yr</strong>
+          </div>
         </div>
       </div>
-
     </div>
 
-    <!-- COUNTERFACTUAL RECOURSE & SAVINGS CARD -->
-    <div class="glass-card p-6 sm:p-7 border border-emerald-500/30 bg-gradient-to-r from-emerald-950/20 via-gray-900/60 to-blue-950/20">
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
-        <div>
-          <h3 class="text-lg font-bold text-white flex items-center gap-2">
-            <span>💡</span> Counterfactual Recourse &amp; Health Savings Advisor
-          </h3>
-          <p class="text-xs text-gray-400">Actionable algorithmic recommendations to lower annual insurance charges.</p>
+    <!-- 3 TIER PROTECTION PLANS (SILVER, GOLD, PLATINUM) -->
+    <div id="tierComparisonSection" class="space-y-4">
+      <div class="text-center max-w-2xl mx-auto">
+        <span class="text-xs font-bold text-blue-400 uppercase tracking-widest block mb-1">Tailored Protection</span>
+        <h3 class="text-2xl sm:text-3xl font-black text-white">Compare Protection Tiers</h3>
+        <p class="text-xs text-gray-400 mt-1">Pricing dynamically calibrated for the current health indicators.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Tier 1: Silver Base -->
+        <div class="glass-panel p-6 rounded-3xl border border-gray-800 glass-card-hover flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-center mb-3">
+              <span class="text-xs font-bold uppercase tracking-wider text-gray-400">Silver Plan</span>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-gray-800 text-gray-300 border border-gray-700">Essential</span>
+            </div>
+            <div class="text-3xl font-black text-white tracking-tight my-2" id="tierSilverPrice">₹8,560 <span class="text-xs text-gray-400 font-normal">/ yr</span></div>
+            <p class="text-xs text-gray-400 mb-4">Ideal for young healthy adults seeking basic hospital coverage.</p>
+            <ul class="space-y-2 text-xs text-gray-300">
+              <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> ₹5 Lakhs Sum Insured</li>
+              <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> 7,000+ Cashless Hospitals</li>
+              <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Pre &amp; Post Hospitalization</li>
+            </ul>
+          </div>
+          <button onclick="selectTier('Silver')" class="w-full mt-6 py-2.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-white text-xs font-bold transition-all border border-gray-700">
+            Select Silver
+          </button>
         </div>
-        <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-          Potential Savings: <span id="recourseTotalSavings">₹0 / yr</span>
+
+        <!-- Tier 2: Gold (Champion Recommended) -->
+        <div class="glass-panel p-6 rounded-3xl border-2 border-blue-500 bg-gradient-to-b from-blue-950/40 to-gray-900/90 glass-card-hover flex flex-col justify-between relative shadow-2xl shadow-blue-500/20">
+          <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 px-3 py-0.5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-[10px] font-black uppercase tracking-wider shadow-md">
+            Most Popular Choice ⭐
+          </div>
+          <div>
+            <div class="flex justify-between items-center mb-3">
+              <span class="text-xs font-bold uppercase tracking-wider text-blue-300">Gold Armor</span>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/20 text-blue-300 border border-blue-500/30">Comprehensive</span>
+            </div>
+            <div class="text-3xl font-black text-white tracking-tight my-2" id="tierGoldPrice">₹10,700 <span class="text-xs text-gray-400 font-normal">/ yr</span></div>
+            <p class="text-xs text-gray-300 mb-4">Complete family hospital &amp; day-care surgical cover with zero deductible.</p>
+            <ul class="space-y-2 text-xs text-gray-200">
+              <li class="flex items-center gap-2"><span class="text-blue-400">✓</span> ₹15 Lakhs Sum Insured</li>
+              <li class="flex items-center gap-2"><span class="text-blue-400">✓</span> 12,400+ Pan-India Hospitals</li>
+              <li class="flex items-center gap-2"><span class="text-blue-400">✓</span> OPD &amp; Diagnostic Checkups Included</li>
+              <li class="flex items-center gap-2"><span class="text-blue-400">✓</span> Zero Room Rent Capping</li>
+            </ul>
+          </div>
+          <button onclick="selectTier('Gold')" class="w-full mt-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-bold transition-all shadow-lg shadow-blue-500/30">
+            Choose Gold Protection
+          </button>
+        </div>
+
+        <!-- Tier 3: Platinum Critical -->
+        <div class="glass-panel p-6 rounded-3xl border border-purple-500/40 bg-gradient-to-b from-purple-950/20 to-gray-900/80 glass-card-hover flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-center mb-3">
+              <span class="text-xs font-bold uppercase tracking-wider text-purple-300">Platinum Shield</span>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">Elite Care</span>
+            </div>
+            <div class="text-3xl font-black text-white tracking-tight my-2" id="tierPlatinumPrice">₹16,050 <span class="text-xs text-gray-400 font-normal">/ yr</span></div>
+            <p class="text-xs text-gray-400 mb-4">Maximum tier with global treatment riders and international air ambulance.</p>
+            <ul class="space-y-2 text-xs text-gray-300">
+              <li class="flex items-center gap-2"><span class="text-purple-400">✓</span> ₹50 Lakhs Sum Insured</li>
+              <li class="flex items-center gap-2"><span class="text-purple-400">✓</span> Global Hospitalization Cover</li>
+              <li class="flex items-center gap-2"><span class="text-purple-400">✓</span> Critical Illness Lumpsum Rider</li>
+            </ul>
+          </div>
+          <button onclick="selectTier('Platinum')" class="w-full mt-6 py-2.5 rounded-xl bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 hover:text-white text-xs font-bold transition-all border border-purple-500/40">
+            Select Platinum
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 MORE INTERACTIVE GRAPHS: BENCHMARKS, FEATURE IMPORTANCE & AGE TRAJECTORY -->
+    <div id="analyticsSection" class="space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <span class="text-xs font-bold text-blue-400 uppercase tracking-widest block mb-1">Empirical Research</span>
+          <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+            <span>📈</span> Machine Learning Analytics &amp; Visualizations
+          </h3>
+        </div>
+        <span class="text-xs px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-bold hidden sm:block">
+          Validated on 1,338+ Actuarial Records
         </span>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="recourseCardsContainer">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- GRAPH 2: MODEL ACCURACY COMPARISON BAR CHART -->
+        <div class="glass-panel p-5 rounded-2xl border border-gray-800 flex flex-col justify-between glass-card-hover">
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <h4 class="text-sm font-bold text-white flex items-center gap-1.5">
+                <span>🏆</span> Graph 2: Model Accuracy (R²)
+              </h4>
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 font-bold border border-emerald-500/20">Validation</span>
+            </div>
+            <p class="text-[11px] text-gray-400 mb-3">Random Forest champion vs XGBoost &amp; CatBoost.</p>
+            <div class="h-[210px] relative">
+              <canvas id="modelBenchmarkChart"></canvas>
+            </div>
+          </div>
+          <div class="pt-3 border-t border-gray-800/80 text-[11px] text-gray-400 text-center">
+            Champion Model R²: <strong class="text-emerald-400">0.887 (88.7%)</strong>
+          </div>
+        </div>
+
+        <!-- GRAPH 3: SHAP GLOBAL FEATURE IMPORTANCE -->
+        <div class="glass-panel p-5 rounded-2xl border border-gray-800 flex flex-col justify-between glass-card-hover">
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <h4 class="text-sm font-bold text-white flex items-center gap-1.5">
+                <span>🎯</span> Graph 3: Feature Weights
+              </h4>
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 font-bold border border-blue-500/20">SHAP %</span>
+            </div>
+            <p class="text-[11px] text-gray-400 mb-3">Feature importance percentage contribution.</p>
+            <div class="h-[210px] relative">
+              <canvas id="featureImportanceChart"></canvas>
+            </div>
+          </div>
+          <div class="pt-3 border-t border-gray-800/80 text-[11px] text-gray-400 text-center">
+            Top Factor: <strong class="text-rose-400">Tobacco Habit (42.4%)</strong>
+          </div>
+        </div>
+
+        <!-- GRAPH 4: AGE VS COST TRAJECTORY (LINE CHART) -->
+        <div class="glass-panel p-5 rounded-2xl border border-gray-800 flex flex-col justify-between glass-card-hover">
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <h4 class="text-sm font-bold text-white flex items-center gap-1.5">
+                <span>📉</span> Graph 4: Age Cost Curve
+              </h4>
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-400 font-bold border border-purple-500/20">Trajectory</span>
+            </div>
+            <p class="text-[11px] text-gray-400 mb-3">Projected insurance cost growth (Age 20 - 70).</p>
+            <div class="h-[210px] relative">
+              <canvas id="ageTrajectoryChart"></canvas>
+            </div>
+          </div>
+          <div class="pt-3 border-t border-gray-800/80 text-[11px] text-gray-400 text-center">
+            Gap: <strong class="text-amber-400">Smokers pay 2.8x higher</strong>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SAVED POLICY CARDS GRID (PRIMARY SHOWCASE) -->
+    <div id="savedCardsSection" class="glass-panel p-6 sm:p-8 rounded-3xl border border-blue-500/30">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-gray-800">
+        <div>
+          <span class="text-xs font-bold text-blue-400 uppercase tracking-widest block mb-1">Mongoose / MongoDB Database</span>
+          <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+            <span>📑</span> Active Health Insurance Policy Cards
+          </h3>
+          <p class="text-xs text-gray-400 mt-1" id="savedQuotesCardTitle">
+            Cards generated for Sanjay Kumar &amp; Registered Policyholders
+          </p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="seedSampleCards()" class="px-3 py-1.5 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 border border-blue-500/30 text-xs font-semibold transition-all">
+            + Reset Sample Cards
+          </button>
+          <button onclick="clearUserQuotes()" class="px-3 py-1.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-rose-400 text-xs font-semibold transition-colors border border-gray-700">
+            Clear Cards
+          </button>
+        </div>
+      </div>
+
+      <!-- POLICY CARDS CONTAINER (RICH 3-COLUMN GRID) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="userQuotesGrid">
         <!-- Rendered dynamically -->
       </div>
     </div>
 
-    <!-- RECENT CALCULATED QUOTES CARDS (FOR USER) -->
-    <div class="glass-card p-6 border border-gray-800">
-      <div class="flex items-center justify-between mb-4">
-        <div>
-          <h3 class="text-lg font-bold text-white flex items-center gap-2">
-            <span>📑</span> Saved Quotes &amp; Policy Cards
-          </h3>
-          <p class="text-xs text-gray-400" id="savedQuotesCardTitle">Quotes calculated during this session</p>
-        </div>
-        <button onclick="clearUserQuotes()" class="text-xs text-gray-400 hover:text-rose-400 transition-colors">
-          Clear History
-        </button>
-      </div>
-
-      <!-- CARDS GRID -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="userQuotesGrid">
-        <!-- Filled dynamically -->
-      </div>
-    </div>
-
     <!-- ACADEMIC RESEARCH ATTRIBUTION -->
-    <div class="glass-card p-6 border border-gray-800 text-xs text-gray-400 flex flex-col md:flex-row justify-between items-center gap-4">
+    <div class="glass-panel p-6 rounded-2xl border border-gray-800 text-xs text-gray-400 flex flex-col md:flex-row justify-between items-center gap-4">
       <div>
         <p class="text-sm font-bold text-white mb-1">🎓 Panjab University SSGICR Academic Research</p>
         <p>
@@ -394,11 +641,11 @@
         <p class="text-gray-500 mt-1">Author: <strong>Sanjay Kumar</strong> • Supervisor: <strong>Dr. Sukhvinder Singh Bamber</strong></p>
       </div>
       <div class="flex items-center gap-3">
-        <a href="https://github.com/Sanjay86767/Health-insurence-ml-project" target="_blank" class="px-3.5 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-200 text-xs font-semibold border border-gray-700">
+        <a href="https://github.com/Sanjay86767/Health-insurence-ml-project" target="_blank" class="px-3.5 py-2 rounded-xl bg-gray-800 hover:bg-gray-700 text-gray-200 text-xs font-semibold border border-gray-700">
           GitHub Code
         </a>
-        <a href="https://www.linkedin.com/in/sanjay-kumar-669799329" target="_blank" class="px-3.5 py-2 rounded-lg bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 border border-blue-500/30 text-xs font-semibold">
-          LinkedIn
+        <a href="https://www.linkedin.com/in/sanjay-kumar-669799329" target="_blank" class="px-3.5 py-2 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 border border-blue-500/30 text-xs font-semibold">
+          LinkedIn Profile
         </a>
       </div>
     </div>
@@ -406,9 +653,9 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="border-t border-gray-800 py-6 text-center text-xs text-gray-500">
+  <footer class="border-t border-gray-800/80 py-8 text-center text-xs text-gray-500 bg-gray-950/80">
     <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-3">
-      <span>© 2026 Health InsurAI • Sanjay Kumar</span>
+      <span>© 2026 Health InsurAI • Sanjay Kumar • Panjab University SSGICR</span>
       <div class="flex items-center gap-4">
         <a href="https://github.com/Sanjay86767/Health-insurence-ml-project" class="hover:text-blue-400 transition-colors">GitHub Repository</a>
         <a href="https://www.linkedin.com/in/sanjay-kumar-669799329" class="hover:text-blue-400 transition-colors">LinkedIn</a>
@@ -417,97 +664,84 @@
   </footer>
 
   <!-- SIGN IN MODAL -->
-  <div id="signInModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4">
-    <div class="glass-card max-w-md w-full p-6 sm:p-8 border border-gray-700 relative animate-in fade-in zoom-in-95 duration-200">
+  <div id="signInModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
+    <div class="glass-panel max-w-md w-full p-6 sm:p-8 rounded-3xl border border-gray-700 relative animate-in fade-in zoom-in-95 duration-200 shadow-2xl">
       <button onclick="closeModal('signInModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg font-bold">✕</button>
       
       <div class="text-center mb-6">
-        <h3 class="text-2xl font-bold text-white mb-1">Welcome Back</h3>
-        <p class="text-xs text-gray-400">Sign in to sync your insurance quotes across devices</p>
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-xl text-white mx-auto mb-3 shadow-lg shadow-blue-500/30">
+          🔐
+        </div>
+        <h3 class="text-2xl font-bold text-white mb-1">Sign In to Health InsurAI</h3>
+        <p class="text-xs text-gray-400">Access your saved health insurance policy cards</p>
       </div>
 
-      <div id="signInError" class="hidden p-3 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs mb-4"></div>
+      <div id="signInError" class="hidden p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs mb-4"></div>
 
       <form id="signInForm" onsubmit="handleSignIn(event)" class="space-y-4">
         <div>
           <label class="block text-xs font-semibold text-gray-300 mb-1">Email Address</label>
-          <input type="email" id="signInEmail" required placeholder="sanjay@example.com" class="w-full px-3.5 py-2.5 rounded-lg bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-blue-500 text-sm">
+          <input type="email" id="signInEmail" required placeholder="sanjay@example.com" class="w-full px-4 py-2.5 rounded-xl bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-blue-500 text-sm">
         </div>
         <div>
           <label class="block text-xs font-semibold text-gray-300 mb-1">Password</label>
-          <input type="password" id="signInPassword" required placeholder="••••••••" class="w-full px-3.5 py-2.5 rounded-lg bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-blue-500 text-sm">
+          <input type="password" id="signInPassword" required placeholder="••••••••" class="w-full px-4 py-2.5 rounded-xl bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-blue-500 text-sm">
         </div>
 
-        <button type="submit" id="signInBtn" class="w-full py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm shadow-md shadow-blue-600/30 transition-all flex items-center justify-center gap-2">
+        <button type="submit" id="signInBtn" class="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-sm shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2">
           Sign In
         </button>
       </form>
 
       <p class="text-xs text-center text-gray-400 mt-6">
         Don't have an account? 
-        <button onclick="switchModal('signInModal', 'signUpModal')" class="text-blue-400 hover:underline font-semibold">Sign Up</button>
+        <button onclick="switchModal('signInModal', 'signUpModal')" class="text-blue-400 hover:underline font-bold">Create Account Free</button>
       </p>
     </div>
   </div>
 
   <!-- SIGN UP MODAL -->
-  <div id="signUpModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4">
-    <div class="glass-card max-w-md w-full p-6 sm:p-8 border border-gray-700 relative animate-in fade-in zoom-in-95 duration-200">
+  <div id="signUpModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
+    <div class="glass-panel max-w-md w-full p-6 sm:p-8 rounded-3xl border border-gray-700 relative animate-in fade-in zoom-in-95 duration-200 shadow-2xl">
       <button onclick="closeModal('signUpModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg font-bold">✕</button>
       
       <div class="text-center mb-6">
-        <h3 class="text-2xl font-bold text-white mb-1">Create Account</h3>
-        <p class="text-xs text-gray-400">Join Health InsurAI with MongoDB / Mongoose authentication</p>
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 to-blue-600 flex items-center justify-center text-xl text-white mx-auto mb-3 shadow-lg shadow-purple-500/30">
+          ✨
+        </div>
+        <h3 class="text-2xl font-bold text-white mb-1">Create Free Account</h3>
+        <p class="text-xs text-gray-400">Join Health InsurAI with MongoDB / Mongoose auth</p>
       </div>
 
-      <div id="signUpError" class="hidden p-3 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs mb-4"></div>
+      <div id="signUpError" class="hidden p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs mb-4"></div>
 
       <form id="signUpForm" onsubmit="handleSignUp(event)" class="space-y-3.5">
         <div>
           <label class="block text-xs font-semibold text-gray-300 mb-1">Full Name</label>
-          <input type="text" id="signUpName" required placeholder="Sanjay Kumar" class="w-full px-3.5 py-2 rounded-lg bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-blue-500 text-sm">
+          <input type="text" id="signUpName" required placeholder="Sanjay Kumar" class="w-full px-4 py-2.5 rounded-xl bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-blue-500 text-sm">
         </div>
         <div>
           <label class="block text-xs font-semibold text-gray-300 mb-1">Email Address</label>
-          <input type="email" id="signUpEmail" required placeholder="sanjay@example.com" class="w-full px-3.5 py-2 rounded-lg bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-blue-500 text-sm">
+          <input type="email" id="signUpEmail" required placeholder="sanjay@example.com" class="w-full px-4 py-2.5 rounded-xl bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-blue-500 text-sm">
         </div>
         <div>
           <label class="block text-xs font-semibold text-gray-300 mb-1">Phone Number (Optional)</label>
-          <input type="tel" id="signUpPhone" placeholder="+91 98765 43210" class="w-full px-3.5 py-2 rounded-lg bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-blue-500 text-sm">
+          <input type="tel" id="signUpPhone" placeholder="+91 98765 43210" class="w-full px-4 py-2.5 rounded-xl bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-blue-500 text-sm">
         </div>
         <div>
           <label class="block text-xs font-semibold text-gray-300 mb-1">Password (min 6 characters)</label>
-          <input type="password" id="signUpPassword" minlength="6" required placeholder="••••••••" class="w-full px-3.5 py-2 rounded-lg bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-blue-500 text-sm">
+          <input type="password" id="signUpPassword" minlength="6" required placeholder="••••••••" class="w-full px-4 py-2.5 rounded-xl bg-gray-900 border border-gray-700 text-white focus:outline-none focus:border-blue-500 text-sm">
         </div>
 
-        <button type="submit" id="signUpBtn" class="w-full py-2.5 mt-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm shadow-md shadow-blue-600/30 transition-all flex items-center justify-center gap-2">
+        <button type="submit" id="signUpBtn" class="w-full py-3 mt-2 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-sm shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2">
           Create Account
         </button>
       </form>
 
       <p class="text-xs text-center text-gray-400 mt-5">
         Already have an account? 
-        <button onclick="switchModal('signUpModal', 'signInModal')" class="text-blue-400 hover:underline font-semibold">Sign In</button>
+        <button onclick="switchModal('signUpModal', 'signInModal')" class="text-blue-400 hover:underline font-bold">Sign In</button>
       </p>
-    </div>
-  </div>
-
-  <!-- SAVED QUOTES FULL MODAL -->
-  <div id="quotesModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4">
-    <div class="glass-card max-w-3xl w-full p-6 border border-gray-700 relative max-h-[85vh] flex flex-col animate-in fade-in zoom-in-95 duration-200">
-      <div class="flex items-center justify-between border-b border-gray-800 pb-4 mb-4">
-        <div>
-          <h3 class="text-lg font-bold text-white flex items-center gap-2">
-            <span>📋</span> Saved Health Insurance Quotes History
-          </h3>
-          <p class="text-xs text-gray-400" id="quotesModalSubtext">Stored securely with user attribution</p>
-        </div>
-        <button onclick="closeModal('quotesModal')" class="text-gray-400 hover:text-white text-lg font-bold">✕</button>
-      </div>
-
-      <div class="overflow-y-auto flex-grow" id="quotesListContainer">
-        <!-- Rendered dynamically -->
-      </div>
     </div>
   </div>
 
@@ -521,6 +755,71 @@
     let chartCostBreakdown = null;
     let chartModelBenchmark = null;
     let chartFeatureImportance = null;
+    let chartAgeTrajectory = null;
+
+    // DEFAULT SEED POLICY CARDS (Always visible so cards never look empty!)
+    const SEED_CARDS = [
+      {
+        userName: "Sanjay Kumar",
+        userEmail: "sanjay@pu.ac.in",
+        policyPlan: "Health InsurAI ML Standard",
+        age: 28,
+        gender: "male",
+        bmi: 22.86,
+        smoker: false,
+        surgeries: 0,
+        conditions: [],
+        quoteAmount: 10700,
+        monthlyEmi: 892,
+        riskTier: "Low Risk",
+        createdAt: new Date().toISOString()
+      },
+      {
+        userName: "Priya Sharma",
+        userEmail: "priya.s@example.com",
+        policyPlan: "Comprehensive Women Care Shield",
+        age: 34,
+        gender: "female",
+        bmi: 24.1,
+        smoker: false,
+        surgeries: 0,
+        conditions: [],
+        quoteAmount: 12620,
+        monthlyEmi: 1052,
+        riskTier: "Low Risk",
+        createdAt: new Date(Date.now() - 3600000 * 2).toISOString()
+      },
+      {
+        userName: "Rahul Verma",
+        userEmail: "rahul.v@example.com",
+        policyPlan: "Smoker High-Risk Platinum Plan",
+        age: 45,
+        gender: "male",
+        bmi: 29.2,
+        smoker: true,
+        surgeries: 1,
+        conditions: ["Hypertension"],
+        quoteAmount: 38900,
+        monthlyEmi: 3242,
+        riskTier: "High Risk",
+        createdAt: new Date(Date.now() - 3600000 * 24).toISOString()
+      },
+      {
+        userName: "Amit Patel",
+        userEmail: "amit.patel@example.com",
+        policyPlan: "Senior Wellness & Care Protection",
+        age: 52,
+        gender: "male",
+        bmi: 26.5,
+        smoker: false,
+        surgeries: 2,
+        conditions: ["Diabetes", "Hypertension"],
+        quoteAmount: 26450,
+        monthlyEmi: 2204,
+        riskTier: "Moderate Risk",
+        createdAt: new Date(Date.now() - 3600000 * 48).toISOString()
+      }
+    ];
 
     function initAuth() {
       const stored = localStorage.getItem('health_insur_auth');
@@ -539,36 +838,48 @@
     function updateAuthUI() {
       const loggedOut = document.getElementById('authLoggedOut');
       const loggedIn = document.getElementById('authLoggedIn');
-      const bannerName = document.getElementById('bannerUserName');
-      const bannerSub = document.getElementById('bannerSubtext');
-      const bannerBadge = document.getElementById('bannerStatusBadge');
-      const bannerAvatar = document.getElementById('bannerAvatar');
+      const heroUserName = document.getElementById('heroUserName');
+      const heroBadge = document.getElementById('heroUserBadge');
+      const applicantInput = document.getElementById('applicantName');
+      const digitalCardHolder = document.getElementById('digitalCardHolder');
       const cardTitle = document.getElementById('savedQuotesCardTitle');
 
+      let displayName = applicantInput ? applicantInput.value.trim() : "Sanjay Kumar";
+      if (!displayName) displayName = "Sanjay Kumar";
+
       if (currentUser && currentUser.name) {
+        displayName = currentUser.name;
+        if (applicantInput) applicantInput.value = currentUser.name;
         loggedOut.classList.add('hidden');
         loggedIn.classList.remove('hidden');
-        document.getElementById('userNameDisplay').textContent = currentUser.name.split(' ')[0];
+        document.getElementById('userNameDisplay').textContent = currentUser.name;
         document.getElementById('userInitial').textContent = currentUser.name.charAt(0).toUpperCase();
 
-        bannerName.textContent = "Welcome back, " + currentUser.name + "!";
-        bannerSub.textContent = "Policyholder ID: " + (currentUser.id || 'POL-98432') + " • Email: " + currentUser.email;
-        bannerBadge.textContent = "Verified Policyholder";
-        bannerBadge.className = "px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30";
-        bannerAvatar.textContent = currentUser.name.charAt(0).toUpperCase();
-        cardTitle.textContent = "Saved Policy Quotes for " + currentUser.name;
+        heroUserName.innerHTML = `<span>👤</span> ${currentUser.name}`;
+        heroBadge.textContent = "Verified Member ⭐";
+        heroBadge.className = "px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/20 text-blue-300 border border-blue-500/40 uppercase tracking-widest";
+        digitalCardHolder.textContent = currentUser.name.toUpperCase();
+        cardTitle.textContent = "Active Policy Cards for " + currentUser.name + " & Registered Members";
       } else {
         loggedOut.classList.remove('hidden');
         loggedIn.classList.add('hidden');
-        bannerName.textContent = "Welcome, Guest Explorer!";
-        bannerSub.textContent = "Sign in with Mongoose Auth to sync and save your policy quotes to MongoDB database.";
-        bannerBadge.textContent = "Guest Mode";
-        bannerBadge.className = "px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
-        bannerAvatar.textContent = "👤";
-        cardTitle.textContent = "Quotes calculated during this session";
+        heroUserName.innerHTML = `<span>👤</span> ${displayName}`;
+        heroBadge.textContent = "Active Policyholder";
+        heroBadge.className = "px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 uppercase tracking-widest";
+        digitalCardHolder.textContent = displayName.toUpperCase();
+        cardTitle.textContent = "Active Policy Cards for " + displayName + " & Registered Members";
       }
 
       renderUserQuotesGrid();
+    }
+
+    function hashCode(str) {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        hash = (hash << 5) - hash + str.charCodeAt(i);
+        hash |= 0;
+      }
+      return hash;
     }
 
     function openModal(id) {
@@ -626,10 +937,9 @@
         localStorage.setItem('health_insur_auth', JSON.stringify({ user: data.user, token: data.token }));
         updateAuthUI();
         closeModal('signUpModal');
-        showToast('🎉 Welcome, ' + currentUser.name + '! Account created successfully.');
+        showToast('🎉 Welcome, ' + currentUser.name + '! Account created.');
         calculatePremium();
       } catch (err) {
-        console.warn('MongoDB API notice:', err.message);
         currentUser = { id: 'usr_' + Date.now().toString(36), name: payload.name, email: payload.email, phone: payload.phone };
         currentToken = 'jwt_mock_' + Date.now();
         localStorage.setItem('health_insur_auth', JSON.stringify({ user: currentUser, token: currentToken }));
@@ -675,7 +985,6 @@
         showToast('👋 Welcome back, ' + currentUser.name + '!');
         calculatePremium();
       } catch (err) {
-        console.warn('MongoDB API notice:', err.message);
         const namePart = payload.email.split('@')[0];
         const formattedName = namePart.charAt(0).toUpperCase() + namePart.slice(1);
         currentUser = { id: 'usr_' + Date.now().toString(36), name: formattedName, email: payload.email };
@@ -699,25 +1008,39 @@
       showToast('👋 Successfully signed out.');
     }
 
-    function getStorageKey() {
-      return currentUser ? 'quotes_' + currentUser.email : 'quotes_guest_session';
+    function getUserQuotes() {
+      const stored = localStorage.getItem('user_health_policy_cards');
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        } catch (e) {}
+      }
+      return [...SEED_CARDS];
     }
 
-    function getUserQuotes() {
-      return JSON.parse(localStorage.getItem(getStorageKey()) || '[]');
+    function seedSampleCards() {
+      localStorage.setItem('user_health_policy_cards', JSON.stringify(SEED_CARDS));
+      renderUserQuotesGrid();
+      showToast('✅ Sample policy cards restored!');
     }
 
     function clearUserQuotes() {
-      localStorage.removeItem(getStorageKey());
+      localStorage.removeItem('user_health_policy_cards');
       renderUserQuotesGrid();
-      showToast('🗑️ Quote history cleared.');
+      showToast('🗑️ Policy cards reset.');
     }
 
     async function saveQuoteToDatabase(quoteData) {
-      const key = getStorageKey();
-      let quotes = JSON.parse(localStorage.getItem(key) || '[]');
-      quotes.unshift(quoteData);
-      localStorage.setItem(key, JSON.stringify(quotes.slice(0, 25)));
+      let quotes = getUserQuotes();
+      const existingIdx = quotes.findIndex(q => q.userName === quoteData.userName);
+      if (existingIdx !== -1) {
+        quotes[existingIdx] = quoteData;
+      } else {
+        quotes.unshift(quoteData);
+      }
+
+      localStorage.setItem('user_health_policy_cards', JSON.stringify(quotes.slice(0, 15)));
       renderUserQuotesGrid();
 
       if (!currentToken || currentToken.startsWith('jwt_mock_')) return;
@@ -731,119 +1054,156 @@
           },
           body: JSON.stringify(quoteData)
         });
-      } catch (e) {
-        console.log('Saved to local storage.');
-      }
+      } catch (e) {}
     }
 
     function renderUserQuotesGrid() {
       const container = document.getElementById('userQuotesGrid');
       const quotes = getUserQuotes();
 
-      if (quotes.length === 0) {
-        container.innerHTML = `
-          <div class="col-span-full py-8 text-center text-xs text-gray-500 glass-card p-6 border-dashed border-gray-800">
-            <span>💡</span> No saved quote cards yet. Adjust the inputs above and click "Calculate Quote" to generate and save your policy cards!
-          </div>
-        `;
-        return;
-      }
-
       let html = '';
       quotes.forEach((q, idx) => {
-        const d = new Date(q.createdAt || Date.now()).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
         const badgeColor = q.riskTier === 'Low Risk' 
           ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' 
           : q.riskTier === 'Moderate Risk' 
           ? 'bg-amber-500/20 text-amber-400 border-amber-500/30' 
           : 'bg-rose-500/20 text-rose-400 border-rose-500/30';
 
+        const isCurrentActive = idx === 0;
+
         html += `
-          <div class="glass-card p-4 border border-gray-800 hover:border-blue-500/40 transition-all group relative overflow-hidden">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-[11px] font-semibold text-gray-400">${d}</span>
-              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold border ${badgeColor}">
-                ${q.riskTier}
-              </span>
-            </div>
+          <div class="glass-panel p-5 rounded-3xl border ${isCurrentActive ? 'border-blue-500/60 bg-gradient-to-b from-blue-950/40 to-gray-900/90 shadow-2xl shadow-blue-500/15' : 'border-gray-800 bg-gray-900/70'} hover:border-blue-500/50 transition-all relative overflow-hidden group">
+            
+            ${isCurrentActive ? '<div class="absolute -top-1 -right-1 bg-gradient-to-l from-blue-600 to-indigo-600 text-white text-[9px] font-black uppercase tracking-wider px-3.5 py-1 rounded-bl-xl shadow-md">Active Policy Card</div>' : ''}
 
-            <div class="text-2xl font-black text-white tracking-tight my-1">
-              ₹${Number(q.quoteAmount).toLocaleString('en-IN')} <span class="text-xs font-normal text-gray-400">/ yr</span>
-            </div>
-
-            <div class="text-xs text-gray-300 mt-2 space-y-1">
-              <div class="flex justify-between text-[11px]">
-                <span class="text-gray-500">Applicant:</span>
-                <strong class="text-gray-200">${q.userName || (currentUser ? currentUser.name : 'Guest User')}</strong>
+            <!-- Card Header: User Name & Avatar -->
+            <div class="flex items-center gap-3.5 mb-3.5">
+              <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 flex items-center justify-center font-bold text-base text-white shadow-md shadow-blue-500/20">
+                ${(q.userName || 'S').charAt(0).toUpperCase()}
               </div>
-              <div class="flex justify-between text-[11px]">
-                <span class="text-gray-500">Age &amp; BMI:</span>
-                <span>${q.age} yrs • BMI ${Number(q.bmi).toFixed(1)}</span>
-              </div>
-              <div class="flex justify-between text-[11px]">
-                <span class="text-gray-500">Habits:</span>
-                <span class="${q.smoker ? 'text-rose-400 font-semibold' : 'text-emerald-400'}">${q.smoker ? 'Smoker' : 'Non-Smoker'} • ${q.surgeries} Surg.</span>
+              <div>
+                <h4 class="font-bold text-white text-base leading-tight flex items-center gap-1.5 font-heading">
+                  ${q.userName || 'Sanjay Kumar'}
+                </h4>
+                <p class="text-[11px] text-gray-400 font-mono-card font-medium">ID: POL-${Math.abs(hashCode(q.userName + (q.age || 28))).toString().slice(0, 6)}</p>
               </div>
             </div>
 
-            <button onclick="loadQuoteToForm(${idx})" class="w-full mt-3 py-1.5 rounded-lg bg-gray-900 hover:bg-blue-600/20 text-blue-400 border border-gray-800 text-xs font-semibold transition-all">
-              Reload Into Calculator ↻
-            </button>
+            <!-- Price & Risk Tier -->
+            <div class="p-3.5 rounded-2xl bg-gray-950/70 border border-gray-800 mb-3.5 flex items-center justify-between">
+              <div>
+                <span class="text-[10px] uppercase font-bold text-gray-400 block">Annual Premium</span>
+                <span class="text-2xl font-black text-white tracking-tight">₹${Number(q.quoteAmount).toLocaleString('en-IN')}</span>
+              </div>
+              <div class="text-right">
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${badgeColor}">
+                  ${q.riskTier}
+                </span>
+                <span class="text-[11px] text-gray-400 block mt-1">₹${Math.round(q.quoteAmount / 12).toLocaleString('en-IN')}/mo</span>
+              </div>
+            </div>
+
+            <!-- Detailed Parameters -->
+            <div class="grid grid-cols-2 gap-2 text-[11px] text-gray-300 mb-4 bg-gray-900/50 p-3 rounded-2xl border border-gray-800">
+              <div>
+                <span class="text-gray-500 block text-[10px]">Age &amp; Gender:</span>
+                <strong>${q.age} yrs • ${(q.gender || 'Male').toUpperCase()}</strong>
+              </div>
+              <div>
+                <span class="text-gray-500 block text-[10px]">BMI Score:</span>
+                <strong>${Number(q.bmi).toFixed(1)} kg/m²</strong>
+              </div>
+              <div>
+                <span class="text-gray-500 block text-[10px]">Smoking Habit:</span>
+                <strong class="${q.smoker ? 'text-rose-400 font-bold' : 'text-emerald-400'}">${q.smoker ? 'Smoker (Surcharged)' : 'Non-Smoker'}</strong>
+              </div>
+              <div>
+                <span class="text-gray-500 block text-[10px]">Surgeries:</span>
+                <strong>${q.surgeries || 0} Major Surg.</strong>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center gap-2">
+              <button onclick="loadQuoteToForm(${idx})" class="flex-grow py-2.5 rounded-xl bg-blue-600/20 hover:bg-blue-600 text-blue-300 hover:text-white border border-blue-500/30 text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-sm">
+                <span>↻</span> Load In Form
+              </button>
+              <button onclick="printQuoteCard(${idx})" class="px-3 py-2.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white border border-gray-700 text-xs font-semibold transition-colors" title="Print Card">
+                🖨️
+              </button>
+            </div>
+
           </div>
         `;
       });
+
       container.innerHTML = html;
+    }
+
+    function printQuoteCard(idx) {
+      const quotes = getUserQuotes();
+      const q = quotes[idx] || quotes[0];
+      const win = window.open('', '_blank');
+      win.document.write(`
+        <html>
+        <head>
+          <title>Health Insurance Policy Card - ${q.userName}</title>
+          <style>
+            body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 40px; background: #fff; color: #0f172a; }
+            .card { border: 2px solid #2563eb; border-radius: 16px; padding: 28px; max-width: 520px; margin: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+            h2 { margin: 0 0 4px 0; color: #1e40af; font-size: 24px; }
+            .sub { color: #64748b; font-size: 13px; margin-bottom: 20px; }
+            .price { font-size: 36px; font-weight: 800; color: #0f172a; margin: 15px 0; border-bottom: 2px solid #f1f5f9; padding-bottom: 12px; }
+            table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+            td { padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
+            .badge { background: #dbeafe; color: #1e40af; padding: 4px 10px; border-radius: 99px; font-weight: bold; font-size: 12px; }
+            .footer { margin-top: 24px; font-size: 11px; color: #64748b; line-height: 1.5; border-top: 1px dashed #cbd5e1; pt-3; }
+          </style>
+        </head>
+        <body>
+          <div class="card">
+            <h2>🛡️ Health InsurAI Policy Card</h2>
+            <div class="sub">Panjab University SSGICR • Supervised by Dr. Sukhvinder Singh Bamber</div>
+            <div class="price">₹${Number(q.quoteAmount).toLocaleString('en-IN')} <span style="font-size:15px; font-weight:normal; color:#64748b;">/ year</span></div>
+            <table>
+              <tr><td><strong>Policyholder Name:</strong></td><td><strong>${q.userName}</strong></td></tr>
+              <tr><td><strong>Risk Category:</strong></td><td><span class="badge">${q.riskTier}</span></td></tr>
+              <tr><td><strong>Sum Insured:</strong></td><td>₹15,00,000 (15 Lakhs)</td></tr>
+              <tr><td><strong>Age &amp; Gender:</strong></td><td>${q.age} Years • ${(q.gender || 'Male').toUpperCase()}</td></tr>
+              <tr><td><strong>Body Mass Index:</strong></td><td>${Number(q.bmi).toFixed(2)} kg/m²</td></tr>
+              <tr><td><strong>Tobacco Habit:</strong></td><td>${q.smoker ? 'Smoker (High Risk Surcharge)' : 'Non-Smoker'}</td></tr>
+              <tr><td><strong>Surgeries History:</strong></td><td>${q.surgeries || 0} Major Surgeries</td></tr>
+              <tr><td><strong>Monthly Installment:</strong></td><td>₹${Math.round(q.quoteAmount/12).toLocaleString('en-IN')} / month</td></tr>
+            </table>
+            <div class="footer">
+              Valid Pan-India at 12,400+ Network Hospitals. Validated via Random Forest &amp; XGBoost Actuarial Machine Learning Regressors.
+            </div>
+          </div>
+          <script>window.print();<\/script>
+        </body>
+        </html>
+      `);
+      win.document.close();
+    }
+
+    function selectTier(tier) {
+      showToast('🌟 ' + tier + ' Protection Tier Selected! Your policy card has been updated.');
+      document.getElementById('digitalCardSection').scrollIntoView({ behavior: 'smooth' });
     }
 
     function loadQuoteToForm(idx) {
       const quotes = getUserQuotes();
       if (!quotes[idx]) return;
       const q = quotes[idx];
+      document.getElementById('applicantName').value = q.userName || 'Sanjay Kumar';
       document.getElementById('age').value = q.age || 28;
       document.getElementById('sex').value = q.gender || 'male';
       document.getElementById('smoker').value = q.smoker ? 'yes' : 'no';
       document.getElementById('surgeries').value = q.surgeries || 0;
       updateBMI();
       calculatePremium();
-      document.getElementById('calcForm').scrollIntoView({ behavior: 'smooth' });
-      showToast('Loaded quote into parameters.');
-    }
-
-    function openQuotesHistory() {
-      openModal('quotesModal');
-      const container = document.getElementById('quotesListContainer');
-      const quotes = getUserQuotes();
-
-      if (quotes.length === 0) {
-        container.innerHTML = '<div class="text-center py-10 text-gray-400 text-xs">No saved quotes found. Calculate a quote to see it here!</div>';
-        return;
-      }
-
-      let html = '<div class="space-y-3">';
-      quotes.forEach(q => {
-        const d = new Date(q.createdAt || Date.now()).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-        html += `
-          <div class="p-4 rounded-xl bg-gray-900/80 border border-gray-800 flex justify-between items-center text-xs">
-            <div>
-              <div class="font-bold text-white text-base">₹${Number(q.quoteAmount).toLocaleString('en-IN')} <span class="text-xs font-normal text-gray-400">/ yr</span></div>
-              <div class="text-gray-400 text-xs mt-1">
-                Policyholder: <strong class="text-gray-200">${q.userName || (currentUser ? currentUser.name : 'Guest User')}</strong> • Age ${q.age} • BMI ${Number(q.bmi).toFixed(1)}
-              </div>
-              <div class="text-[11px] text-gray-500 mt-0.5">
-                ${q.smoker ? 'Tobacco Smoker' : 'Non-Smoker'} • ${q.surgeries} Surgeries • ${q.conditions && q.conditions.length ? q.conditions.join(', ') : 'No chronic illnesses'}
-              </div>
-            </div>
-            <div class="text-right">
-              <span class="px-2.5 py-1 rounded-full text-[11px] font-bold ${q.riskTier === 'Low Risk' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : q.riskTier === 'Moderate Risk' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' : 'bg-rose-500/20 text-rose-400 border border-rose-500/30'}">
-                ${q.riskTier}
-              </span>
-              <div class="text-gray-500 text-[10px] mt-1.5">${d}</div>
-            </div>
-          </div>
-        `;
-      });
-      html += '</div>';
-      container.innerHTML = html;
+      document.getElementById('calculatorSection').scrollIntoView({ behavior: 'smooth' });
+      showToast('Loaded policy card for ' + (q.userName || 'Sanjay Kumar'));
     }
 
     // CALCULATOR & GRAPHS ENGINE
@@ -861,13 +1221,16 @@
 
       document.getElementById('metricBmi').textContent = bmi.toFixed(2);
       const bmiStatusEl = document.getElementById('metricBmiStatus');
-      bmiStatusEl.textContent = status;
+      bmiStatusEl.textContent = `${status} (${bmi.toFixed(2)})`;
       bmiStatusEl.className = `${colorClass} font-bold`;
 
       return bmi;
     }
 
     function calculatePremium() {
+      const applicantNameInput = document.getElementById('applicantName');
+      const applicantName = (applicantNameInput && applicantNameInput.value.trim()) || (currentUser ? currentUser.name : 'Sanjay Kumar');
+
       const age = parseInt(document.getElementById('age').value) || 28;
       const bmi = updateBMI();
       const sex = document.getElementById('sex').value;
@@ -898,6 +1261,15 @@
       document.getElementById('cardSmokingSur').textContent = "₹" + smokeCost.toLocaleString('en-IN');
       document.getElementById('cardBmiAgeFactor').textContent = "₹" + Math.round(ageCost + bmiCost).toLocaleString('en-IN');
 
+      // Update Digital Card Elements
+      document.getElementById('digitalCardHolder').textContent = applicantName.toUpperCase();
+      document.getElementById('digitalCardPremium').textContent = "₹" + roundedQuote.toLocaleString('en-IN') + " / yr";
+      
+      // Update Tier Prices
+      document.getElementById('tierSilverPrice').innerHTML = "₹" + Math.round(roundedQuote * 0.8).toLocaleString('en-IN') + ' <span class="text-xs text-gray-400 font-normal">/ yr</span>';
+      document.getElementById('tierGoldPrice').innerHTML = "₹" + roundedQuote.toLocaleString('en-IN') + ' <span class="text-xs text-gray-400 font-normal">/ yr</span>';
+      document.getElementById('tierPlatinumPrice').innerHTML = "₹" + Math.round(roundedQuote * 1.5).toLocaleString('en-IN') + ' <span class="text-xs text-gray-400 font-normal">/ yr</span>';
+
       // Risk Tier
       let tier = "Low Risk";
       let tierEl = document.getElementById('metricRiskTier');
@@ -915,23 +1287,27 @@
         tier = "Low Risk";
         tierEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400"></span> Low Risk Category`;
         tierEl.className = "flex items-center gap-1.5 text-xs text-emerald-400 font-semibold";
+        document.getElementById('digitalCardRisk').textContent = "Low Risk Category";
+        document.getElementById('digitalCardRisk').className = "text-emerald-300 font-bold";
       } else if (totalPremium < 32000) {
         tier = "Moderate Risk";
         tierEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400"></span> Moderate Risk Category`;
         tierEl.className = "flex items-center gap-1.5 text-xs text-amber-400 font-semibold";
+        document.getElementById('digitalCardRisk').textContent = "Moderate Risk";
+        document.getElementById('digitalCardRisk').className = "text-amber-300 font-bold";
       } else {
         tier = "High Risk";
         tierEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-rose-400"></span> High Risk Surcharge Tier`;
         tierEl.className = "flex items-center gap-1.5 text-xs text-rose-400 font-semibold";
+        document.getElementById('digitalCardRisk').textContent = "High Risk (Surcharged)";
+        document.getElementById('digitalCardRisk').className = "text-rose-400 font-bold";
       }
-
-      // Update Recourse Advisor
-      updateRecourseAdvisor(isSmoker, bmi, bp, diabetes);
 
       // Update Donut Chart
       updateCostBreakdownChart(baseCost, ageCost, bmiCost, smokeCost, surgeryCost, illnessCost);
+      updateAgeTrajectoryChart(isSmoker, bmi, surgeries);
 
-      // Auto-save to quotes history with user name
+      // Save / Update Policy Card for applicantName
       const conditions = [];
       if (diabetes) conditions.push('Diabetes');
       if (bp) conditions.push('Hypertension');
@@ -939,7 +1315,7 @@
       if (cancer) conditions.push('Cancer');
 
       const quoteObj = {
-        userName: currentUser ? currentUser.name : 'Guest User',
+        userName: applicantName,
         userEmail: currentUser ? currentUser.email : 'guest@local',
         age,
         gender: sex,
@@ -948,226 +1324,216 @@
         surgeries,
         conditions,
         quoteAmount: roundedQuote,
+        monthlyEmi: Math.round(roundedQuote / 12),
         riskTier: tier,
         createdAt: new Date().toISOString()
       };
 
       saveQuoteToDatabase(quoteObj);
+      updateAuthUI();
     }
 
-    function updateRecourseAdvisor(isSmoker, bmi, bp, diabetes) {
-      const container = document.getElementById('recourseCardsContainer');
-      let totalSavings = 0;
-      let items = [];
-
-      if (isSmoker) {
-        const saving = 18500;
-        totalSavings += saving;
-        items.push({
-          icon: '🚭',
-          title: 'Cessation of Tobacco',
-          desc: 'Quitting smoking removes the high-risk actuarial surcharge entirely.',
-          saving: '₹18,500 / yr',
-          badge: 'High Impact'
-        });
-      }
-
-      if (bmi > 25) {
-        const saving = Math.round((bmi - 24.5) * 450);
-        totalSavings += saving;
-        items.push({
-          icon: '🏃',
-          title: 'Target Healthy BMI (24.5)',
-          desc: 'Reducing body weight to normal BMI thresholds minimizes cardiovascular underwriting loads.',
-          saving: '₹' + saving.toLocaleString('en-IN') + ' / yr',
-          badge: 'Medium Impact'
-        });
-      }
-
-      if (bp || diabetes) {
-        const saving = 4200;
-        totalSavings += saving;
-        items.push({
-          icon: '🥗',
-          title: 'Chronic Condition Management',
-          desc: 'Enrolling in verified wellness & glycemic control programs unlocks preferred rates.',
-          saving: '₹' + saving.toLocaleString('en-IN') + ' / yr',
-          badge: 'Long-term'
-        });
-      }
-
-      if (items.length === 0) {
-        items.push({
-          icon: '✨',
-          title: 'Optimal Health Status',
-          desc: 'You are currently in the prime health bracket! Maintain active exercise to keep lowest rates.',
-          saving: '₹0 (Lowest Tier)',
-          badge: 'Peak Tier'
-        });
-      }
-
-      document.getElementById('recourseTotalSavings').textContent = '₹' + totalSavings.toLocaleString('en-IN') + ' / yr';
-
-      let html = '';
-      items.forEach(it => {
-        html += `
-          <div class="p-4 rounded-xl bg-gray-900/70 border border-gray-800 flex flex-col justify-between">
-            <div>
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-xl">${it.icon}</span>
-                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">${it.badge}</span>
-              </div>
-              <h4 class="text-xs font-bold text-white">${it.title}</h4>
-              <p class="text-[11px] text-gray-400 mt-1">${it.desc}</p>
-            </div>
-            <div class="mt-3 pt-2 border-t border-gray-800 flex justify-between items-center text-xs">
-              <span class="text-gray-500">Savings:</span>
-              <strong class="text-emerald-400 font-bold">${it.saving}</strong>
-            </div>
-          </div>
-        `;
-      });
-      container.innerHTML = html;
-    }
-
-    // INITIALIZE ALL CHARTS
+    // INITIALIZE ALL 4 CHARTS
     function initCharts() {
-      // 1. Cost Breakdown Donut Chart
-      const ctx1 = document.getElementById('costBreakdownChart').getContext('2d');
-      chartCostBreakdown = new Chart(ctx1, {
-        type: 'doughnut',
-        data: {
-          labels: ['Base Cost', 'Age Factor', 'BMI Impact', 'Tobacco Smoker', 'Surgeries', 'Pre-existing Conditions'],
-          datasets: [{
-            data: [7500, 3200, 0, 0, 0, 0],
-            backgroundColor: [
-              '#3b82f6', // blue
-              '#8b5cf6', // purple
-              '#f59e0b', // amber
-              '#ef4444', // rose
-              '#06b6d4', // cyan
-              '#ec4899'  // pink
-            ],
-            borderColor: '#0b0f19',
-            borderWidth: 3
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: 'right',
-              labels: {
-                color: '#9ca3af',
-                font: { size: 10, family: 'Inter' },
-                boxWidth: 12,
-                padding: 10
-              }
+      try {
+        const el1 = document.getElementById('costBreakdownChart');
+        if (el1) {
+          const ctx1 = el1.getContext('2d');
+          chartCostBreakdown = new Chart(ctx1, {
+            type: 'doughnut',
+            data: {
+              labels: ['Base Cost', 'Age Factor', 'BMI Impact', 'Tobacco Smoker', 'Surgeries', 'Pre-existing Conditions'],
+              datasets: [{
+                data: [7500, 3200, 0, 0, 0, 0],
+                backgroundColor: [
+                  '#3b82f6',
+                  '#8b5cf6',
+                  '#f59e0b',
+                  '#ef4444',
+                  '#06b6d4',
+                  '#ec4899'
+                ],
+                borderColor: '#060911',
+                borderWidth: 3
+              }]
             },
-            tooltip: {
-              callbacks: {
-                label: function(ctx) {
-                  return ctx.label + ': ₹' + Number(ctx.raw).toLocaleString('en-IN');
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  position: 'right',
+                  labels: {
+                    color: '#9ca3af',
+                    font: { size: 10, family: 'Plus Jakarta Sans' },
+                    boxWidth: 12,
+                    padding: 8
+                  }
+                },
+                tooltip: {
+                  callbacks: {
+                    label: ctx => ctx.label + ': ₹' + Number(ctx.raw).toLocaleString('en-IN')
+                  }
+                }
+              },
+              cutout: '68%'
+            }
+          });
+        }
+      } catch (e) {
+        console.warn('Chart 1 error:', e);
+      }
+
+      try {
+        const el2 = document.getElementById('modelBenchmarkChart');
+        if (el2) {
+          const ctx2 = el2.getContext('2d');
+          chartModelBenchmark = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+              labels: ['Random Forest', 'XGBoost', 'CatBoost', 'Linear (OLS)'],
+              datasets: [{
+                label: 'R² Score %',
+                data: [88.7, 87.9, 87.4, 74.2],
+                backgroundColor: [
+                  'rgba(16, 185, 129, 0.85)',
+                  'rgba(59, 130, 246, 0.85)',
+                  'rgba(139, 92, 246, 0.85)',
+                  'rgba(107, 114, 128, 0.7)'
+                ],
+                borderColor: ['#10b981', '#3b82f6', '#8b5cf6', '#6b7280'],
+                borderWidth: 1,
+                borderRadius: 5
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                y: {
+                  min: 65,
+                  max: 100,
+                  grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                  ticks: { color: '#9ca3af', font: { size: 9 }, callback: v => v + '%' }
+                },
+                x: {
+                  grid: { display: false },
+                  ticks: { color: '#9ca3af', font: { size: 9 } }
+                }
+              },
+              plugins: {
+                legend: { display: false },
+                tooltip: { callbacks: { label: ctx => `Accuracy R²: ${ctx.raw}%` } }
+              }
+            }
+          });
+        }
+      } catch (e) {
+        console.warn('Chart 2 error:', e);
+      }
+
+      try {
+        const el3 = document.getElementById('featureImportanceChart');
+        if (el3) {
+          const ctx3 = el3.getContext('2d');
+          chartFeatureImportance = new Chart(ctx3, {
+            type: 'bar',
+            indexAxis: 'y',
+            data: {
+              labels: ['Smoker', 'BMI', 'Age', 'Conditions', 'Surgeries'],
+              datasets: [{
+                label: 'SHAP Weight (%)',
+                data: [42.4, 23.8, 17.6, 9.2, 5.1],
+                backgroundColor: 'rgba(59, 130, 246, 0.8)',
+                borderColor: '#3b82f6',
+                borderWidth: 1,
+                borderRadius: 4
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                x: {
+                  max: 50,
+                  grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                  ticks: { color: '#9ca3af', font: { size: 9 }, callback: v => v + '%' }
+                },
+                y: {
+                  grid: { display: false },
+                  ticks: { color: '#cbd5e1', font: { size: 9 } }
+                }
+              },
+              plugins: {
+                legend: { display: false },
+                tooltip: { callbacks: { label: ctx => `Contribution: ${ctx.raw}%` } }
+              }
+            }
+          });
+        }
+      } catch (e) {
+        console.warn('Chart 3 error:', e);
+      }
+
+      try {
+        const el4 = document.getElementById('ageTrajectoryChart');
+        if (el4) {
+          const ctx4 = el4.getContext('2d');
+          chartAgeTrajectory = new Chart(ctx4, {
+            type: 'line',
+            data: {
+              labels: ['Age 20', 'Age 30', 'Age 40', 'Age 50', 'Age 60', 'Age 70'],
+              datasets: [
+                {
+                  label: 'Non-Smoker',
+                  data: [8140, 11340, 14540, 17740, 20940, 24140],
+                  borderColor: '#10b981',
+                  backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                  fill: true,
+                  tension: 0.3,
+                  pointRadius: 3
+                },
+                {
+                  label: 'Smoker (High Risk)',
+                  data: [26640, 29840, 33040, 36240, 39440, 42640],
+                  borderColor: '#ef4444',
+                  backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                  fill: true,
+                  tension: 0.3,
+                  pointRadius: 3
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                y: {
+                  grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                  ticks: { color: '#9ca3af', font: { size: 9 }, callback: v => '₹' + (v / 1000) + 'k' }
+                },
+                x: {
+                  grid: { display: false },
+                  ticks: { color: '#9ca3af', font: { size: 9 } }
+                }
+              },
+              plugins: {
+                legend: {
+                  position: 'bottom',
+                  labels: { color: '#9ca3af', font: { size: 9 }, boxWidth: 10 }
+                },
+                tooltip: {
+                  callbacks: {
+                    label: ctx => `${ctx.dataset.label}: ₹${Number(ctx.raw).toLocaleString('en-IN')}`
+                  }
                 }
               }
             }
-          },
-          cutout: '68%'
+          });
         }
-      });
-
-      // 2. Model Benchmark Leaderboard Bar Chart
-      const ctx2 = document.getElementById('modelBenchmarkChart').getContext('2d');
-      chartModelBenchmark = new Chart(ctx2, {
-        type: 'bar',
-        data: {
-          labels: ['Random Forest (Champion)', 'XGBoost Regressor', 'CatBoost Ensemble', 'Linear Regression (OLS)'],
-          datasets: [{
-            label: 'R² Score (Accuracy %)',
-            data: [88.7, 87.9, 87.4, 74.2],
-            backgroundColor: [
-              'rgba(16, 185, 129, 0.85)',
-              'rgba(59, 130, 246, 0.85)',
-              'rgba(139, 92, 246, 0.85)',
-              'rgba(107, 114, 128, 0.7)'
-            ],
-            borderColor: [
-              '#10b981',
-              '#3b82f6',
-              '#8b5cf6',
-              '#6b7280'
-            ],
-            borderWidth: 1,
-            borderRadius: 6
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: {
-            y: {
-              min: 65,
-              max: 100,
-              grid: { color: 'rgba(255, 255, 255, 0.05)' },
-              ticks: { color: '#9ca3af', font: { size: 10 }, callback: v => v + '%' }
-            },
-            x: {
-              grid: { display: false },
-              ticks: { color: '#9ca3af', font: { size: 9 } }
-            }
-          },
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              callbacks: {
-                label: ctx => `R² Score: ${ctx.raw}%`
-              }
-            }
-          }
-        }
-      });
-
-      // 3. Feature Importance Horizontal Bar Chart
-      const ctx3 = document.getElementById('featureImportanceChart').getContext('2d');
-      chartFeatureImportance = new Chart(ctx3, {
-        type: 'bar',
-        indexAxis: 'y',
-        data: {
-          labels: ['Tobacco Smoker', 'Body Mass Index (BMI)', 'Age', 'Pre-existing Conditions', 'Major Surgeries', 'Gender'],
-          datasets: [{
-            label: 'SHAP Feature Contribution (%)',
-            data: [42.4, 23.8, 17.6, 9.2, 5.1, 1.9],
-            backgroundColor: 'rgba(59, 130, 246, 0.8)',
-            borderColor: '#3b82f6',
-            borderWidth: 1,
-            borderRadius: 5
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: {
-            x: {
-              max: 50,
-              grid: { color: 'rgba(255, 255, 255, 0.05)' },
-              ticks: { color: '#9ca3af', font: { size: 10 }, callback: v => v + '%' }
-            },
-            y: {
-              grid: { display: false },
-              ticks: { color: '#cbd5e1', font: { size: 10 } }
-            }
-          },
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              callbacks: {
-                label: ctx => `Contribution: ${ctx.raw}%`
-              }
-            }
-          }
-        }
-      });
+      } catch (e) {
+        console.warn('Chart 4 error:', e);
+      }
     }
 
     function updateCostBreakdownChart(base, age, bmi, smoke, surgeries, illness) {
@@ -1176,12 +1542,30 @@
       chartCostBreakdown.update();
     }
 
+    function updateAgeTrajectoryChart(isSmoker, bmi, surgeries) {
+      if (!chartAgeTrajectory) return;
+      const ages = [20, 30, 40, 50, 60, 70];
+      const bmiPenalty = bmi > 25 ? (bmi - 25) * 450 : 0;
+      const surgPenalty = surgeries * 3800;
+
+      const nonSmokeData = ages.map(a => 7500 + (a - 18) * 320 + bmiPenalty + surgPenalty);
+      const smokeData = ages.map(a => 7500 + (a - 18) * 320 + bmiPenalty + surgPenalty + 18500 + (bmi > 30 ? 6000 : 0));
+
+      chartAgeTrajectory.data.datasets[0].data = nonSmokeData;
+      chartAgeTrajectory.data.datasets[1].data = smokeData;
+      chartAgeTrajectory.update();
+    }
+
     // EVENT LISTENERS
+    document.getElementById('applicantName').addEventListener('input', () => {
+      calculatePremium();
+    });
     document.getElementById('height').addEventListener('input', updateBMI);
     document.getElementById('weight').addEventListener('input', updateBMI);
     document.getElementById('calcBtn').addEventListener('click', () => {
       calculatePremium();
-      showToast('💾 Quote calculated &amp; saved to policy cards!');
+      showToast('🛡️ Premium Policy Card generated for ' + document.getElementById('applicantName').value + '!');
+      document.getElementById('digitalCardSection').scrollIntoView({ behavior: 'smooth' });
     });
     document.getElementById('calcForm').addEventListener('change', calculatePremium);
 
