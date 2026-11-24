@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sanjay Kumar — Machine Learning Engineer &amp; Full-Stack Developer Resume</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1e40af;
+      --primary-light: #3b82f6;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --border: #e2e8f0;
+      --bg-pill: #f1f5f9;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      background-color: #f8fafc;
+      color: var(--text);
+      line-height: 1.5;
+      padding: 2rem 1rem;
+    }
+
+    .resume-wrapper {
+      max-width: 860px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 3rem;
+      border-radius: 1rem;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
+    }
+
+    /* HEADER */
+    .header {
+      border-bottom: 2px solid #2563eb;
+      padding-bottom: 1.5rem;
+      margin-bottom: 1.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .header h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.25rem;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.5px;
+    }
+    .header .subtitle {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #2563eb;
+      margin-top: 0.15rem;
+    }
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      text-align: right;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .contact-links a {
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .contact-links a:hover {
+      text-decoration: underline;
+    }
+
+    /* SECTIONS */
+    .section {
+      margin-bottom: 1.6rem;
+    }
+    .section-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #1e3a8a;
+      border-bottom: 1.5px solid #e2e8f0;
+      padding-bottom: 0.35rem;
+      margin-bottom: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* SKILLS */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 0.6rem;
+      font-size: 0.85rem;
+    }
+    .skill-category strong {
+      color: #0f172a;
+      font-weight: 700;
+    }
+    .skill-category span {
+      color: var(--text-muted);
+    }
+
+    /* EXPERIENCE & PROJECTS */
+    .project-item {
+      margin-bottom: 1.25rem;
+    }
+    .project-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      margin-bottom: 0.25rem;
+    }
+    .project-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .project-role {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #2563eb;
+      margin-left: 0.4rem;
+    }
+    .project-links a {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #2563eb;
+      text-decoration: none;
+      margin-left: 0.5rem;
+      padding: 0.15rem 0.45rem;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 0.35rem;
+    }
+    .project-links a:hover {
+      background: #dbeafe;
+    }
+    .project-item ul {
+      list-style-type: disc;
+      padding-left: 1.25rem;
+      margin-top: 0.35rem;
+      font-size: 0.85rem;
+      color: #334155;
+    }
+    .project-item li {
+      margin-bottom: 0.3rem;
+      line-height: 1.45;
+    }
+
+    /* EDUCATION & PUBLICATIONS */
+    .edu-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.25rem;
+      font-size: 0.9rem;
+    }
+    .edu-title {
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .edu-date {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #64748b;
+    }
+
+    /* PRINT BUTTON & MEDIA */
+    .print-bar {
+      max-width: 860px;
+      margin: 0 auto 1.5rem auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .print-btn {
+      padding: 0.6rem 1.4rem;
+      background: #2563eb;
+      color: #ffffff;
+      font-size: 0.85rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(37,99,235,0.25);
+      transition: background 0.2s;
+    }
+    .print-btn:hover {
+      background: #1d4ed8;
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+        padding: 0;
+      }
+      .print-bar {
+        display: none;
+      }
+      .resume-wrapper {
+        border: none;
+        box-shadow: none;
+        padding: 0;
+        max-width: 100%;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PRINT TOOLBAR -->
+  <div class="print-bar">
+    <span style="font-size: 0.85rem; color: #64748b;">
+      📄 Sanjay Kumar's Master Curriculum Vitae
+    </span>
+    <button onclick="window.print()" class="print-btn">
+      🖨️ Download / Save as PDF
+    </button>
+  </div>
+
+  <div class="resume-wrapper">
+    
+    <!-- HEADER -->
+    <header class="header">
+      <div>
+        <h1>SANJAY KUMAR</h1>
+        <div class="subtitle">Machine Learning Engineer &amp; Full-Stack Developer</div>
+        <div style="font-size: 0.85rem; color: #64748b; margin-top: 0.35rem;">
+          📍 Panjab University SSGICR, Hoshiarpur / Chandigarh, Punjab, India
+        </div>
+      </div>
+      <div class="contact-links">
+        <div>✉️ <a href="mailto:sanjaykumar86767@gmail.com">sanjaykumar86767@gmail.com</a></div>
+        <div>🔗 <a href="https://www.linkedin.com/in/sanjay-kumar-669799329" target="_blank">linkedin.com/in/sanjay-kumar</a></div>
+        <div>💻 <a href="https://github.com/SANJAYKUMAR86767" target="_blank">github.com/SANJAYKUMAR86767</a></div>
+        <div>🌐 <a href="https://health-insurance-ml.vercel.app" target="_blank">health-insurance-ml.vercel.app</a></div>
+      </div>
+    </header>
+
+    <!-- PROFESSIONAL SUMMARY -->
+    <section class="section">
+      <div class="section-title">🎯 Professional Summary</div>
+      <p style="font-size: 0.86rem; color: #334155; line-height: 1.55;">
+        Performance-driven Computer Science &amp; Engineering student at <strong>Panjab University SSGICR</strong> with deep hands-on expertise in <strong>Applied Machine Learning, Explainable AI (XAI), and Modern Full-Stack Web Systems (MERN &amp; Python FastAPI)</strong>. First author of academic research in tree-based actuarial regression and counterfactual recourse. Proven competence in architecting low-latency microservices (&lt; 8ms), scalable MongoDB/Mongoose database backends, and responsive cloud applications on Vercel.
+      </p>
+    </section>
+
+    <!-- TECHNICAL SKILLS -->
+    <section class="section">
+      <div class="section-title">🛠️ Technical Skills</div>
+      <div class="skills-grid">
+        <div class="skill-category">
+          <strong>Languages:</strong><br>
+          <span>Python, JavaScript (ES6+), TypeScript, C++, SQL, HTML5/CSS3</span>
+        </div>
+        <div class="skill-category">
+          <strong>Machine Learning &amp; AI:</strong><br>
+          <span>Scikit-Learn, XGBoost, CatBoost, LightGBM, SHAP (TreeSHAP), Ensembles, Feature Engineering</span>
+        </div>
+        <div class="skill-category">
+          <strong>Backend &amp; Database:</strong><br>
+          <span>FastAPI, Node.js, Express.js, MongoDB Atlas, Mongoose, REST APIs, JWT Authentication</span>
+        </div>
+        <div class="skill-category">
+          <strong>Frontend &amp; Visualization:</strong><br>
+          <span>React.js, Streamlit, Tailwind CSS, Chart.js, HTML5 Canvas, UI/UX Optimization</span>
+        </div>
+        <div class="skill-category">
+          <strong>Cloud, DevOps &amp; Tools:</strong><br>
+          <span>Vercel Serverless, Git, GitHub, Docker, Postman, Linux Shell, VS Code</span>
+        </div>
+        <div class="skill-category">
+          <strong>Core Competencies:</strong><br>
+          <span>Data Structures &amp; Algorithms, Model Evaluation ($R^2$, MAE, RMSE), Data Drift Audits</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURED PROJECTS -->
+    <section class="section">
+      <div class="section-title">🚀 Featured Projects</div>
+
+      <!-- PROJECT 1 -->
+      <div class="project-item">
+        <div class="project-header">
+          <div>
+            <span class="project-title">Health InsurAI — Explainable ML for Health Insurance Cost Prediction</span>
+            <span class="project-role">• Lead Researcher &amp; Engineer</span>
+          </div>
+          <div class="project-links">
+            <a href="https://health-insurance-ml.vercel.app" target="_blank">Live Demo ↗</a>
+            <a href="https://github.com/Sanjay86767/Health-insurence-ml-project" target="_blank">GitHub ↗</a>
+          </div>
+        </div>
+        <ul>
+          <li>Benchmarked 9 regression algorithms (Random Forest, XGBoost, CatBoost, Tweedie GLM) over 1,338+ actuarial records, achieving champion $R^2 = 0.887$ and MAE of ₹2,140.</li>
+          <li>Engineered clinical features (BMI, Composite Comorbidity Index) yielding a +2.77% accuracy increase with zero multicollinearity ($VIF &lt; 3.0$).</li>
+          <li>Integrated TreeSHAP population explainability and counterfactual recourse, identifying personalized health steps saving policyholders up to ₹18,500/year.</li>
+          <li>Built and deployed on Vercel with Mongoose/MongoDB authentication, digital holographic card generation, and 4 interactive Chart.js analytics modules.</li>
+        </ul>
+      </div>
+
+      <!-- PROJECT 2 -->
+      <div class="project-item">
+        <div class="project-header">
+          <div>
+            <span class="project-title">HireHub-AI — Autonomous Recruitment &amp; Career Acceleration Platform</span>
+            <span class="project-role">• Full-Stack MERN Developer</span>
+          </div>
+          <div class="project-links">
+            <a href="https://hire-hub-ai-autonomous-recruitment.vercel.app" target="_blank">Live Demo ↗</a>
+            <a href="https://github.com/SANJAYKUMAR86767/HireHub-AI-Autonomous-Recruitment-Career-Acceleration-Platform-MERN-" target="_blank">GitHub ↗</a>
+          </div>
+        </div>
+        <ul>
+          <li>Architected an autonomous recruitment web platform automating candidate qualification, AI-assisted resume screening, and recruiter hiring workflows.</li>
+          <li>Engineered secure role-based JWT authentication, custom MongoDB Atlas schemas, and RESTful APIs in Node.js/Express with sub-second queries.</li>
+          <li>Built a high-responsiveness React frontend with real-time application pipelines, interview scheduling, and candidate status notifications.</li>
+        </ul>
+      </div>
+
+      <!-- PROJECT 3 -->
+      <div class="project-item">
+        <div class="project-header">
+          <div>
+            <span class="project-title">E-Commerce Modern Retail &amp; Logistics Platform</span>
+            <span class="project-role">• Full-Stack Web Developer</span>
+          </div>
+          <div class="project-links">
+            <a href="https://e-commerce-mauve-ten-78.vercel.app" target="_blank">Live Demo ↗</a>
+            <a href="https://github.com/SANJAYKUMAR86767/E-commerce-" target="_blank">GitHub ↗</a>
+          </div>
+        </div>
+        <ul>
+          <li>Engineered a full-featured e-commerce storefront with real-time cart state synchronization, search filtering, and seamless checkout processing.</li>
+          <li>Optimized Cumulative Layout Shift (CLS &lt; 0.05) and asset bundling for lightning-fast mobile loading on Vercel global edge network.</li>
+        </ul>
+      </div>
+
+    </section>
+
+    <!-- RESEARCH & PUBLICATIONS -->
+    <section class="section">
+      <div class="section-title">📜 Research &amp; Publications</div>
+      <div style="font-size: 0.86rem; color: #334155;">
+        <strong style="color: #0f172a;">"Explainable Machine Learning for Health Insurance Cost Prediction: A Comparative Study of Tree-Based Ensembles with SHAP, ICE, and Counterfactual Analysis"</strong><br>
+        <span style="color: #64748b; font-size: 0.8rem;">Authors: <strong>Sanjay Kumar</strong> &amp; Dr. Sukhvinder Singh Bamber • Department of Computer Science &amp; Engineering, Panjab University SSGICR</span>
+        <ul style="list-style-type: disc; padding-left: 1.25rem; margin-top: 0.35rem; font-size: 0.84rem;">
+          <li>Formulated an end-to-end framework solving linear underfitting in heavy-tailed medical insurance underwriting via non-negative meta-learner stacking.</li>
+          <li>Evaluated algorithmic fairness across age and gender subgroups with Population Stability Index (PSI) data drift monitors.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section class="section">
+      <div class="section-title">🎓 Education</div>
+      <div class="edu-item">
+        <div>
+          <span class="edu-title">Bachelor of Engineering (B.E.) in Computer Science &amp; Engineering</span><br>
+          <span style="color: #475569; font-size: 0.85rem;">Panjab University Swami Sarvanand Giri Regional Centre (SSGICR), Hoshiarpur, Punjab</span>
+        </div>
+        <div class="edu-date">2023 – 2027 (Expected)</div>
+      </div>
+      <p style="font-size: 0.82rem; color: #64748b; margin-top: 0.25rem;">
+        Roll No: <strong>SGM23366</strong> • Key Coursework: Data Structures &amp; Algorithms, DBMS, Machine Learning, Operating Systems, Computer Networks.
+      </p>
+    </section>
+
+    <!-- CERTIFICATIONS & STRENGTHS -->
+    <section class="section">
+      <div class="section-title">🏆 Key Strengths &amp; Highlights</div>
+      <ul style="list-style-type: disc; padding-left: 1.25rem; font-size: 0.85rem; color: #334155;">
+        <li>Demonstrated ability to deploy real-world production applications used by real users on cloud platforms (Vercel, MongoDB Atlas).</li>
+        <li>Strong foundation in algorithmic thinking, data modeling, clean code architecture, and Git collaboration.</li>
+      </ul>
+    </section>
+
+  </div>
+
+</body>
+</html>
