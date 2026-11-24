@@ -1,68 +1,67 @@
 # SANJAY KUMAR
-**Machine Learning Engineer & Full-Stack Developer**  
-📍 Hoshiarpur / Chandigarh, Punjab, India | ✉️ sanjaykumar86767@gmail.com  
-🔗 [LinkedIn](https://www.linkedin.com/in/sanjay-kumar-669799329) | 💻 [GitHub (SANJAYKUMAR86767)](https://github.com/SANJAYKUMAR86767) | 🌐 [Portfolio / Live Projects](https://health-insurance-ml.vercel.app)
+**Computer Science Undergraduate | Full-Stack Developer | MERN & Python**  
+📍 Hoshiarpur, Punjab, India | 📞 +91 8809604880 | ✉️ Sanjay12012005@gmail.com  
+🔗 [LinkedIn](https://www.linkedin.com/in/sanjay-kumar-669799329) | 💻 [GitHub (Sanjay86767)](https://github.com/Sanjay86767) | 💡 [LeetCode (SanjayNova)](https://leetcode.com/u/SanjayNova/) | 🏅 [Credly Badge](https://www.credly.com/badges/46a0923a-6cd4-46ae-888e-26766bd05c62/public_url)
 
 ---
 
 ## 🎯 PROFESSIONAL SUMMARY
-Goal-driven Computer Science & Engineering student at **Panjab University SSGICR** with demonstrated expertise in **Applied Machine Learning, Explainable AI (XAI), and Full-Stack Web Architecture (MERN & Python FastAPI)**. Proven track record of developing research-backed, production-grade applications with sub-10ms inference latencies, robust cloud deployments on Vercel, and database integrations using MongoDB/Mongoose. Author of academic ML research on actuarial healthcare cost optimization and explainability.
+Results-driven Computer Science & Engineering undergraduate at **Panjab University SSGICR** with demonstrated competence in **Full-Stack Web Development (MERN Stack)**, **Machine Learning**, and **Scalable Backend Architecture**. Developed and deployed multiple production-ready web applications on Vercel with MongoDB Atlas, RESTful microservices, and secure JWT authentication. Active problem solver with **150+ LeetCode algorithmic challenges solved**. Strong foundation in Data Structures, Algorithms, Object-Oriented Design, and production engineering practices.
 
 ---
 
 ## 🛠️ TECHNICAL SKILLS
-- **Programming Languages:** Python (Advanced), JavaScript (ES6+), TypeScript, C++, SQL, HTML5, CSS3
-- **Machine Learning & Data Science:** Scikit-Learn, XGBoost, CatBoost, LightGBM, SHAP (TreeSHAP, Local Waterfall), Feature Engineering, Hyperparameter Tuning, Stacking Ensembles, Pandas, NumPy, SciPy
-- **Backend & Cloud Services:** FastAPI, Node.js, Express.js, Mongoose / MongoDB Atlas, RESTful Microservices, JWT Auth, Vercel CLI, Git/GitHub, Docker
-- **Frontend & Data Visualization:** React.js, Streamlit, Tailwind CSS, Chart.js, HTML5 Canvas, Responsive UI/UX
-- **Developer Tools & Workflow:** VS Code, Postman, Git Version Control, Vercel Serverless Functions, Linux Shell
+- **Programming Languages:** C++, Python (Advanced, OOPs), JavaScript (ES6+), TypeScript, SQL
+- **Frontend Development:** React.js, Tailwind CSS, Vite, HTML5, CSS3, Responsive UI/UX, State Management
+- **Backend & APIs:** Node.js, Express.js, RESTful APIs, JWT Authentication, WebSockets (Socket.IO), Middleware
+- **Databases & Cloud:** MongoDB Atlas, Mongoose ODM, MySQL, Relational Database Modeling, Vercel Serverless
+- **Machine Learning & Tools:** Scikit-Learn, XGBoost, Random Forest, SHAP, Pandas, NumPy, Git/GitHub, Postman, Linux Shell
 
 ---
 
 ## 🚀 FEATURED PROJECTS
 
-### 1. Health InsurAI — Explainable ML for Health Insurance Cost Prediction & Recourse
-*Lead Researcher & Developer* | **Live:** [health-insurance-ml.vercel.app](https://health-insurance-ml.vercel.app) | **GitHub:** [Sanjay86767/Health-insurence-ml-project](https://github.com/Sanjay86767/Health-insurence-ml-project)
-- Engineered an end-to-end Machine Learning web platform comparing 9 benchmark regression models across 1,338+ clinical and actuarial records.
-- Deployed a champion **Random Forest & XGBoost Ensemble** achieving an **$R^2$ of 0.887** and Mean Absolute Error (MAE) of ₹2,140 with **< 8ms API response time**.
-- Integrated **TreeSHAP attribution** and **Counterfactual Algorithmic Recourse**, identifying actionable health recommendations saving applicants up to ₹18,500/year.
-- Implemented **Mongoose / MongoDB JWT authentication**, digital health insurance card generator with 1-Year validity tracking, and 4 interactive Chart.js visualizations.
-- Deployed live on Vercel using serverless architecture and production routing.
+### 1. PulseStore – Full-Stack Scalable E-Commerce Platform
+*Full-Stack Web Developer* | **Live Demo:** [e-commerce-mauve-ten-78.vercel.app](https://e-commerce-mauve-ten-78.vercel.app/) | **GitHub:** [Sanjay86767/E-commerce-](https://github.com/Sanjay86767/E-commerce-)
+- Built a production-grade e-commerce application featuring instant search filtering, responsive catalog browsing, and real-time client cart state synchronization using React.js.
+- Integrated Stripe Payment Gateway with webhook validation, ensuring atomicity in transaction processing and automated order status logging.
+- Designed indexed MongoDB collection queries and RESTful micro-endpoints, deployed live on Vercel Edge with zero layout shift (CLS < 0.05).
 
-### 2. HireHub-AI — Autonomous Recruitment & Career Acceleration Platform
-*Full-Stack MERN & AI Developer* | **Live:** [hire-hub-ai-autonomous-recruitment.vercel.app](https://hire-hub-ai-autonomous-recruitment.vercel.app) | **GitHub:** [SANJAYKUMAR86767/HireHub-AI](https://github.com/SANJAYKUMAR86767/HireHub-AI-Autonomous-Recruitment-Career-Acceleration-Platform-MERN-)
-- Developed an intelligent autonomous recruitment platform streamlining candidate screening, AI-powered resume parsing, and interview workflow automation.
-- Designed scalable MongoDB Atlas data schemas, RESTful APIs in Node.js/Express, and high-performance React frontend.
-- Incorporated role-based access control (Candidates & Recruiters) with secure authentication and real-time application status tracking.
+### 2. HireHub – AI-Powered Job Portal & Candidate Acceleration System
+*Full-Stack MERN Developer* | **Live Demo:** [hire-hub-ai-autonomous-recruitment.vercel.app](https://hire-hub-ai-autonomous-recruitment.vercel.app/) | **GitHub:** [Sanjay86767/HireHub-AI](https://github.com/Sanjay86767/HireHub-AI-Autonomous-Recruitment-Career-Acceleration-Platform-MERN-)
+- Architected dual dashboards for Job Seekers and Recruiters, automating application lifecycle workflows, status tracking, and candidate profile evaluations.
+- Implemented bidirectional WebSocket messaging via Socket.IO for sub-100ms recruiter-candidate interactions; secured user sessions using JWT and bcrypt hashing.
+- Engineered custom MongoDB pipeline aggregations to filter applicant pools across multi-dimensional criteria (skills, experience, and hiring rounds).
 
-### 3. E-Commerce Scalable Web Platform
-*Full-Stack Web Developer* | **Live:** [e-commerce-mauve-ten-78.vercel.app](https://e-commerce-mauve-ten-78.vercel.app) | **GitHub:** [SANJAYKUMAR86767/E-commerce-](https://github.com/SANJAYKUMAR86767/E-commerce-)
-- Engineered a high-performance modern e-commerce web application featuring real-time cart state synchronization and layout shift stabilization (CLS < 0.05).
-- Integrated live order tracking, responsive product catalogs, search filtering, and secure checkout processing deployed on Vercel.
-
-### 4. EstateHub — Modern Real-Estate Property Marketplace
-*Full-Stack Developer* | **Live:** [estatehub-rust.vercel.app](https://estatehub-rust.vercel.app)
-- Designed an interactive property search and listing portal with location-based filtering, rich media previews, and inquiry lead routing.
+### 3. Health InsurAI – Explainable Machine Learning Health Insurance Platform
+*Lead ML & Full-Stack Developer* | **Live Demo:** [health-insurance-ml.vercel.app](https://health-insurance-ml.vercel.app/) | **GitHub:** [Sanjay86767/Health-insurence-ml-project](https://github.com/Sanjay86767/Health-insurence-ml-project)
+- Evaluated 9 regression algorithms on 1,338+ actuarial records; deployed a champion Random Forest & XGBoost ensemble achieving **$R^2 = 0.887$** with **< 8ms inference latency**.
+- Integrated TreeSHAP attribution and counterfactual analysis to highlight critical cost drivers, providing applicants actionable health recourse saving up to ₹18,500/year.
+- Engineered interactive Chart.js analytics visualizations, Mongoose database authentication, and dynamic 1-year policy card generation deployed on Vercel.
 
 ---
 
 ## 🎓 EDUCATION
-**Bachelor of Engineering (B.E.) in Computer Science & Engineering**  
-Panjab University Swami Sarvanand Giri Regional Centre (SSGICR), Hoshiarpur, Punjab  
-*2023 – 2027 (Expected)* | Roll No: **SGM23366**  
-- Relevant Coursework: Data Structures & Algorithms, Database Management Systems (DBMS), Machine Learning, Software Engineering, Object-Oriented Programming (OOPs), Operating Systems, Computer Networks.
+- **Bachelor of Engineering (B.E.) in Computer Science & Engineering**  
+  Panjab University Swami Sarvanand Giri Regional Centre (SSGICR), Hoshiarpur, Punjab  
+  *Aug 2023 – June 2027* | **CGPA: 6.74 / 10.00**
+- **Senior Secondary Education (Class XII, BSEB)**  
+  Higher Secondary Certification (Science Stream — Physics, Chemistry, Math) | *2020 – 2022* | **First Division (66.4%)**
+- **Secondary Education (Class X, BSEB)**  
+  Matriculation (Secondary School Certification) | *2019 – 2020* | **First Division (78.8%)**
 
 ---
 
 ## 📜 RESEARCH & PUBLICATIONS
 **"Explainable Machine Learning for Health Insurance Cost Prediction: A Comparative Study of Tree-Based Ensembles with SHAP, ICE, and Counterfactual Analysis"**  
-- *Authors:* **Sanjay Kumar** & Dr. Sukhvinder Singh Bamber  
+- *Authors:* Sanjay Kumar & Dr. Sukhvinder Singh Bamber  
 - *Department:* Computer Science & Engineering, Panjab University SSGICR  
 - Evaluated 9 machine learning algorithms with novel clinical feature engineering (BMI, Composite Comorbidity Index), delivering +2.77% $R^2$ accuracy gain and personalized counterfactual premium reduction frameworks.
 
 ---
 
 ## 🏆 CERTIFICATIONS & ACHIEVEMENTS
-- **Machine Learning & Python Specialization** — Hands-on modeling with Scikit-Learn & XGBoost
-- **Full-Stack Web Development** — MERN Architecture, MongoDB Mongoose, and Vercel Cloud Deployments
-- Multiple live production web apps deployed on global Edge CDNs with 99.9% uptime
+- **Getting Started with Generative AI (IBM SkillsBuild):** Verified mastery of foundations of Generative AI, prompt engineering, LLM architectures, and AI ethics. [Verify Badge](https://www.credly.com/badges/46a0923a-6cd4-46ae-888e-26766bd05c62/public_url)
+- **Competitive Programming & Problem Solving:** Solved 150+ computational challenges on [LeetCode](https://leetcode.com/u/SanjayNova/) with optimal time and space complexity across Data Structures and Algorithms.
+- **IBM Professional Web Development Certification:** Specialized in cloud-native applications, modern full-stack web architecture, and production API design.
+- **Hackathons & Technical Leadership:** Active participant in global hackathons, open-source workshops, and National Service Scheme (NSS) community initiatives.
