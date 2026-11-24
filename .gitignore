@@ -41,3 +41,6 @@ models/*.pkl
 # OS specific
 .DS_Store
 Thumbs.db
+
+catboost_info/
+sum.py
