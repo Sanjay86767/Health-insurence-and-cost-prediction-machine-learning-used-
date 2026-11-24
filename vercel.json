@@ -6,6 +6,14 @@
       "use": "@vercel/static"
     },
     {
+      "src": "resume.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "Sanjay_Kumar_Resume.pdf",
+      "use": "@vercel/static"
+    },
+    {
       "src": "api/**/*.js",
       "use": "@vercel/node"
     }
@@ -14,6 +22,18 @@
     {
       "src": "/api/(.*)",
       "dest": "/api/$1"
+    },
+    {
+      "src": "/Sanjay_Kumar_Resume.pdf",
+      "dest": "/Sanjay_Kumar_Resume.pdf",
+      "headers": {
+        "Content-Type": "application/pdf",
+        "Content-Disposition": "attachment; filename=\"Sanjay_Kumar_Resume.pdf\""
+      }
+    },
+    {
+      "src": "/resume.html",
+      "dest": "/resume.html"
     },
     {
       "src": "/(.*)",
