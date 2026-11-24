@@ -1,39 +1,17 @@
 {
-  "version": 2,
-  "builds": [
+  "headers": [
     {
-      "src": "index.html",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "resume.html",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "Sanjay_Kumar_Resume.pdf",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "api/**/*.js",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
-      "src": "/Sanjay_Kumar_Resume.pdf",
-      "dest": "/api/resume.js"
-    },
-    {
-      "src": "/resume.html",
-      "dest": "/resume.html"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/Sanjay_Kumar_Resume.pdf",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/pdf"
+        },
+        {
+          "key": "Content-Disposition",
+          "value": "inline; filename=\"Sanjay_Kumar_Resume.pdf\""
+        }
+      ]
     }
   ]
 }
